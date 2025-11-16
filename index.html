@@ -6,161 +6,160 @@
 <title>ПравОк! — Обучение праву</title>
 <style>
 /* ===== Base ===== */
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin:0; padding:0; box-sizing:border-box; }
 body {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-    background: #000;
-    color: #fff;
-    overflow-x: hidden;
-    min-height: 100vh;
-    scroll-behavior: smooth;
+    background:#111;
+    color:#fff;
+    overflow-x:hidden;
+    min-height:100vh;
+    scroll-behavior:smooth;
 }
-a { color: inherit; text-decoration: none; }
+a { color:inherit; text-decoration:none; }
 
-/* ===== Background Animated Letters ===== */
+/* ===== Background Letters ===== */
 .bg-letters {
-    position: fixed; inset: 0; z-index: -1; opacity: 0.07; overflow: hidden;
+    position: fixed; inset:0; z-index:-1; overflow:hidden; opacity:0.05;
 }
 .bg-letters span {
-    position: absolute;
-    font-size: 5rem;
-    font-weight: 700;
-    color: #fff;
-    animation: float 12s linear infinite;
-    user-select: none;
+    position:absolute;
+    font-size:6rem;
+    font-weight:900;
+    color:#fff;
+    animation:float 15s linear infinite;
+    user-select:none;
 }
 @keyframes float {
     0% { transform: translateY(120vh) rotate(0deg); opacity:0; }
-    20% { opacity:1; }
+    20% { opacity:0.2; }
     100% { transform: translateY(-20vh) rotate(360deg); opacity:0; }
 }
 
-/* ===== Top Bar (iOS style) ===== */
+/* ===== Top Bar iOS 26 Style ===== */
 .top-bar {
-    position: fixed; top:0; left:0; width:100%; height:60px;
-    display:flex; justify-content:space-between; align-items:center;
-    padding:0 20px;
-    backdrop-filter: blur(18px) saturate(200%);
+    position: fixed; top:0; left:0; width:100%; height:70px;
+    border-radius:0 0 30px 30px;
+    backdrop-filter: blur(20px) saturate(200%);
     background: rgba(255,255,255,0.05);
-    border-bottom: 1px solid rgba(255,255,255,0.12);
-    z-index:999;
-    transition: background 0.3s ease, transform 0.3s ease;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:0 25px; z-index:999;
+    transition: all 0.4s cubic-bezier(.4,0,.2,1);
+    box-shadow: 0 6px 30px rgba(0,0,0,0.3);
 }
-.top-bar .logo { font-weight:700; font-size:1.2rem; }
+.top-bar:hover {
+    background: rgba(255,255,255,0.08);
+}
+.top-bar .logo {
+    font-weight:700; font-size:1.4rem; letter-spacing:1px;
+}
 .top-bar .menu span {
-    margin-left:20px;
+    margin-left:25px;
     cursor:pointer;
-    position: relative;
-    transition: all 0.25s cubic-bezier(.4,0,.2,1);
+    position:relative;
+    font-weight:500;
+    transition: all 0.3s ease;
 }
 .top-bar .menu span::after {
-    content:''; position:absolute; left:0; bottom:-3px;
-    width:0%; height:2px; background:#fff; border-radius:2px;
-    transition: width 0.25s ease;
+    content:'';
+    position:absolute; bottom:-3px; left:0;
+    width:0%; height:3px;
+    background:#fff;
+    border-radius:2px;
+    transition: width 0.3s ease;
 }
 .top-bar .menu span:hover::after { width:100%; }
-.top-bar .menu span:hover {
-    transform: translateY(-2px);
-    text-shadow:0 0 12px rgba(255,255,255,0.5);
-}
+.top-bar .menu span:hover { transform:translateY(-3px); }
 
-/* ===== Container Card ===== */
+/* ===== Main Container ===== */
 .container {
-    width: 92%; max-width:980px; margin:7vh auto; padding:55px;
-    border-radius: 30px;
-    background: rgba(255,255,255,0.04);
-    backdrop-filter: blur(22px) saturate(230%);
-    border: 1px solid rgba(255,255,255,0.14);
-    box-shadow:0 0 30px rgba(255,255,255,0.15);
+    width:92%; max-width:980px;
+    margin:100px auto 50px auto;
+    padding:55px;
+    border-radius:30px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(25px) saturate(180%);
+    border:1px solid rgba(255,255,255,0.15);
+    box-shadow:0 0 40px rgba(255,255,255,0.1);
     position:relative; z-index:1;
-    animation: fadeUp 0.7s ease forwards;
+    animation:fadeUp 0.7s ease forwards;
 }
-@keyframes fadeUp {
-    from { opacity:0; transform:translateY(20px); }
-    to { opacity:1; transform:translateY(0); }
-}
-h1 { font-size:3rem; text-align:center; letter-spacing:-1.4px; font-weight:700; margin-bottom:8px; text-shadow:0 0 20px rgba(255,255,255,0.4); }
-.section-title { font-size:1.45rem; margin:28px 0 8px 0; opacity:0.9; }
+@keyframes fadeUp { from {opacity:0; transform:translateY(30px);} to{opacity:1; transform:translateY(0);} }
+h1 { font-size:3rem; text-align:center; margin-bottom:10px; font-weight:800; text-shadow:0 0 20px rgba(255,255,255,0.3); }
+.section-title { font-size:1.5rem; margin:25px 0 10px 0; opacity:0.9; }
 
 /* ===== Glow Button ===== */
 .btn {
-    display:block; width:100%; padding:18px; text-align:center; border-radius:18px;
-    background: rgba(255,255,255,0.13); border:1px solid rgba(255,255,255,0.25);
-    margin-top:32px; font-size:1.25rem; cursor:pointer; transition: all 0.3s ease;
-    text-shadow:0 0 9px rgba(255,255,255,0.5);
+    display:block; width:100%; padding:18px;
+    text-align:center; border-radius:25px;
+    background: rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.2);
+    margin-top:35px; font-size:1.25rem; cursor:pointer;
+    text-shadow:0 0 6px rgba(255,255,255,0.4);
+    transition: all 0.3s ease;
 }
-.btn:hover { 
-    background:rgba(255,255,255,0.22); 
-    box-shadow:0 0 25px rgba(255,255,255,0.35), inset 0 0 15px rgba(255,255,255,0.25);
-}
-.btn:active { transform:scale(0.97); }
+.btn:hover { background: rgba(255,255,255,0.22); box-shadow:0 0 30px rgba(255,255,255,0.3), inset 0 0 15px rgba(255,255,255,0.15); }
+.btn:active { transform:scale(0.96); }
 
 /* ===== Lessons Table ===== */
 #lessonsTable {
-    width:92%; max-width:980px; margin:30px auto; padding:0 25px;
-    border-radius:28px; background:rgba(255,255,255,0.04);
+    width:92%; max-width:980px; margin:30px auto;
+    padding:0 25px; border-radius:28px;
+    background: rgba(255,255,255,0.05);
     backdrop-filter:blur(22px) saturate(230%);
-    border:1px solid rgba(255,255,255,0.14); box-shadow:0 0 30px rgba(255,255,255,0.15);
-    transform:translateY(-20px); opacity:0; max-height:0; overflow:hidden; transition:all 0.5s ease;
-    position:relative; z-index:1;
+    border:1px solid rgba(255,255,255,0.15);
+    box-shadow:0 0 30px rgba(255,255,255,0.15);
+    transform:translateY(-20px); opacity:0; max-height:0; overflow:hidden;
+    transition:all 0.6s ease;
 }
 #lessonsTable.active { opacity:1; transform:translateY(0); max-height:2000px; padding:25px; }
-
-/* ===== Lesson Item ===== */
-.lesson { padding:15px; margin-bottom:14px; border-radius:15px;
-    background:linear-gradient(120deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
-    border:1px solid rgba(255,255,255,0.17);
-    cursor:pointer; transition: all 0.3s ease;
+.lesson { padding:15px; margin-bottom:14px; border-radius:18px;
+    background: rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.17);
+    cursor:pointer; transition:all 0.3s ease;
 }
-.lesson:hover { 
-    background:linear-gradient(120deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
-    box-shadow:0 0 25px rgba(255,255,255,0.25); 
-}
+.lesson:hover { background: rgba(255,255,255,0.18); box-shadow:0 0 25px rgba(255,255,255,0.25); }
 
-/* ===== Cards Block ===== */
-.cards { display:flex; justify-content:space-around; flex-wrap:wrap; margin:50px 0; }
-.card {
-    width:250px; padding:25px; margin:15px; border-radius:20px; background: rgba(255,255,255,0.04);
-    backdrop-filter: blur(22px) saturate(230%); border:1px solid rgba(255,255,255,0.14);
-    box-shadow:0 0 20px rgba(255,255,255,0.15); text-align:center; cursor:pointer;
+/* ===== Cards ===== */
+.cards { display:flex; flex-wrap:wrap; justify-content:space-around; margin:50px 0; }
+.card { width:250px; padding:25px; margin:15px; border-radius:25px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px) saturate(200%);
+    border:1px solid rgba(255,255,255,0.15);
+    box-shadow:0 0 25px rgba(255,255,255,0.1);
     opacity:0; transform:translateY(30px);
     transition: all 0.7s ease-out;
+    cursor:pointer;
 }
-.card.visible { opacity:1; transform:translateY(0); box-shadow:0 0 40px rgba(255,255,255,0.3); }
-.card:hover { transform:translateY(-5px); box-shadow:0 0 45px rgba(255,255,255,0.35); }
+.card.visible { opacity:1; transform:translateY(0); }
+.card:hover { transform:translateY(-5px); box-shadow:0 0 45px rgba(255,255,255,0.25); }
 
-/* ===== Reviews Carousel ===== */
+/* ===== Reviews ===== */
 .reviews { width:92%; max-width:980px; margin:50px auto; overflow:hidden; position:relative; }
-.review { min-height:80px; padding:20px; text-align:center; border-radius:20px;
-    background: rgba(255,255,255,0.04); margin-bottom:15px;
-    backdrop-filter: blur(22px) saturate(230%); border:1px solid rgba(255,255,255,0.14); 
-    box-shadow:0 0 20px rgba(255,255,255,0.15); opacity:0; transition:opacity 0.5s ease; }
+.review { min-height:80px; padding:20px; text-align:center; border-radius:22px;
+    background: rgba(255,255,255,0.05); margin-bottom:15px;
+    backdrop-filter: blur(20px) saturate(200%); border:1px solid rgba(255,255,255,0.15);
+    box-shadow:0 0 25px rgba(255,255,255,0.15); opacity:0; transition:opacity 0.5s ease;
+}
 .review.active { opacity:1; }
 
-/* ===== Stats Block ===== */
-.stats { width:92%; max-width:980px; margin:50px auto; display:flex; justify-content:space-around; }
-.stat { padding:20px; border-radius:20px; text-align:center;
-    background: rgba(255,255,255,0.04); backdrop-filter: blur(22px) saturate(230%);
-    border:1px solid rgba(255,255,255,0.14); box-shadow:0 0 20px rgba(255,255,255,0.15); }
-.stat h3 { font-size:1.5rem; margin-bottom:5px; }
+/* ===== Footer ===== */
+footer { width:100%; padding:30px 0; text-align:center;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(15px) saturate(180%);
+    border-top:1px solid rgba(255,255,255,0.12);
+    margin-top:50px;
+    border-radius:20px 20px 0 0;
+}
 
-/* ===== FAQ ===== */
-.faq { width:92%; max-width:980px; margin:50px auto; }
-.faq-item { margin-bottom:15px; border-radius:20px; padding:15px; background: rgba(255,255,255,0.04); 
-    backdrop-filter: blur(22px) saturate(230%); border:1px solid rgba(255,255,255,0.14); cursor:pointer; transition: all 0.3s; }
+/* ===== Fade in FAQ ===== */
+.faq-item { margin-bottom:15px; border-radius:20px; padding:15px; background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px) saturate(200%);
+    border:1px solid rgba(255,255,255,0.15);
+    cursor:pointer; transition:all 0.3s ease;
+}
 .faq-item p { display:none; margin-top:10px; }
 .faq-item.active p { display:block; }
 
-/* ===== Quiz ===== */
-.quiz { width:92%; max-width:980px; margin:50px auto; }
-.quiz h3 { margin-bottom:15px; }
-.quiz button { margin:5px; padding:10px 20px; border-radius:15px; border:none;
-    background: rgba(255,255,255,0.13); color:#fff; cursor:pointer; transition:0.3s; }
-.quiz button:hover { background: rgba(255,255,255,0.22); }
-
-/* ===== Footer ===== */
-footer { width:100%; padding:30px 0; text-align:center; background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(15px) saturate(180%); border-top:1px solid rgba(255,255,255,0.1); margin-top:50px; }
+/* ===== Scroll animation helper ===== */
 </style>
 </head>
 <body>
@@ -185,13 +184,10 @@ footer { width:100%; padding:30px 0; text-align:center; background: rgba(255,255
 <div class="container" id="container">
     <h1>ПравОк!</h1>
     <p style="opacity:.7; text-align:center;">Обучение праву в современном формате</p>
-
     <h2 class="section-title">О проекте</h2>
     <p>Короткие уроки, реальные правовые ситуации, современный интерфейс — чтобы знания стали инструментом.</p>
-
     <h2 class="section-title">Что изучишь</h2>
     <p>• права и обязанности<br>• ответственность<br>• как защитить себя законно<br>• реальные кейсы</p>
-
     <div class="btn" onclick="toggleLessons(this)">Список уроков ↓</div>
 </div>
 
@@ -205,7 +201,7 @@ footer { width:100%; padding:30px 0; text-align:center; background: rgba(255,255
     <div class="lesson" onclick="openLesson('lesson5.html')">Урок 5 — Право в интернете</div>
 </div>
 
-<!-- Cards Block -->
+<!-- Cards -->
 <div class="cards">
     <div class="card"><h3>Права и обязанности</h3></div>
     <div class="card"><h3>Ответственность</h3></div>
@@ -219,12 +215,6 @@ footer { width:100%; padding:30px 0; text-align:center; background: rgba(255,255
     <div class="review">“Теперь я уверен в своих правах и обязанностях.”</div>
 </div>
 
-<!-- Stats -->
-<div class="stats">
-    <div class="stat"><h3>5</h3>Уроков</div>
-    <div class="stat"><h3>0/5</h3>Пройдено</div>
-</div>
-
 <!-- FAQ -->
 <div class="faq">
     <div class="faq-item" onclick="this.classList.toggle('active')">
@@ -235,15 +225,6 @@ footer { width:100%; padding:30px 0; text-align:center; background: rgba(255,255
         <strong>Можно ли изучать онлайн?</strong>
         <p>Да, все уроки доступны в интерактивном формате онлайн.</p>
     </div>
-</div>
-
-<!-- Quiz -->
-<div class="quiz">
-    <h3>Мини-quiz</h3>
-    <p>Что такое договор?</p>
-    <button>Соглашение между сторонами</button>
-    <button>Набор правил</button>
-    <button>Случайное действие</button>
 </div>
 
 <!-- Footer -->
@@ -266,8 +247,7 @@ function openLesson(page){ window.location.href = page; }
 function scrollToSection(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
 
 // ===== Reviews carousel =====
-let reviews = document.querySelectorAll('.review');
-let current = 0;
+let reviews = document.querySelectorAll('.review'); let current = 0;
 setInterval(()=>{
     reviews[current].classList.remove('active');
     current = (current+1)%reviews.length;
@@ -286,5 +266,6 @@ const revealCards = () => {
 window.addEventListener('scroll', revealCards);
 revealCards();
 </script>
+
 </body>
 </html>
