@@ -23,11 +23,11 @@ a { color:inherit; text-decoration:none; }
 }
 .bg-letters span {
     position:absolute;
-    font-size:6rem;
+    font-size:4rem;
     font-weight:900;
     color:#fff;
-    animation:float 15s linear infinite;
     user-select:none;
+    animation:float linear infinite;
 }
 @keyframes float {
     0% { transform: translateY(120vh) rotate(0deg); opacity:0; }
@@ -50,19 +50,18 @@ a { color:inherit; text-decoration:none; }
 /* ===== Top Bar ===== */
 .top-bar {
     position: fixed; top:10px; left:50%; transform:translateX(-50%);
-    width:95%; max-width:1200px; height:70px;
+    width:95%; max-width:1200px; height:80px;
     border-radius:0 0 30px 30px;
     backdrop-filter: blur(20px) saturate(200%);
     background: rgba(255,255,255,0.05);
     display:flex; justify-content:space-between; align-items:center;
     padding:0 25px; z-index:999;
     transition: all 0.4s cubic-bezier(.4,0,.2,1);
-    transform-style: preserve-3d;
     box-shadow: 0 6px 30px rgba(0,0,0,0.3);
 }
 .top-bar:hover { background: rgba(255,255,255,0.08); }
 .top-bar.scrolled {
-    height:60px;
+    height:70px;
     padding:0 20px;
     background: rgba(255,255,255,0.04);
     box-shadow:0 4px 20px rgba(0,0,0,0.2);
@@ -71,30 +70,34 @@ a { color:inherit; text-decoration:none; }
     font-weight:700; font-size:1.4rem; letter-spacing:1px;
     text-shadow:0 0 10px rgba(255,255,255,0.3);
 }
-.top-bar .menu {
-    display:flex;
-    position:relative;
+
+/* ===== Liquid Glass Toggle ===== */
+.toggle {
+    display:flex; border-radius:25px; overflow:hidden;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(15px) saturate(180%);
+    border:1px solid rgba(255,255,255,0.2);
 }
-.top-bar .menu span {
-    margin-left:25px;
-    cursor:pointer;
-    position:relative;
+.toggle button {
+    flex:1;
+    padding:8px 20px;
+    border:none;
+    background:transparent;
+    color:#fff;
     font-weight:500;
-    padding:5px 0;
+    cursor:pointer;
     transition: all 0.3s ease;
 }
-.top-bar .menu span:hover { transform:translateY(-2px); }
-.top-bar .menu .indicator {
-    position:absolute; bottom:0; left:0;
-    height:3px; background:#4facfe;
-    border-radius:2px;
-    transition: all 0.3s ease;
+.toggle button.active {
+    background: rgba(255,255,255,0.2);
+    box-shadow: 0 0 10px rgba(255,255,255,0.3);
+    color:#00f2fe;
 }
 
 /* ===== Main Container ===== */
 .container {
     width:92%; max-width:980px;
-    margin:100px auto 50px auto;
+    margin:120px auto 50px auto;
     padding:55px;
     border-radius:30px;
     background: rgba(255,255,255,0.05);
@@ -156,18 +159,21 @@ footer { width:100%; padding:30px 0; text-align:center;
 
 <!-- Background letters -->
 <div class="bg-letters">
-    <span>P</span><span>R</span><span>A</span><span>V</span><span>O</span><span>K</span>
-    <span>P</span><span>R</span><span>A</span><span>V</span><span>O</span>
+    <span style="left:10%; animation-duration:12s; animation-delay:0s;">P</span>
+    <span style="left:25%; animation-duration:15s; animation-delay:2s;">R</span>
+    <span style="left:40%; animation-duration:18s; animation-delay:1s;">A</span>
+    <span style="left:55%; animation-duration:14s; animation-delay:3s;">V</span>
+    <span style="left:70%; animation-duration:17s; animation-delay:0.5s;">O</span>
+    <span style="left:85%; animation-duration:16s; animation-delay:2.5s;">K</span>
 </div>
 
 <!-- Top Bar -->
 <div class="top-bar" id="topBar">
     <div class="logo">ПравОк!</div>
-    <div class="menu" id="menu">
-        <span data-target="container">Главная</span>
-        <span data-target="lessonsTable">Уроки</span>
-        <span data-target="footer">Контакты</span>
-        <div class="indicator" id="indicator"></div>
+    <div class="toggle">
+        <button class="active" onclick="toggleTab(this)">Главная</button>
+        <button onclick="toggleTab(this)">Уроки</button>
+        <button onclick="toggleTab(this)">Контакты</button>
     </div>
 </div>
 
@@ -208,6 +214,12 @@ function toggleLessons(button){
 // ===== Open lesson =====
 function openLesson(page){ window.location.href = page; }
 
+// ===== Toggle Tab =====
+function toggleTab(el){
+    document.querySelectorAll('.toggle button').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+}
+
 // ===== Scroll progress bar =====
 const scrollBar = document.getElementById('scrollBar');
 window.addEventListener('scroll', () => {
@@ -225,36 +237,6 @@ window.addEventListener('scroll', () => {
     } else {
         topBar.classList.remove('scrolled');
     }
-});
-
-// ===== Menu Indicator =====
-const menu = document.getElementById('menu');
-const indicator = document.getElementById('indicator');
-const menuItems = menu.querySelectorAll('span');
-
-function moveIndicator(el){
-    indicator.style.width = el.offsetWidth + 'px';
-    indicator.style.left = el.offsetLeft + 'px';
-}
-moveIndicator(menuItems[0]);
-
-menuItems.forEach(item=>{
-    item.addEventListener('click', ()=>{
-        const target = document.getElementById(item.dataset.target);
-        target.scrollIntoView({behavior:'smooth'});
-        moveIndicator(item);
-    });
-});
-
-// ===== Update indicator on scroll =====
-window.addEventListener('scroll', ()=>{
-    const scrollPos = window.scrollY + 100;
-    menuItems.forEach(item=>{
-        const section = document.getElementById(item.dataset.target);
-        if(section.offsetTop <= scrollPos && section.offsetTop + section.offsetHeight > scrollPos){
-            moveIndicator(item);
-        }
-    });
 });
 </script>
 
