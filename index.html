@@ -57,8 +57,8 @@ a { color:inherit; text-decoration:none; }
     display:flex; justify-content:space-between; align-items:center;
     padding:0 25px; z-index:999;
     transition: all 0.4s cubic-bezier(.4,0,.2,1);
-    box-shadow: 0 6px 30px rgba(0,0,0,0.3);
     transform-style: preserve-3d;
+    box-shadow: 0 6px 30px rgba(0,0,0,0.3);
 }
 .top-bar:hover { background: rgba(255,255,255,0.08); }
 .top-bar.scrolled {
@@ -71,20 +71,27 @@ a { color:inherit; text-decoration:none; }
     font-weight:700; font-size:1.4rem; letter-spacing:1px;
     text-shadow:0 0 10px rgba(255,255,255,0.3);
 }
+
+/* ===== Menu with Indicator ===== */
+.top-bar .menu {
+    display:flex;
+    position:relative;
+}
 .top-bar .menu span {
     margin-left:25px;
     cursor:pointer;
     position:relative;
     font-weight:500;
+    padding:5px 0;
     transition: all 0.3s ease;
 }
-.top-bar .menu span::after {
-    content:''; position:absolute; bottom:-3px; left:0;
-    width:0%; height:3px; background:#fff; border-radius:2px;
-    transition: width 0.3s ease;
+.top-bar .menu span:hover { transform:translateY(-2px); }
+.top-bar .menu .indicator {
+    position:absolute; bottom:0; left:0;
+    height:3px; background:#4facfe;
+    border-radius:2px;
+    transition: all 0.3s ease;
 }
-.top-bar .menu span:hover::after { width:100%; }
-.top-bar .menu span:hover { transform:translateY(-3px); }
 
 /* ===== Main Container ===== */
 .container {
@@ -100,6 +107,7 @@ a { color:inherit; text-decoration:none; }
     animation:fadeUp 0.7s ease forwards;
 }
 @keyframes fadeUp { from {opacity:0; transform:translateY(30px);} to{opacity:1; transform:translateY(0);} }
+
 h1 { font-size:3rem; text-align:center; margin-bottom:10px; font-weight:800; text-shadow:0 0 20px rgba(255,255,255,0.3); }
 .section-title { font-size:1.5rem; margin:25px 0 10px 0; opacity:0.9; }
 
@@ -174,7 +182,6 @@ footer { width:100%; padding:30px 0; text-align:center;
 }
 .faq-item p { display:none; margin-top:10px; }
 .faq-item.active p { display:block; }
-
 </style>
 </head>
 <body>
@@ -191,10 +198,11 @@ footer { width:100%; padding:30px 0; text-align:center;
 <!-- Top Bar -->
 <div class="top-bar" id="topBar">
     <div class="logo">ПравОк!</div>
-    <div class="menu">
-        <span onclick="scrollToSection('container')">Главная</span>
-        <span onclick="toggleLessons(document.querySelector('.btn'))">Уроки</span>
-        <span onclick="scrollToSection('footer')">Контакты</span>
+    <div class="menu" id="menu">
+        <span data-target="container">Главная</span>
+        <span data-target="lessonsSection">Уроки</span>
+        <span data-target="footer">Контакты</span>
+        <div class="indicator" id="indicator"></div>
     </div>
 </div>
 
@@ -308,6 +316,36 @@ window.addEventListener('scroll', () => {
     const docHeight = document.body.scrollHeight - window.innerHeight;
     const scrolled = (scrollTop / docHeight) * 100;
     scrollBar.style.width = scrolled + '%';
+});
+
+// ===== Menu Indicator =====
+const menu = document.getElementById('menu');
+const indicator = document.getElementById('indicator');
+const menuItems = menu.querySelectorAll('span');
+
+function moveIndicator(el){
+    indicator.style.width = el.offsetWidth + 'px';
+    indicator.style.left = el.offsetLeft + 'px';
+}
+moveIndicator(menuItems[0]);
+
+menuItems.forEach(item=>{
+    item.addEventListener('click', ()=>{
+        const target = document.getElementById(item.dataset.target);
+        target.scrollIntoView({behavior:'smooth'});
+        moveIndicator(item);
+    });
+});
+
+// ===== Update indicator on scroll =====
+window.addEventListener('scroll', ()=>{
+    const scrollPos = window.scrollY + 100;
+    menuItems.forEach(item=>{
+        const section = document.getElementById(item.dataset.target);
+        if(section.offsetTop <= scrollPos && section.offsetTop + section.offsetHeight > scrollPos){
+            moveIndicator(item);
+        }
+    });
 });
 </script>
 
