@@ -118,13 +118,30 @@ h1 {
     margin: 30px auto;
     padding: 25px;
     border-radius: 28px;
-    background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
-    backdrop-filter: blur(18px) saturate(250%);
-    border: 1px solid rgba(255,255,255,0.13);
-    box-shadow: 0 0 35px rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(22px) saturate(230%);
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow: 0 0 30px rgba(255,255,255,0.15);
     transform: translateY(-20px);
     opacity: 0;
     transition: all 0.5s ease;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* Glow / перелив градиента */
+#lessonsTable::before {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 32px;
+    background: linear-gradient(140deg, #fff, #000, #fff);
+    filter: blur(25px);
+    pointer-events: none;
+    opacity: 0.15;
+    animation: glowWave 4s infinite;
+    z-index: 0;
 }
 
 #lessonsTable.active {
@@ -133,9 +150,9 @@ h1 {
     opacity: 1;
 }
 
-#lessonsTable h2 {
-    text-align: center;
-    margin-bottom: 15px;
+#lessonsTable h2, .lesson {
+    position: relative;
+    z-index: 1;
 }
 
 .lesson {
@@ -146,6 +163,8 @@ h1 {
     border: 1px solid rgba(255,255,255,0.17);
     cursor: pointer;
     transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
 }
 .lesson:hover {
     background: linear-gradient(120deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
@@ -176,7 +195,7 @@ h1 {
 
 <!-- Lessons Table under main -->
 <div id="lessonsTable">
-    <h2>Доступные урокы</h2>
+    <h2>Доступные уроки</h2>
     <div class="lesson" onclick="openLesson('lesson1.html')">Урок 1 — Что такое право?</div>
     <div class="lesson" onclick="openLesson('lesson2.html')">Урок 2 — Права и обязанности</div>
     <div class="lesson" onclick="openLesson('lesson3.html')">Урок 3 — Ответственность</div>
