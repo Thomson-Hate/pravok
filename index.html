@@ -35,6 +35,18 @@ a { color:inherit; text-decoration:none; }
     100% { transform: translateY(-20vh) rotate(360deg); opacity:0; }
 }
 
+/* ===== Scroll Progress Bar ===== */
+#scrollBar {
+    position: fixed;
+    top:0; left:0;
+    height:4px;
+    background: linear-gradient(90deg, #4facfe, #00f2fe);
+    width:0%;
+    z-index:1000;
+    border-radius:0 0 4px 4px;
+    transition: width 0.1s ease-out;
+}
+
 /* ===== Top Bar iOS 26 Style ===== */
 .top-bar {
     position: fixed; top:10px; left:50%; transform:translateX(-50%);
@@ -46,6 +58,7 @@ a { color:inherit; text-decoration:none; }
     padding:0 25px; z-index:999;
     transition: all 0.4s cubic-bezier(.4,0,.2,1);
     box-shadow: 0 6px 30px rgba(0,0,0,0.3);
+    transform-style: preserve-3d;
 }
 .top-bar:hover { background: rgba(255,255,255,0.08); }
 .top-bar.scrolled {
@@ -166,6 +179,9 @@ footer { width:100%; padding:30px 0; text-align:center;
 </head>
 <body>
 
+<!-- Scroll Bar -->
+<div id="scrollBar"></div>
+
 <!-- Background letters -->
 <div class="bg-letters">
     <span>P</span><span>R</span><span>A</span><span>V</span><span>O</span><span>K</span>
@@ -276,6 +292,22 @@ window.addEventListener('scroll', () => {
     } else {
         topBar.classList.remove('scrolled');
     }
+});
+
+// ===== Floating effect =====
+document.addEventListener('mousemove', e => {
+    const x = (e.clientX - window.innerWidth/2) / 50;
+    const y = (e.clientY - window.innerHeight/2) / 50;
+    topBar.style.transform = `translateX(-50%) rotateX(${-y}deg) rotateY(${x}deg)`;
+});
+
+// ===== Scroll progress bar =====
+const scrollBar = document.getElementById('scrollBar');
+window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.body.scrollHeight - window.innerHeight;
+    const scrolled = (scrollTop / docHeight) * 100;
+    scrollBar.style.width = scrolled + '%';
 });
 </script>
 
