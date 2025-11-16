@@ -52,7 +52,7 @@ body {
 .bg-letters span:nth-child(9){left:26%; animation-delay:8s;}
 .bg-letters span:nth-child(10){left:54%; animation-delay:9s;}
 
-/* ===== Glass Card (Bigger) ===== */
+/* ===== Glass Card ===== */
 .container {
     width: 92%;
     max-width: 980px;
@@ -67,10 +67,10 @@ body {
     z-index: 1;
 }
 
-/* Animated glowing black & white border */
+/* Animated black & white border */
 @keyframes glowWave {
     0% { opacity: .05; transform: scale(1); }
-    50% { opacity: .18; transform: scale(1.1); }
+    50% { opacity: .18; transform: scale(1.05); }
     100% { opacity: .05; transform: scale(1); }
 }
 
@@ -122,20 +122,29 @@ h1 {
     box-shadow: 0 0 25px rgba(255,255,255,0.35), inset 0 0 15px rgba(255,255,255,0.25);
 }
 
-/* ===== Lessons Slide Panel ===== */
-#lessonsPanel {
-    position: fixed;
-    bottom: -70vh;
-    left: 0; right: 0;
-    height: 70vh;
+/* ===== Lessons Table ===== */
+#lessonsTable {
+    display: none;
+    width: 92%;
+    max-width: 980px;
+    margin: 30px auto;
+    padding: 25px;
+    border-radius: 28px;
     background: rgba(255,255,255,0.08);
     backdrop-filter: blur(18px) saturate(250%);
-    border-top: 1px solid rgba(255,255,255,0.13);
-    border-radius: 28px 28px 0 0;
-    transition: bottom .55s ease;
-    padding: 30px;
-    overflow-y: auto;
-    z-index: 100;
+    border: 1px solid rgba(255,255,255,0.13);
+    box-shadow: 0 0 25px rgba(255,255,255,0.2);
+    transition: opacity .4s ease;
+}
+
+#lessonsTable.active {
+    display: block;
+    opacity: 1;
+}
+
+#lessonsTable h2 {
+    text-align: center;
+    margin-bottom: 15px;
 }
 
 .lesson {
@@ -150,6 +159,22 @@ h1 {
 .lesson:hover {
     background: rgba(255,255,255,0.18);
     box-shadow: 0 0 19px rgba(255,255,255,0.25);
+}
+
+.closeBtn {
+    display: block;
+    margin: 15px auto 0;
+    padding: 10px 20px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+}
+.closeBtn:hover {
+    background: rgba(255,255,255,0.22);
+    box-shadow: 0 0 20px rgba(255,255,255,0.25);
 }
 </style>
 </head>
@@ -174,19 +199,24 @@ h1 {
     <div class="btn" onclick="openLessons()">Список уроков ↓</div>
 </div>
 
-<!-- Lessons Slide Panel -->
-<div id="lessonsPanel">
-    <h2 style="margin-bottom:12px;">Доступные уроки</h2>
+<!-- Lessons Table under main -->
+<div id="lessonsTable">
+    <h2>Доступные уроки</h2>
     <div class="lesson" onclick="openLesson('lesson1.html')">Урок 1 — Что такое право?</div>
     <div class="lesson" onclick="openLesson('lesson2.html')">Урок 2 — Права и обязанности</div>
     <div class="lesson" onclick="openLesson('lesson3.html')">Урок 3 — Ответственность</div>
     <div class="lesson" onclick="openLesson('lesson4.html')">Урок 4 — Договоры</div>
     <div class="lesson" onclick="openLesson('lesson5.html')">Урок 5 — Право в интернете</div>
+    <div class="closeBtn" onclick="closeLessons()">Закрыть</div>
 </div>
 
 <script>
 function openLessons() {
-    document.getElementById('lessonsPanel').style.bottom = "0";
+    document.getElementById('lessonsTable').classList.add('active');
+}
+
+function closeLessons() {
+    document.getElementById('lessonsTable').classList.remove('active');
 }
 
 function openLesson(page) {
