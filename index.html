@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ПравОк! — Обучение праву</title>
-
 <style>
 /* ===== Base ===== */
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -15,7 +14,6 @@ body {
     overflow-x: hidden;
     min-height: 100vh;
 }
-
 /* ===== Background Animated Letters ===== */
 .bg-letters {
     position: fixed;
@@ -24,7 +22,6 @@ body {
     z-index: -1;
     opacity: 0.07;
 }
-
 .bg-letters span {
     position: absolute;
     font-size: 5rem;
@@ -33,12 +30,28 @@ body {
     animation: float 12s linear infinite;
     user-select: none;
 }
-
 @keyframes float {
     0% { transform: translateY(120vh) rotate(0deg); opacity: 0; }
     20% { opacity: 1; }
     100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
 }
+
+/* ===== Top Bar ===== */
+.top-bar {
+    position: fixed;
+    top:0; left:0; width:100%; height:60px;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:0 20px;
+    backdrop-filter: blur(15px) saturate(180%);
+    background: rgba(255,255,255,0.05);
+    border-bottom:1px solid rgba(255,255,255,0.1);
+    z-index:999;
+}
+.top-bar .logo { font-weight:700; font-size:1.2rem; }
+.top-bar .menu span {
+    margin-left:20px; cursor:pointer; transition:0.25s;
+}
+.top-bar .menu span:hover { text-shadow:0 0 8px rgba(255,255,255,0.5); }
 
 /* ===== Glass Card ===== */
 .container {
@@ -54,123 +67,98 @@ body {
     position: relative;
     z-index: 1;
 }
-
-/* Animated black & white border */
 @keyframes glowWave {
     0% { opacity: .05; transform: scale(1); }
     50% { opacity: .18; transform: scale(1.05); }
     100% { opacity: .05; transform: scale(1); }
 }
-
 .container::before {
     content: "";
     position: absolute;
     inset: -4px;
     border-radius: 32px;
-    background: linear-gradient(140deg, #fff, #000, #fff);
+    background: linear-gradient(140deg,#fff,#000,#fff);
     filter: blur(25px);
-    pointer-events: none;
+    pointer-events:none;
     animation: glowWave 4s infinite;
 }
+h1 { font-size:3rem; text-align:center; letter-spacing:-1.4px; font-weight:700; margin-bottom:8px; text-shadow:0 0 20px rgba(255,255,255,0.4); }
+.section-title { font-size:1.45rem; margin:28px 0 8px 0; opacity:0.9; }
 
-/* Headers */
-h1 {
-    font-size: 3rem;
-    text-align: center;
-    letter-spacing: -1.4px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    text-shadow: 0 0 20px rgba(255,255,255,0.4);
-}
-
-.section-title {
-    font-size: 1.45rem;
-    margin-top: 28px;
-    margin-bottom: 8px;
-    opacity: 0.9;
-}
-
-/* Glow Button */
+/* ===== Glow Button ===== */
 .btn {
-    display: block;
-    width: 100%;
-    padding: 18px;
-    text-align: center;
-    border-radius: 18px;
-    background: rgba(255,255,255,0.13);
-    border: 1px solid rgba(255,255,255,0.25);
-    margin-top: 32px;
-    font-size: 1.25rem;
-    cursor: pointer;
-    transition: 0.25s;
-    text-shadow: 0 0 9px rgba(255,255,255,0.5);
+    display:block; width:100%; padding:18px; text-align:center; border-radius:18px;
+    background: rgba(255,255,255,0.13); border:1px solid rgba(255,255,255,0.25);
+    margin-top:32px; font-size:1.25rem; cursor:pointer; transition:0.25s;
+    text-shadow:0 0 9px rgba(255,255,255,0.5);
 }
-.btn:hover {
-    background: rgba(255,255,255,0.22);
-    box-shadow: 0 0 25px rgba(255,255,255,0.35), inset 0 0 15px rgba(255,255,255,0.25);
-}
+.btn:hover { background:rgba(255,255,255,0.22); box-shadow:0 0 25px rgba(255,255,255,0.35), inset 0 0 15px rgba(255,255,255,0.25); }
 
 /* ===== Lessons Table ===== */
 #lessonsTable {
-    width: 92%;
-    max-width: 980px;
-    margin: 30px auto;
-    padding: 0 25px; /* анимация padding */
-    border-radius: 28px;
-    background: rgba(255,255,255,0.04);
-    backdrop-filter: blur(22px) saturate(230%);
-    border: 1px solid rgba(255,255,255,0.14);
-    box-shadow: 0 0 30px rgba(255,255,255,0.15);
-    transform: translateY(-20px);
-    opacity: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: all 0.5s ease;
-    position: relative;
-    z-index: 1;
+    width:92%; max-width:980px; margin:30px auto; padding:0 25px;
+    border-radius:28px; background:rgba(255,255,255,0.04);
+    backdrop-filter:blur(22px) saturate(230%);
+    border:1px solid rgba(255,255,255,0.14); box-shadow:0 0 30px rgba(255,255,255,0.15);
+    transform:translateY(-20px); opacity:0; max-height:0; overflow:hidden; transition:all 0.5s ease;
+    position:relative; z-index:1;
 }
-
-/* Glow / перелив градиента */
 #lessonsTable::before {
-    content: "";
-    position: absolute;
-    inset: -4px;
-    border-radius: 32px;
-    background: linear-gradient(140deg, #fff, #000, #fff);
-    filter: blur(25px);
-    pointer-events: none;
-    opacity: 0.15;
-    animation: glowWave 4s infinite;
-    z-index: 0;
+    content:""; position:absolute; inset:-4px; border-radius:32px;
+    background:linear-gradient(140deg,#fff,#000,#fff); filter:blur(25px);
+    pointer-events:none; opacity:0.15; animation:glowWave 4s infinite; z-index:0;
 }
+#lessonsTable.active { opacity:1; transform:translateY(0); max-height:2000px; padding:25px; }
+#lessonsTable h2, .lesson { position:relative; z-index:1; }
+.lesson { padding:15px; margin-bottom:14px; border-radius:15px;
+    background:linear-gradient(120deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+    border:1px solid rgba(255,255,255,0.17);
+    cursor:pointer; transition:all 0.3s ease; position:relative; z-index:1;
+}
+.lesson:hover { background:linear-gradient(120deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+    box-shadow:0 0 25px rgba(255,255,255,0.25); }
 
-#lessonsTable.active {
-    opacity: 1;
-    transform: translateY(0);
-    max-height: 2000px; /* достаточно большое значение для раскрытия */
-    padding: 25px;
+/* ===== Cards Block ===== */
+.cards { display:flex; justify-content:space-around; flex-wrap:wrap; margin:50px 0; }
+.card { width:250px; padding:25px; margin:15px; border-radius:20px; background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(22px) saturate(230%); border:1px solid rgba(255,255,255,0.14);
+    box-shadow:0 0 20px rgba(255,255,255,0.15); text-align:center; cursor:pointer; transition:0.3s;
 }
+.card:hover { box-shadow:0 0 40px rgba(255,255,255,0.3); transform:translateY(-5px); }
+.card h3 { margin-top:15px; }
 
-#lessonsTable h2, .lesson {
-    position: relative;
-    z-index: 1;
-}
+/* ===== Reviews Carousel ===== */
+.reviews { width:92%; max-width:980px; margin:50px auto; overflow:hidden; position:relative; }
+.review { min-height:80px; padding:20px; text-align:center; border-radius:20px;
+    background: rgba(255,255,255,0.04); margin-bottom:15px;
+    backdrop-filter: blur(22px) saturate(230%); border:1px solid rgba(255,255,255,0.14); 
+    box-shadow:0 0 20px rgba(255,255,255,0.15); opacity:0; transition:opacity 0.5s ease; }
+.review.active { opacity:1; }
 
-.lesson {
-    padding: 15px;
-    margin-bottom: 14px;
-    border-radius: 15px;
-    background: linear-gradient(120deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
-    border: 1px solid rgba(255,255,255,0.17);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    z-index: 1;
-}
-.lesson:hover {
-    background: linear-gradient(120deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
-    box-shadow: 0 0 25px rgba(255,255,255,0.25);
-}
+/* ===== Stats Block ===== */
+.stats { width:92%; max-width:980px; margin:50px auto; display:flex; justify-content:space-around; }
+.stat { padding:20px; border-radius:20px; text-align:center;
+    background: rgba(255,255,255,0.04); backdrop-filter: blur(22px) saturate(230%);
+    border:1px solid rgba(255,255,255,0.14); box-shadow:0 0 20px rgba(255,255,255,0.15); }
+.stat h3 { font-size:1.5rem; margin-bottom:5px; }
+
+/* ===== FAQ ===== */
+.faq { width:92%; max-width:980px; margin:50px auto; }
+.faq-item { margin-bottom:15px; border-radius:20px; padding:15px; background: rgba(255,255,255,0.04); 
+    backdrop-filter: blur(22px) saturate(230%); border:1px solid rgba(255,255,255,0.14); cursor:pointer; }
+.faq-item p { display:none; margin-top:10px; }
+.faq-item.active p { display:block; }
+
+/* ===== Quiz ===== */
+.quiz { width:92%; max-width:980px; margin:50px auto; }
+.quiz h3 { margin-bottom:15px; }
+.quiz button { margin:5px; padding:10px 20px; border-radius:15px; border:none;
+    background: rgba(255,255,255,0.13); color:#fff; cursor:pointer; transition:0.3s; }
+.quiz button:hover { background: rgba(255,255,255,0.22); }
+
+/* ===== Footer ===== */
+footer { width:100%; padding:30px 0; text-align:center; background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(15px) saturate(180%); border-top:1px solid rgba(255,255,255,0.1); margin-top:50px; }
 </style>
 </head>
 <body>
@@ -181,7 +169,18 @@ h1 {
     <span>P</span><span>R</span><span>A</span><span>V</span><span>O</span>
 </div>
 
-<div class="container">
+<!-- Top Bar -->
+<div class="top-bar">
+    <div class="logo">ПравОк!</div>
+    <div class="menu">
+        <span onclick="scrollToSection('container')">Главная</span>
+        <span onclick="toggleLessons(document.querySelector('.btn'))">Уроки</span>
+        <span onclick="scrollToSection('footer')">Контакты</span>
+    </div>
+</div>
+
+<!-- Main Container -->
+<div class="container" id="container">
     <h1>ПравОк!</h1>
     <p style="opacity:.7; text-align:center;">Обучение праву в современном формате</p>
 
@@ -194,9 +193,9 @@ h1 {
     <div class="btn" onclick="toggleLessons(this)">Список уроков ↓</div>
 </div>
 
-<!-- Lessons Table under main -->
+<!-- Lessons Table -->
 <div id="lessonsTable">
-    <h2>Доступные уроки</h2>
+    <h2>Доступные урокы</h2>
     <div class="lesson" onclick="openLesson('lesson1.html')">Урок 1 — Что такое право?</div>
     <div class="lesson" onclick="openLesson('lesson2.html')">Урок 2 — Права и обязанности</div>
     <div class="lesson" onclick="openLesson('lesson3.html')">Урок 3 — Ответственность</div>
@@ -204,19 +203,72 @@ h1 {
     <div class="lesson" onclick="openLesson('lesson5.html')">Урок 5 — Право в интернете</div>
 </div>
 
+<!-- Cards Block -->
+<div class="cards">
+    <div class="card"><h3>Права и обязанности</h3></div>
+    <div class="card"><h3>Ответственность</h3></div>
+    <div class="card"><h3>Интернет-право</h3></div>
+</div>
+
+<!-- Reviews -->
+<div class="reviews">
+    <div class="review active">“Обучение помогло понять, как действовать законно в любой ситуации.”</div>
+    <div class="review">“Уроки краткие, но очень информативные, удобно изучать.”</div>
+    <div class="review">“Теперь я уверен в своих правах и обязанностях.”</div>
+</div>
+
+<!-- Stats -->
+<div class="stats">
+    <div class="stat"><h3>5</h3>Уроков</div>
+    <div class="stat"><h3>0/5</h3>Пройдено</div>
+</div>
+
+<!-- FAQ -->
+<div class="faq">
+    <div class="faq-item" onclick="this.classList.toggle('active')">
+        <strong>Что такое право?</strong>
+        <p>Право — это совокупность правил и норм, регулирующих общественные отношения.</p>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('active')">
+        <strong>Можно ли изучать онлайн?</strong>
+        <p>Да, все уроки доступны в интерактивном формате онлайн.</p>
+    </div>
+</div>
+
+<!-- Quiz -->
+<div class="quiz">
+    <h3>Мини-quiz</h3>
+    <p>Что такое договор?</p>
+    <button>Соглашение между сторонами</button>
+    <button>Набор правил</button>
+    <button>Случайное действие</button>
+</div>
+
+<!-- Footer -->
+<footer id="footer">
+    Контакты: info@pravok.ru | Соцсети: Telegram, VK | © 2025 ПравОк!
+</footer>
+
 <script>
-function toggleLessons(button) {
+function toggleLessons(button){
     const table = document.getElementById('lessonsTable');
     table.classList.toggle('active');
     button.innerHTML = table.classList.contains('active') ? 'Список уроков ↑' : 'Список уроков ↓';
-    if (table.classList.contains('active')) {
-        table.scrollIntoView({behavior: 'smooth'});
+    if(table.classList.contains('active')){
+        table.scrollIntoView({behavior:'smooth'});
     }
 }
+function openLesson(page){ window.location.href = page; }
+function scrollToSection(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
 
-function openLesson(page) {
-    window.location.href = page;
-}
+/* Simple reviews carousel */
+let reviews = document.querySelectorAll('.review');
+let current = 0;
+setInterval(()=>{
+    reviews[current].classList.remove('active');
+    current = (current+1)%reviews.length;
+    reviews[current].classList.add('active');
+},5000);
 </script>
 </body>
 </html>
