@@ -83,7 +83,9 @@ body {
     background: linear-gradient(140deg, white, transparent, white);
     filter: blur(25px);
     animation: glowWave 4s infinite;
+    pointer-events: none; /* ← теперь клики проходят через него */
 }
+
 
 /* Headers */
 h1 {
