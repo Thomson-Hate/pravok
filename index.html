@@ -13,54 +13,10 @@ body {
     background: #000;
     color: #fff;
     overflow-x: hidden;
-    height: 100vh;
+    min-height: 100vh;
 }
 
-/* ===== Animated Color Gradient Glow ===== */
-@keyframes glowWave {
-    0% { opacity: .05; transform: scale(1); }
-    50% { opacity: .18; transform: scale(1.1); }
-    100% { opacity: .05; transform: scale(1); }
-}
-
-/* ===== Background Animated Letters ===== */
-.bg-letters {
-    position: fixed;
-    inset: 0;
-    overflow: hidden;
-    z-index: -1;
-    opacity: 0.07;
-}
-
-.bg-letters span {
-    position: absolute;
-    font-size: 5rem;
-    font-weight: 700;
-    color: #fff;
-    animation: float 12s linear infinite;
-    user-select: none;
-}
-
-@keyframes float {
-    0% { transform: translateY(120vh) rotate(0deg); opacity: 0; }
-    20% { opacity: 1; }
-    100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
-}
-
-/* random positions */
-.bg-letters span:nth-child(1){left:5%; animation-delay:0s;}
-.bg-letters span:nth-child(2){left:18%; animation-delay:2s;}
-.bg-letters span:nth-child(3){left:32%; animation-delay:4s;}
-.bg-letters span:nth-child(4){left:47%; animation-delay:1s;}
-.bg-letters span:nth-child(5){left:61%; animation-delay:3s;}
-.bg-letters span:nth-child(6){left:75%; animation-delay:5s;}
-.bg-letters span:nth-child(7){left:88%; animation-delay:6s;}
-.bg-letters span:nth-child(8){left:12%; animation-delay:7s;}
-.bg-letters span:nth-child(9){left:26%; animation-delay:8s;}
-.bg-letters span:nth-child(10){left:54%; animation-delay:9s;}
-
-
-/* ===== Glass Card (Bigger) ===== */
+/* ===== Glass Card ===== */
 .container {
     width: 92%;
     max-width: 980px;
@@ -82,10 +38,8 @@ body {
     border-radius: 32px;
     background: linear-gradient(140deg, white, transparent, white);
     filter: blur(25px);
-    animation: glowWave 4s infinite;
-    pointer-events: none; /* ← теперь клики проходят через него */
+    pointer-events: none;
 }
-
 
 /* Headers */
 h1 {
@@ -124,28 +78,41 @@ h1 {
     box-shadow: 0 0 25px rgba(255,255,255,0.35), inset 0 0 15px rgba(255,255,255,0.25);
 }
 
-/* ===== Lessons Slide Panel ===== */
-#lessonsPanel {
+/* ===== Popup Lessons Table ===== */
+#lessonsPopup {
     position: fixed;
-    bottom: -70vh;
-    left: 0; right: 0;
-    height: 70vh;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 90%;
+    max-width: 600px;
     background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(18px) saturate(250%);
-    border-top: 1px solid rgba(255,255,255,0.13);
-    border-radius: 28px 28px 0 0;
-    transition: .55s ease;
-    padding: 30px;
-    overflow-y: auto;
+    backdrop-filter: blur(22px) saturate(230%);
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 0 25px rgba(255,255,255,0.2);
+    padding: 25px;
+    z-index: 1000;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+}
+
+#lessonsPopup.active {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+
+#lessonsPopup h2 {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .lesson {
     padding: 15px;
     margin-bottom: 14px;
-    border-radius: 15px;
+    border-radius: 12px;
     background: rgba(255,255,255,0.07);
     border: 1px solid rgba(255,255,255,0.17);
-    backdrop-filter: blur(14px);
     cursor: pointer;
     transition: 0.25s;
 }
@@ -153,15 +120,25 @@ h1 {
     background: rgba(255,255,255,0.18);
     box-shadow: 0 0 19px rgba(255,255,255,0.25);
 }
+
+.closeBtn {
+    display: block;
+    margin: 15px auto 0;
+    padding: 10px 20px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+}
+.closeBtn:hover {
+    background: rgba(255,255,255,0.22);
+    box-shadow: 0 0 20px rgba(255,255,255,0.25);
+}
 </style>
 </head>
-
 <body>
-
-<div class="bg-letters">
-    <span>P</span><span>R</span><span>A</span><span>V</span><span>O</span><span>K</span>
-    <span>P</span><span>R</span><span>A</span><span>V</span><span>O</span>
-</div>
 
 <div class="container">
     <h1>ПравОк!</h1>
@@ -176,24 +153,30 @@ h1 {
     <div class="btn" onclick="openLessons()">Список уроков ↓</div>
 </div>
 
-<div id="lessonsPanel">
-    <h2 style="margin-bottom:12px;">Доступные уроки</h2>
-
+<!-- Popup Lessons -->
+<div id="lessonsPopup">
+    <h2>Доступные уроки</h2>
     <div class="lesson" onclick="openLesson('lesson1.html')">Урок 1 — Что такое право?</div>
     <div class="lesson" onclick="openLesson('lesson2.html')">Урок 2 — Права и обязанности</div>
     <div class="lesson" onclick="openLesson('lesson3.html')">Урок 3 — Ответственность</div>
     <div class="lesson" onclick="openLesson('lesson4.html')">Урок 4 — Договоры</div>
     <div class="lesson" onclick="openLesson('lesson5.html')">Урок 5 — Право в интернете</div>
+    <div class="closeBtn" onclick="closeLessons()">Закрыть</div>
 </div>
 
 <script>
 function openLessons() {
-    document.getElementById("lessonsPanel").style.bottom = "0";
+    document.getElementById('lessonsPopup').classList.add('active');
+}
+
+function closeLessons() {
+    document.getElementById('lessonsPopup').classList.remove('active');
 }
 
 function openLesson(page) {
     window.location.href = page;
 }
 </script>
+
 </body>
 </html>
