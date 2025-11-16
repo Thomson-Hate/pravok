@@ -134,11 +134,14 @@ h1 {
     backdrop-filter: blur(18px) saturate(250%);
     border: 1px solid rgba(255,255,255,0.13);
     box-shadow: 0 0 25px rgba(255,255,255,0.2);
-    transition: opacity .4s ease;
+    transform: translateY(-50px);
+    opacity: 0;
+    transition: all 0.5s ease;
 }
 
 #lessonsTable.active {
     display: block;
+    transform: translateY(0);
     opacity: 1;
 }
 
@@ -201,7 +204,7 @@ h1 {
 
 <!-- Lessons Table under main -->
 <div id="lessonsTable">
-    <h2>Доступные уроки</h2>
+    <h2>Доступные урокы</h2>
     <div class="lesson" onclick="openLesson('lesson1.html')">Урок 1 — Что такое право?</div>
     <div class="lesson" onclick="openLesson('lesson2.html')">Урок 2 — Права и обязанности</div>
     <div class="lesson" onclick="openLesson('lesson3.html')">Урок 3 — Ответственность</div>
@@ -212,7 +215,9 @@ h1 {
 
 <script>
 function openLessons() {
-    document.getElementById('lessonsTable').classList.add('active');
+    const table = document.getElementById('lessonsTable');
+    table.classList.add('active');
+    table.scrollIntoView({behavior: 'smooth'});
 }
 
 function closeLessons() {
