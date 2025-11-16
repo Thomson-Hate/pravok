@@ -67,11 +67,11 @@ body {
     z-index: 1;
 }
 
-/* Animated glowing border with gradient */
-@keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+/* Animated glowing black & white border */
+@keyframes glowWave {
+    0% { opacity: .05; transform: scale(1); }
+    50% { opacity: .18; transform: scale(1.1); }
+    100% { opacity: .05; transform: scale(1); }
 }
 
 .container::before {
@@ -79,11 +79,10 @@ body {
     position: absolute;
     inset: -4px;
     border-radius: 32px;
-    background: linear-gradient(140deg, #ff7fff, #00ffff, #ff7fff);
-    background-size: 300% 300%;
+    background: linear-gradient(140deg, #fff, #000, #fff);
     filter: blur(25px);
     pointer-events: none;
-    animation: gradientMove 6s ease infinite;
+    animation: glowWave 4s infinite;
 }
 
 /* Headers */
@@ -123,28 +122,26 @@ h1 {
     box-shadow: 0 0 25px rgba(255,255,255,0.35), inset 0 0 15px rgba(255,255,255,0.25);
 }
 
-/* ===== Lessons Table Under Main ===== */
-#lessonsSection {
-    width: 92%;
-    max-width: 980px;
-    margin: 40px auto;
-    padding: 25px;
-    border-radius: 25px;
+/* ===== Lessons Slide Panel ===== */
+#lessonsPanel {
+    position: fixed;
+    bottom: -70vh;
+    left: 0; right: 0;
+    height: 70vh;
     background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(22px) saturate(230%);
-    border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: 0 0 25px rgba(255,255,255,0.2);
-}
-
-#lessonsSection h2 {
-    text-align: center;
-    margin-bottom: 20px;
+    backdrop-filter: blur(18px) saturate(250%);
+    border-top: 1px solid rgba(255,255,255,0.13);
+    border-radius: 28px 28px 0 0;
+    transition: bottom .55s ease;
+    padding: 30px;
+    overflow-y: auto;
+    z-index: 100;
 }
 
 .lesson {
     padding: 15px;
     margin-bottom: 14px;
-    border-radius: 12px;
+    border-radius: 15px;
     background: rgba(255,255,255,0.07);
     border: 1px solid rgba(255,255,255,0.17);
     cursor: pointer;
@@ -154,7 +151,6 @@ h1 {
     background: rgba(255,255,255,0.18);
     box-shadow: 0 0 19px rgba(255,255,255,0.25);
 }
-
 </style>
 </head>
 <body>
@@ -175,12 +171,12 @@ h1 {
     <h2 class="section-title">Что изучишь</h2>
     <p>• права и обязанности<br>• ответственность<br>• как защитить себя законно<br>• реальные кейсы</p>
 
-    <div class="btn" onclick="scrollToLessons()">Список уроков ↓</div>
+    <div class="btn" onclick="openLessons()">Список уроков ↓</div>
 </div>
 
-<!-- Lessons Section under main -->
-<div id="lessonsSection">
-    <h2>Доступные уроки</h2>
+<!-- Lessons Slide Panel -->
+<div id="lessonsPanel">
+    <h2 style="margin-bottom:12px;">Доступные уроки</h2>
     <div class="lesson" onclick="openLesson('lesson1.html')">Урок 1 — Что такое право?</div>
     <div class="lesson" onclick="openLesson('lesson2.html')">Урок 2 — Права и обязанности</div>
     <div class="lesson" onclick="openLesson('lesson3.html')">Урок 3 — Ответственность</div>
@@ -189,14 +185,13 @@ h1 {
 </div>
 
 <script>
-function scrollToLessons() {
-    document.getElementById('lessonsSection').scrollIntoView({behavior: 'smooth'});
+function openLessons() {
+    document.getElementById('lessonsPanel').style.bottom = "0";
 }
 
 function openLesson(page) {
     window.location.href = page;
 }
 </script>
-
 </body>
 </html>
