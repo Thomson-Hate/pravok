@@ -1,124 +1,190 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ПравОк! — Обучение праву</title>
-    <style>
-        /* ====== Base Styles ====== */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", sans-serif;
-            background: #0f0f0f;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПравОк! — Обучение праву</title>
 
-        /* ====== Glass Container ====== */
-        .container {
-            width: 90%;
-            max-width: 850px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(18px) saturate(180%);
-            -webkit-backdrop-filter: blur(18px) saturate(180%);
-            border-radius: 26px;
-            padding: 40px;
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-        }
+<style>
+/* ===== Base ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    background: #000;
+    color: #fff;
+    overflow: hidden;
+}
 
-        h1 {
-            font-size: 2.4rem;
-            text-align: center;
-            font-weight: 600;
-            margin-bottom: 10px;
-            letter-spacing: -1px;
-        }
+/* ===== Background Animated Letters ===== */
+.bg-letters {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: -1;
+    opacity: 0.07;
+}
 
-        p {
-            font-size: 1.04rem;
-            line-height: 1.55em;
-            opacity: 0.9;
-        }
+.bg-letters span {
+    position: absolute;
+    font-size: 5rem;
+    font-weight: 700;
+    color: #fff;
+    animation: float 12s linear infinite;
+    user-select: none;
+}
 
-        .section-title {
-            font-size: 1.35rem;
-            font-weight: 500;
-            margin-top: 30px;
-            margin-bottom: 10px;
-            letter-spacing: -0.5px;
-        }
+@keyframes float {
+    0% { transform: translateY(120vh) rotate(0deg); opacity: 0; }
+    20% { opacity: 1; }
+    100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+}
 
-        /* ====== Button ====== */
-        .btn {
-            display: block;
-            width: 100%;
-            margin-top: 26px;
-            padding: 14px;
-            text-align: center;
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 500;
-            border-radius: 16px;
-            text-decoration: none;
-            background: rgba(255,255,255,0.13);
-            backdrop-filter: blur(12px);
-            transition: 0.2s ease;
-            border: 1px solid rgba(255,255,255,0.15);
-        }
+/* Create 12 random letters */
+.bg-letters span:nth-child(1){left:5%; animation-delay:0s;}
+.bg-letters span:nth-child(2){left:18%; animation-delay:2s;}
+.bg-letters span:nth-child(3){left:32%; animation-delay:4s;}
+.bg-letters span:nth-child(4){left:47%; animation-delay:1s;}
+.bg-letters span:nth-child(5){left:61%; animation-delay:3s;}
+.bg-letters span:nth-child(6){left:75%; animation-delay:5s;}
+.bg-letters span:nth-child(7){left:88%; animation-delay:6s;}
+.bg-letters span:nth-child(8){left:12%; animation-delay:7s;}
+.bg-letters span:nth-child(9){left:26%; animation-delay:8s;}
+.bg-letters span:nth-child(10){left:54%; animation-delay:9s;}
 
-        .btn:hover {
-            background: rgba(255,255,255,0.22);
-        }
+/* ===== Glass Card ===== */
+.container {
+    width: 90%;
+    max-width: 850px;
+    margin: 8vh auto;
+    padding: 40px;
+    border-radius: 26px;
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(22px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 26px rgba(255,255,255,0.15);
+    position: relative;
+}
 
-        /* ====== Footer ====== */
-        footer {
-            text-align: center;
-            margin-top: 25px;
-            opacity: 0.5;
-            font-size: 0.85rem;
-        }
+/* Glow accent */
+.container::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: 28px;
+    background: linear-gradient(130deg, #fff 0%, transparent 50%, #fff 100%);
+    opacity: 0.08;
+    filter: blur(15px);
+}
 
-        /* ====== Responsive ====== */
-        @media (max-width: 500px) {
-            h1 { font-size: 1.9rem; }
-            .container { padding: 28px; }
-        }
-    </style>
+/* Headers */
+h1 {
+    font-size: 2.8rem;
+    text-align: center;
+    letter-spacing: -1.2px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-shadow: 0 0 16px rgba(255,255,255,0.4);
+}
+
+.section-title {
+    font-size: 1.35rem;
+    margin-top: 24px;
+    margin-bottom: 8px;
+    opacity: 0.9;
+}
+
+/* Glow Button */
+.btn {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    text-align: center;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.2);
+    margin-top: 24px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: 0.25s;
+    text-shadow: 0 0 8px rgba(255,255,255,0.4);
+}
+.btn:hover {
+    background: rgba(255,255,255,0.2);
+    box-shadow: 0 0 20px rgba(255,255,255,0.3), inset 0 0 15px rgba(255,255,255,0.2);
+}
+
+/* ===== Lessons Slide Panel ===== */
+#lessonsPanel {
+    position: fixed;
+    bottom: -100%;
+    left: 0; right: 0;
+    height: 65vh;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(18px) saturate(200%);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    border-radius: 25px 25px 0 0;
+    transition: 0.5s ease;
+    padding: 25px;
+    overflow-y: auto;
+}
+
+.lesson {
+    padding: 14px;
+    margin-bottom: 12px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    backdrop-filter: blur(12px);
+    cursor: pointer;
+    transition: 0.25s;
+}
+.lesson:hover {
+    background: rgba(255,255,255,0.15);
+    box-shadow: 0 0 18px rgba(255,255,255,0.25);
+}
+
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>ПравОк!</h1>
-        <p style="text-align:center; opacity:0.7; margin-top:-5px;">
-            Обучение праву простым языком
-        </p>
 
-        <div class="section">
-            <h2 class="section-title">О проекте</h2>
-            <p>
-                Этот сайт создан для того, чтобы каждый школьник мог легко освоить основы права, понять свои права и обязанности и научиться грамотно принимать решения в жизненных ситуациях.
-            </p>
-        </div>
+<div class="bg-letters">
+    <span>P</span><span>R</span><span>A</span><span>V</span><span>O</span><span>K</span>
+    <span>P</span><span>R</span><span>A</span><span>V</span><span>O</span>
+</div>
 
-        <div class="section">
-            <h2 class="section-title">Что ты узнаешь</h2>
-            <p>• какие права есть у каждого человека<br>
-               • что означает закон и ответственность<br>
-               • как защищать свои интересы<br>
-               • как действовать в реальных правовых ситуациях
-            </p>
-        </div>
+<div class="container">
+    <h1>ПравОк!</h1>
+    <p style="opacity:.7; text-align:center;">Обучение праву в современном формате</p>
 
-        <a href="lessons.html" class="btn">Перейти к урокам →</a>
+    <h2 class="section-title">О проекте</h2>
+    <p>Короткие уроки, реальные правовые ситуации, современный интерфейс — чтобы знания стали инструментом.</p>
 
-        <footer>
-            © 2025 ПравОк! — учебный школьный проект
-        </footer>
-    </div>
+    <h2 class="section-title">Что изучишь</h2>
+    <p>• права и обязанности<br>• ответственность<br>• как защитить себя законно<br>• реальные кейсы</p>
+
+    <div class="btn" onclick="openLessons()">Список уроков ↓</div>
+</div>
+
+<!-- Slide Lessons Panel -->
+<div id="lessonsPanel">
+    <h2 style="margin-bottom:12px;">Доступные уроки</h2>
+
+    <div class="lesson" onclick="openLesson('lesson1.html')">Урок 1 — Что такое право?</div>
+    <div class="lesson" onclick="openLesson('lesson2.html')">Урок 2 — Права и обязанности</div>
+    <div class="lesson" onclick="openLesson('lesson3.html')">Урок 3 — Ответственность</div>
+    <div class="lesson" onclick="openLesson('lesson4.html')">Урок 4 — Договоры</div>
+    <div class="lesson" onclick="openLesson('lesson5.html')">Урок 5 — Право в интернете</div>
+</div>
+
+<script>
+function openLessons() {
+    document.getElementById("lessonsPanel").style.bottom = "0";
+}
+function openLesson(page) {
+    window.location.href = page;
+}
+</script>
+
 </body>
 </html>
