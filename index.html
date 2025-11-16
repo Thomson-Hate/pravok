@@ -47,7 +47,7 @@ a { color:inherit; text-decoration:none; }
     transition: width 0.1s ease-out;
 }
 
-/* ===== Top Bar iOS 26 Style ===== */
+/* ===== Top Bar ===== */
 .top-bar {
     position: fixed; top:10px; left:50%; transform:translateX(-50%);
     width:95%; max-width:1200px; height:70px;
@@ -71,8 +71,6 @@ a { color:inherit; text-decoration:none; }
     font-weight:700; font-size:1.4rem; letter-spacing:1px;
     text-shadow:0 0 10px rgba(255,255,255,0.3);
 }
-
-/* ===== Menu with Indicator ===== */
 .top-bar .menu {
     display:flex;
     position:relative;
@@ -107,7 +105,6 @@ a { color:inherit; text-decoration:none; }
     animation:fadeUp 0.7s ease forwards;
 }
 @keyframes fadeUp { from {opacity:0; transform:translateY(30px);} to{opacity:1; transform:translateY(0);} }
-
 h1 { font-size:3rem; text-align:center; margin-bottom:10px; font-weight:800; text-shadow:0 0 20px rgba(255,255,255,0.3); }
 .section-title { font-size:1.5rem; margin:25px 0 10px 0; opacity:0.9; }
 
@@ -142,29 +139,6 @@ h1 { font-size:3rem; text-align:center; margin-bottom:10px; font-weight:800; tex
 }
 .lesson:hover { background: rgba(255,255,255,0.18); box-shadow:0 0 25px rgba(255,255,255,0.25); }
 
-/* ===== Cards ===== */
-.cards { display:flex; flex-wrap:wrap; justify-content:space-around; margin:50px 0; }
-.card { width:250px; padding:25px; margin:15px; border-radius:25px;
-    background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(20px) saturate(200%);
-    border:1px solid rgba(255,255,255,0.15);
-    box-shadow:0 0 25px rgba(255,255,255,0.1);
-    opacity:0; transform:translateY(30px);
-    transition: all 0.7s ease-out;
-    cursor:pointer;
-}
-.card.visible { opacity:1; transform:translateY(0); }
-.card:hover { transform:translateY(-5px); box-shadow:0 0 45px rgba(255,255,255,0.25); }
-
-/* ===== Reviews ===== */
-.reviews { width:92%; max-width:980px; margin:50px auto; overflow:hidden; position:relative; }
-.review { min-height:80px; padding:20px; text-align:center; border-radius:22px;
-    background: rgba(255,255,255,0.05); margin-bottom:15px;
-    backdrop-filter: blur(20px) saturate(200%); border:1px solid rgba(255,255,255,0.15);
-    box-shadow:0 0 25px rgba(255,255,255,0.15); opacity:0; transition:opacity 0.5s ease;
-}
-.review.active { opacity:1; }
-
 /* ===== Footer ===== */
 footer { width:100%; padding:30px 0; text-align:center;
     background: rgba(255,255,255,0.05);
@@ -173,15 +147,6 @@ footer { width:100%; padding:30px 0; text-align:center;
     margin-top:50px;
     border-radius:20px 20px 0 0;
 }
-
-/* ===== FAQ ===== */
-.faq-item { margin-bottom:15px; border-radius:20px; padding:15px; background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(20px) saturate(200%);
-    border:1px solid rgba(255,255,255,0.15);
-    cursor:pointer; transition:all 0.3s ease;
-}
-.faq-item p { display:none; margin-top:10px; }
-.faq-item.active p { display:block; }
 </style>
 </head>
 <body>
@@ -200,7 +165,7 @@ footer { width:100%; padding:30px 0; text-align:center;
     <div class="logo">ПравОк!</div>
     <div class="menu" id="menu">
         <span data-target="container">Главная</span>
-        <span data-target="lessonsSection">Уроки</span>
+        <span data-target="lessonsTable">Уроки</span>
         <span data-target="footer">Контакты</span>
         <div class="indicator" id="indicator"></div>
     </div>
@@ -227,32 +192,6 @@ footer { width:100%; padding:30px 0; text-align:center;
     <div class="lesson" onclick="openLesson('lesson5.html')">Урок 5 — Право в интернете</div>
 </div>
 
-<!-- Cards -->
-<div class="cards">
-    <div class="card"><h3>Права и обязанности</h3></div>
-    <div class="card"><h3>Ответственность</h3></div>
-    <div class="card"><h3>Интернет-право</h3></div>
-</div>
-
-<!-- Reviews -->
-<div class="reviews">
-    <div class="review active">“Обучение помогло понять, как действовать законно в любой ситуации.”</div>
-    <div class="review">“Уроки краткие, но очень информативные, удобно изучать.”</div>
-    <div class="review">“Теперь я уверен в своих правах и обязанностях.”</div>
-</div>
-
-<!-- FAQ -->
-<div class="faq">
-    <div class="faq-item" onclick="this.classList.toggle('active')">
-        <strong>Что такое право?</strong>
-        <p>Право — это совокупность правил и норм, регулирующих общественные отношения.</p>
-    </div>
-    <div class="faq-item" onclick="this.classList.toggle('active')">
-        <strong>Можно ли изучать онлайн?</strong>
-        <p>Да, все уроки доступны в интерактивном формате онлайн.</p>
-    </div>
-</div>
-
 <!-- Footer -->
 <footer id="footer">
     Контакты: info@pravok.ru | Соцсети: Telegram, VK | © 2025 ПравОк!
@@ -269,28 +208,14 @@ function toggleLessons(button){
 // ===== Open lesson =====
 function openLesson(page){ window.location.href = page; }
 
-// ===== Scroll to section =====
-function scrollToSection(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
-
-// ===== Reviews carousel =====
-let reviews = document.querySelectorAll('.review'); let current = 0;
-setInterval(()=>{
-    reviews[current].classList.remove('active');
-    current = (current+1)%reviews.length;
-    reviews[current].classList.add('active');
-},5000);
-
-// ===== Cards animation on scroll =====
-const cards = document.querySelectorAll('.card');
-const revealCards = () => {
-    const triggerBottom = window.innerHeight * 0.85;
-    cards.forEach(card=>{
-        const cardTop = card.getBoundingClientRect().top;
-        if(cardTop < triggerBottom) card.classList.add('visible');
-    });
-};
-window.addEventListener('scroll', revealCards);
-revealCards();
+// ===== Scroll progress bar =====
+const scrollBar = document.getElementById('scrollBar');
+window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.body.scrollHeight - window.innerHeight;
+    const scrolled = (scrollTop / docHeight) * 100;
+    scrollBar.style.width = scrolled + '%';
+});
 
 // ===== Top Bar Scroll Animation =====
 const topBar = document.getElementById('topBar');
@@ -300,22 +225,6 @@ window.addEventListener('scroll', () => {
     } else {
         topBar.classList.remove('scrolled');
     }
-});
-
-// ===== Floating effect =====
-document.addEventListener('mousemove', e => {
-    const x = (e.clientX - window.innerWidth/2) / 50;
-    const y = (e.clientY - window.innerHeight/2) / 50;
-    topBar.style.transform = `translateX(-50%) rotateX(${-y}deg) rotateY(${x}deg)`;
-});
-
-// ===== Scroll progress bar =====
-const scrollBar = document.getElementById('scrollBar');
-window.addEventListener('scroll', () => {
-    const scrollTop = window.scrollY;
-    const docHeight = document.body.scrollHeight - window.innerHeight;
-    const scrolled = (scrollTop / docHeight) * 100;
-    scrollBar.style.width = scrolled + '%';
 });
 
 // ===== Menu Indicator =====
