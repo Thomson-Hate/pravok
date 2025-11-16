@@ -112,11 +112,10 @@ h1 {
 
 /* ===== Lessons Table ===== */
 #lessonsTable {
-    display: none;
     width: 92%;
     max-width: 980px;
     margin: 30px auto;
-    padding: 25px;
+    padding: 0 25px; /* анимация padding */
     border-radius: 28px;
     background: rgba(255,255,255,0.04);
     backdrop-filter: blur(22px) saturate(230%);
@@ -124,10 +123,11 @@ h1 {
     box-shadow: 0 0 30px rgba(255,255,255,0.15);
     transform: translateY(-20px);
     opacity: 0;
+    max-height: 0;
+    overflow: hidden;
     transition: all 0.5s ease;
     position: relative;
     z-index: 1;
-    overflow: hidden;
 }
 
 /* Glow / перелив градиента */
@@ -145,9 +145,10 @@ h1 {
 }
 
 #lessonsTable.active {
-    display: block;
-    transform: translateY(0);
     opacity: 1;
+    transform: translateY(0);
+    max-height: 2000px; /* достаточно большое значение для раскрытия */
+    padding: 25px;
 }
 
 #lessonsTable h2, .lesson {
@@ -206,12 +207,9 @@ h1 {
 <script>
 function toggleLessons(button) {
     const table = document.getElementById('lessonsTable');
-    if(table.classList.contains('active')) {
-        table.classList.remove('active');
-        button.innerHTML = 'Список уроков ↓';
-    } else {
-        table.classList.add('active');
-        button.innerHTML = 'Список уроков ↑';
+    table.classList.toggle('active');
+    button.innerHTML = table.classList.contains('active') ? 'Список уроков ↑' : 'Список уроков ↓';
+    if (table.classList.contains('active')) {
         table.scrollIntoView({behavior: 'smooth'});
     }
 }
