@@ -179,8 +179,8 @@ a { color:inherit; text-decoration:none; }
     background: rgba(255,255,255,0.05);
     backdrop-filter: blur(25px) saturate(180%);
     border: 1px solid rgba(255,255,255,0.12);
-    overflow: hidden;
-    box-shadow: 0 0 20px rgba(255,255,255,0.08); /* лёгкая тень, как у контейнера */
+    box-shadow: 0 0 40px rgba(255,255,255,0.12); /* как у контейнера */
+    /* overflow: hidden; <-- убрано */
 }
 
 .glass-card::before {
@@ -188,16 +188,12 @@ a { color:inherit; text-decoration:none; }
     position:absolute;
     inset:0;
     border-radius:inherit;
-    padding:2px;
-    background:linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0));
+    padding:2px; /* ширина подсветки */
+    background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0));
     filter:blur(6px);
-    opacity:0;
+    opacity:1; /* всегда видно */
     pointer-events:none;
-    transition: opacity 0.3s ease;
-}
-
-.glass-card:hover::before {
-    opacity:1; /* подсветка рамки при hover */
+    transition:none; /* убрали переход, т.к. ховер не нужен */
 }
 
 /* ===== Lessons (внешняя подсветка) ===== */
