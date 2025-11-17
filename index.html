@@ -171,7 +171,7 @@ a { color:inherit; text-decoration:none; }
     max-height:1200px;
 }
 
-/* ===== Glass Card с подсветкой ===== */
+/* ===== Glass Card с подсветкой (статично) ===== */
 .glass-card {
     position: relative;
     padding: 25px;
@@ -180,10 +180,8 @@ a { color:inherit; text-decoration:none; }
     backdrop-filter: blur(25px) saturate(180%);
     border: 1px solid rgba(255,255,255,0.12);
     overflow: hidden;
-    transition: box-shadow 0.5s ease, transform 0.3s ease;
+    box-shadow:0 0 60px rgba(255,255,255,0.18);
 }
-
-/* Внутренняя подсветка для карточки */
 .glass-card::before {
     content: "";
     position: absolute;
@@ -192,16 +190,8 @@ a { color:inherit; text-decoration:none; }
     padding: 2px;
     background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0));
     filter: blur(12px);
-    opacity: 0;
-    transition: opacity 0.5s ease;
+    opacity: 1; /* всегда видна */
     pointer-events: none;
-}
-.glass-card:hover::before {
-    opacity: 1;
-}
-.glass-card:hover {
-    transform: translateY(-4px);
-    box-shadow:0 0 60px rgba(255,255,255,0.18);
 }
 
 /* ===== Lessons (внешняя подсветка) ===== */
@@ -223,21 +213,14 @@ a { color:inherit; text-decoration:none; }
     border-radius:inherit;
     background:linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0));
     filter:blur(20px);
-    opacity:0;
-    transition:opacity 0.5s ease, transform 0.5s ease;
+    opacity:1; /* всегда видна */
+    transform: scale(1);
     pointer-events:none;
 }
 #lessonsTable.active {
     max-height:1000px;
     opacity:1;
     padding:25px;
-}
-#lessonsTable:hover::after {
-    opacity:1;
-    transform: scale(1.02);
-}
-#lessonsTable:hover {
-    box-shadow:0 0 60px rgba(255,255,255,0.18);
 }
 
 /* ===== Individual lessons ===== */
@@ -248,10 +231,7 @@ a { color:inherit; text-decoration:none; }
     background:rgba(255,255,255,0.075);
     border:1px solid rgba(255,255,255,0.17);
     cursor:pointer;
-    transition:.3s;
-}
-.lesson:hover {
-    box-shadow:0 0 20px rgba(255,255,255,0.22);
+    box-shadow:0 0 20px rgba(255,255,255,0.22); /* всегда подсветка */
 }
 
 /* ===== Footer ===== */
@@ -362,7 +342,6 @@ buttons.forEach((btn, i) =>
         btn.classList.add("active");
         slider.style.left = i * 33.333 + "%";
 
-        // переключение вкладок
         if(btn.dataset.tab === "home"){
             homeCards.classList.add("active");
             lessonsBlock.classList.remove("active");
