@@ -140,10 +140,10 @@ a { color:inherit; text-decoration:none; }
     pointer-events:none;
 }
 
-/* ===== Content ===== */
+/* ===== Container & Card Styles ===== */
 .container {
     width:92%; max-width:980px;
-    margin:130px auto 40px auto;
+    margin:130px auto 20px auto;
     padding:50px;
     border-radius:30px;
     background:rgba(255,255,255,0.05);
@@ -153,6 +153,32 @@ a { color:inherit; text-decoration:none; }
     animation:fade .7s ease;
 }
 @keyframes fade { from{ opacity:0; transform:translateY(25px);} to{ opacity:1; transform:translateY(0);} }
+
+/* ===== Tab Blocks (Главная, Контакты) ===== */
+.tab-block {
+    width:92%; max-width:980px;
+    margin:25px auto;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    opacity:0;
+    max-height:0;
+    overflow:hidden;
+    transition:.5s ease;
+}
+.tab-block.active {
+    opacity:1;
+    max-height:900px;
+}
+.glass-card {
+    padding:22px;
+    border-radius:22px;
+    background:rgba(255,255,255,0.06);
+    backdrop-filter:blur(22px) saturate(180%);
+    border:1px solid rgba(255,255,255,0.14);
+    box-shadow:0 0 25px rgba(255,255,255,0.12);
+    animation:fade .7s ease;
+}
 
 /* ===== Lessons ===== */
 #lessonsTable {
@@ -209,7 +235,6 @@ footer {
 
 <div class="top-bar" id="topBar">
     <div class="logo">ПравОк!</div>
-
     <div class="toggle">
         <div class="slider" id="slider"></div>
         <button data-tab="home" class="active">Главная</button>
@@ -225,6 +250,19 @@ footer {
     <p>Короткие уроки, реальные ситуации, адаптированные понятия и актуальная правовая база.</p>
 </div>
 
+<!-- Главная вкладка -->
+<div id="homeCards" class="tab-block active">
+    <div class="glass-card">
+        <h3>Что тебя ждёт?</h3>
+        <p>Современный формат, простые объяснения и знания, которые реально пригодятся.</p>
+    </div>
+    <div class="glass-card">
+        <h3>Для кого создан курс?</h3>
+        <p>Для всех, кто хочет понимать свои права в жизни, учёбе, работе и интернете.</p>
+    </div>
+</div>
+
+<!-- Уроки -->
 <div id="lessonsTable">
     <h2>Доступные уроки</h2>
     <div class="lesson" onclick="openLesson('lesson1.html')">1 — Что такое право?</div>
@@ -232,6 +270,16 @@ footer {
     <div class="lesson" onclick="openLesson('lesson3.html')">3 — Ответственность</div>
     <div class="lesson" onclick="openLesson('lesson4.html')">4 — Договоры</div>
     <div class="lesson" onclick="openLesson('lesson5.html')">5 — Право в интернете</div>
+</div>
+
+<!-- Контакты -->
+<div id="contactCards" class="tab-block">
+    <div class="glass-card">
+        <h3>Связаться с нами</h3>
+        <p>📩 Email: info@pravok.ru</p>
+        <p>💬 Telegram: @pravok_school</p>
+        <p>🌐 VK: vk.com/pravok</p>
+    </div>
 </div>
 
 <footer>
@@ -256,6 +304,8 @@ window.addEventListener("scroll", () => {
 const slider = document.getElementById("slider");
 const buttons = document.querySelectorAll(".toggle button");
 const lessonsBlock = document.getElementById("lessonsTable");
+const homeCards = document.getElementById("homeCards");
+const contactCards = document.getElementById("contactCards");
 
 buttons.forEach((btn, i) =>
     btn.addEventListener("click", () => {
@@ -263,9 +313,18 @@ buttons.forEach((btn, i) =>
         btn.classList.add("active");
         slider.style.left = i * 33.333 + "%";
 
-        if(btn.dataset.tab === "lessons"){
-            lessonsBlock.classList.toggle("active");
-        } else {
+        // переключение вкладок
+        if(btn.dataset.tab === "home"){
+            homeCards.classList.add("active");
+            lessonsBlock.classList.remove("active");
+            contactCards.classList.remove("active");
+        } else if(btn.dataset.tab === "lessons"){
+            lessonsBlock.classList.add("active");
+            homeCards.classList.remove("active");
+            contactCards.classList.remove("active");
+        } else if(btn.dataset.tab === "contacts"){
+            contactCards.classList.add("active");
+            homeCards.classList.remove("active");
             lessonsBlock.classList.remove("active");
         }
     })
