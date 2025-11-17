@@ -179,21 +179,19 @@ a { color:inherit; text-decoration:none; }
     background: rgba(255,255,255,0.05);
     backdrop-filter: blur(25px) saturate(180%);
     border: 1px solid rgba(255,255,255,0.12);
-    box-shadow: 0 0 40px rgba(255,255,255,0.12); /* как у контейнера */
-    /* overflow: hidden; <-- убрано */
+    box-shadow: 0 0 40px rgba(255,255,255,0.12);
+    overflow: visible; /* важно для внешней подсветки */
 }
 
 .glass-card::before {
     content:"";
     position:absolute;
-    inset:0;
+    top:-6px; bottom:-6px; left:-6px; right:-6px; /* внешняя зона свечения */
     border-radius:inherit;
-    padding:2px; /* ширина подсветки */
     background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0));
-    filter:blur(6px);
-    opacity:1; /* всегда видно */
+    filter: blur(8px);
+    opacity:1;
     pointer-events:none;
-    transition:none; /* убрали переход, т.к. ховер не нужен */
 }
 
 /* ===== Lessons (внешняя подсветка) ===== */
