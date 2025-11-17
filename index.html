@@ -195,11 +195,13 @@ a { color:inherit; text-decoration:none; }
 
 /* ===== Lessons ===== */
 #lessonsTable {
-    width:92%; max-width:980px; margin:25px auto;
+    width:92%; max-width:980px;
+    margin:25px auto;
     border-radius:25px;
     background:rgba(255,255,255,0.05);
-    backdrop-filter:blur(20px);
-    border:1px solid rgba(255,255,255,0.15);
+    backdrop-filter:blur(25px) saturate(180%);
+    border:1px solid rgba(255,255,255,0.12);
+    box-shadow:0 0 40px rgba(255,255,255,0.12); /* как у контейнера */
     max-height:0;
     opacity:0;
     padding:0 25px;
@@ -231,9 +233,7 @@ a { color:inherit; text-decoration:none; }
     background:rgba(255,255,255,0.075);
     border:1px solid rgba(255,255,255,0.17);
     cursor:pointer;
-    box-shadow:0 0 20px rgba(255,255,255,0.22);
-    opacity:0;
-    animation:fadeInUp 0.7s ease forwards;
+    box-shadow:none; /* убираем дефолтное свечение */
     transition:0.3s;
 }
 #lessonsTable .lesson:nth-child(1){animation-delay:0.1s;}
@@ -242,7 +242,7 @@ a { color:inherit; text-decoration:none; }
 #lessonsTable .lesson:nth-child(4){animation-delay:0.55s;}
 #lessonsTable .lesson:nth-child(5){animation-delay:0.7s;}
 
-/* ===== Hover Glow Effect for Lessons ===== */
+/* ===== Hover Glow Effect для уроков ===== */
 .lesson:hover {
     box-shadow:0 0 30px rgba(255,255,255,0.45);
     border-color:rgba(255,255,255,0.25);
