@@ -200,8 +200,8 @@ a { color:inherit; text-decoration:none; }
     border-radius:25px;
     background:rgba(255,255,255,0.05);
     backdrop-filter:blur(25px) saturate(180%);
-    border:1px solid rgba(255,255,255,0.12);
-    box-shadow:0 0 40px rgba(255,255,255,0.12); /* как у контейнера */
+    border:1px solid rgba(255,255,255,0.12); /* мягкая граница */
+    box-shadow:none; /* убрали яркое свечение */
     max-height:0;
     opacity:0;
     padding:0 25px;
@@ -230,10 +230,10 @@ a { color:inherit; text-decoration:none; }
     margin-bottom:14px;
     padding:16px;
     border-radius:18px;
-    background:rgba(255,255,255,0.075);
-    border:1px solid rgba(255,255,255,0.17);
+    background:rgba(255,255,255,0.05); /* чуть темнее и как контейнер */
+    border:1px solid rgba(255,255,255,0.12); /* мягкая граница */
     cursor:pointer;
-    box-shadow:none; /* убираем дефолтное свечение */
+    box-shadow:none; /* убрали свечение */
     transition:0.3s;
 }
 #lessonsTable .lesson:nth-child(1){animation-delay:0.1s;}
@@ -244,9 +244,9 @@ a { color:inherit; text-decoration:none; }
 
 /* ===== Hover Glow Effect для уроков ===== */
 .lesson:hover {
-    box-shadow:0 0 30px rgba(255,255,255,0.45);
-    border-color:rgba(255,255,255,0.25);
-    transform:translateY(-3px);
+    box-shadow:0 0 20px rgba(255,255,255,0.25); /* мягкое свечение при наведении */
+    border-color:rgba(255,255,255,0.18);
+    transform:translateY(-2px);
 }
 
 /* ===== Footer ===== */
