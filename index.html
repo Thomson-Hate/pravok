@@ -171,37 +171,40 @@ a { color:inherit; text-decoration:none; }
     max-height:1200px;
 }
 
-/* ===== Glass Card с закругленной подсветкой ===== */
+/* ===== Glass Card с подсветкой ===== */
 .glass-card {
-    position: relative; /* важно для ::before */
+    position: relative;
     padding: 25px;
     border-radius: 30px;
     background: rgba(255,255,255,0.05);
     backdrop-filter: blur(25px) saturate(180%);
     border: 1px solid rgba(255,255,255,0.12);
     overflow: hidden;
-    transition: border-color 0.5s ease;
+    transition: box-shadow 0.5s ease, transform 0.3s ease;
 }
 
-/* псевдоэлемент для мягкой подсветки */
+/* Внутренняя подсветка для карточки */
 .glass-card::before {
     content: "";
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    padding: 2px; /* ширина свечения */
+    padding: 2px;
     background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0));
     filter: blur(12px);
     opacity: 0;
     transition: opacity 0.5s ease;
     pointer-events: none;
 }
-
 .glass-card:hover::before {
-    opacity: 1; /* плавно показываем свечение */
+    opacity: 1;
+}
+.glass-card:hover {
+    transform: translateY(-4px);
+    box-shadow:0 0 60px rgba(255,255,255,0.18);
 }
 
-/* ===== Lessons ===== */
+/* ===== Lessons (внешняя подсветка) ===== */
 #lessonsTable {
     width:92%; max-width:980px; margin:25px auto;
     border-radius:25px;
@@ -209,14 +212,35 @@ a { color:inherit; text-decoration:none; }
     backdrop-filter:blur(20px);
     border:1px solid rgba(255,255,255,0.15);
     max-height:0; overflow:hidden; opacity:0;
-    transition:.5s;
+    transition:.5s, padding 0.5s ease;
     padding:0 25px;
+    position: relative;
+}
+#lessonsTable::after {
+    content:"";
+    position:absolute;
+    inset:-8px;
+    border-radius:inherit;
+    background:linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0));
+    filter:blur(20px);
+    opacity:0;
+    transition:opacity 0.5s ease, transform 0.5s ease;
+    pointer-events:none;
 }
 #lessonsTable.active {
-    opacity:1;
     max-height:1000px;
+    opacity:1;
     padding:25px;
 }
+#lessonsTable:hover::after {
+    opacity:1;
+    transform: scale(1.02);
+}
+#lessonsTable:hover {
+    box-shadow:0 0 60px rgba(255,255,255,0.18);
+}
+
+/* ===== Individual lessons ===== */
 .lesson {
     margin-bottom:14px;
     padding:16px;
