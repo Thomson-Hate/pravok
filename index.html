@@ -174,17 +174,18 @@ a { color:inherit; text-decoration:none; }
     position: relative;
     padding: 25px;
     border-radius: 30px;
-    background: rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.02); /* почти прозрачная основа */
     backdrop-filter: blur(25px) saturate(180%);
-    border: 1px solid rgba(255,255,255,0.12);
-    box-shadow: 0 0 40px rgba(255,255,255,0.12);
-    overflow: visible; /* важно */
-    margin: 10px 0; /* отступ сверху/снизу */
+    border: 1px solid rgba(255,255,255,0.08); /* тонкая рамка */
+    overflow: visible; /* важно, чтобы внешнее свечение видно было */
+    margin: 10px 0;
+    box-shadow: none; /* убираем внутреннее свечение */
 }
+
 .glass-card::before {
     content:"";
     position:absolute;
-    top:-12px; bottom:-12px; left:-12px; right:-12px; /* внешняя подсветка */
+    top:-12px; bottom:-12px; left:-12px; right:-12px; /* внешняя зона свечения */
     border-radius:inherit;
     background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0));
     filter: blur(12px);
