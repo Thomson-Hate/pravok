@@ -160,7 +160,7 @@ a { color:inherit; text-decoration:none; }
     margin:25px auto;
     display:flex;
     flex-direction:column;
-    gap:25px; /* увеличенный gap для разделения */
+    gap:25px; 
     opacity:0;
     max-height:0;
     overflow:hidden;
@@ -168,16 +168,42 @@ a { color:inherit; text-decoration:none; }
 }
 .tab-block.active {
     opacity:1;
-    max-height:1200px; /* увеличили max-height */
+    max-height:1200px;
 }
+
+/* ===== Glass Card с закругленной подсветкой ===== */
 .glass-card {
+    position: relative;
     padding:25px;
-    border-radius:22px;
+    border-radius:30px; /* Закругление как у контейнера */
     background:rgba(255,255,255,0.065);
     backdrop-filter:blur(22px) saturate(180%);
     border:1px solid rgba(255,255,255,0.14);
-    box-shadow:0 0 30px 4px rgba(255,255,255,0.15), inset 0 0 8px rgba(255,255,255,0.03);
-    animation:fade .7s ease;
+    box-shadow: 0 0 40px rgba(255,255,255,0.12), inset 0 0 20px rgba(255,255,255,0.08);
+    animation:fade .7s ease, glowPulse 4s ease-in-out infinite;
+    overflow: hidden;
+}
+
+@keyframes glowPulse {
+    0% { box-shadow: 0 0 30px rgba(255,255,255,0.10), inset 0 0 15px rgba(255,255,255,0.05);}
+    50% { box-shadow: 0 0 45px rgba(255,255,255,0.25), inset 0 0 20px rgba(255,255,255,0.12);}
+    100% { box-shadow: 0 0 30px rgba(255,255,255,0.10), inset 0 0 15px rgba(255,255,255,0.05);}
+}
+
+.glass-card::before {
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    background:linear-gradient(135deg,
+        rgba(255,255,255,0.65) 0%,
+        rgba(255,255,255,0.18) 40%,
+        rgba(255,255,255,0.08) 75%,
+        rgba(255,255,255,0) 100%);
+    filter: blur(1.5px);
+    animation: shineMove 6s ease-in-out infinite;
+    opacity:.6;
+    pointer-events:none;
 }
 
 /* ===== Lessons ===== */
