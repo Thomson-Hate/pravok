@@ -180,18 +180,24 @@ a { color:inherit; text-decoration:none; }
     backdrop-filter: blur(25px) saturate(180%);
     border: 1px solid rgba(255,255,255,0.12);
     overflow: hidden;
-    box-shadow:0 0 60px rgba(255,255,255,0.18);
+    box-shadow: 0 0 20px rgba(255,255,255,0.08); /* лёгкая тень, как у контейнера */
 }
+
 .glass-card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 2px;
-    background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0));
-    filter: blur(12px);
-    opacity: 1; /* всегда видна */
-    pointer-events: none;
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    padding:2px;
+    background:linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0));
+    filter:blur(6px);
+    opacity:0;
+    pointer-events:none;
+    transition: opacity 0.3s ease;
+}
+
+.glass-card:hover::before {
+    opacity:1; /* подсветка рамки при hover */
 }
 
 /* ===== Lessons (внешняя подсветка) ===== */
