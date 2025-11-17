@@ -200,24 +200,17 @@ a { color:inherit; text-decoration:none; }
     border-radius:25px;
     background:rgba(255,255,255,0.05);
     backdrop-filter:blur(25px) saturate(180%);
-    border:1px solid rgba(255,255,255,0.12); /* мягкая граница */
-    box-shadow:none; /* убрали яркое свечение */
+    border:1px solid rgba(255,255,255,0.12);
+    box-shadow:none; /* убрали сильное свечение */
     max-height:0;
     opacity:0;
     padding:0 25px;
     position: relative;
     transition:.5s, padding 0.5s ease;
 }
-#lessonsTable::after {
-    content:"";
-    position:absolute;
-    inset:-8px;
-    border-radius:inherit;
-    background:linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0));
-    filter:blur(20px);
-    opacity:1;
-    transform: scale(1);
-    pointer-events:none;
+    
+#lessonsTable::after { 
+    content:none; 
 }
 #lessonsTable.active {
     max-height:1000px;
@@ -230,23 +223,26 @@ a { color:inherit; text-decoration:none; }
     margin-bottom:14px;
     padding:16px;
     border-radius:18px;
-    background:rgba(255,255,255,0.05); /* чуть темнее и как контейнер */
-    border:1px solid rgba(255,255,255,0.12); /* мягкая граница */
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.12);
     cursor:pointer;
-    box-shadow:none; /* убрали свечение */
+    box-shadow:none; /* без свечения по умолчанию */
     transition:0.3s;
+    position:relative; /* для корректного отображения */
+    z-index:1;
 }
+
 #lessonsTable .lesson:nth-child(1){animation-delay:0.1s;}
 #lessonsTable .lesson:nth-child(2){animation-delay:0.25s;}
 #lessonsTable .lesson:nth-child(3){animation-delay:0.4s;}
 #lessonsTable .lesson:nth-child(4){animation-delay:0.55s;}
 #lessonsTable .lesson:nth-child(5){animation-delay:0.7s;}
 
-/* ===== Hover Glow Effect для уроков ===== */
 .lesson:hover {
-    box-shadow:0 0 20px rgba(255,255,255,0.25); /* мягкое свечение при наведении */
+    box-shadow:0 0 25px rgba(255,255,255,0.15); /* мягкий свет */
     border-color:rgba(255,255,255,0.18);
     transform:translateY(-2px);
+    z-index:2; /* чтобы свечение было над соседними элементами */
 }
 
 /* ===== Footer ===== */
