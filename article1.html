@@ -6,7 +6,7 @@
 <title>Как рождается сленг — Презентация</title>
 
 <style>
-/* ===== Base style (копия твоего сайта) ===== */
+/* ===== Base style ===== */
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
@@ -49,9 +49,7 @@ body {
     box-shadow:0 8px 35px rgba(0,0,0,0.35);
     z-index:1000;
 }
-.logo {
-    font-size:1.4rem; font-weight:700;
-}
+.logo { font-size:1.4rem; font-weight:700; }
 
 /* ===== Slides container ===== */
 .presentation {
@@ -79,26 +77,16 @@ body {
     border:1px solid rgba(255,255,255,0.12);
     backdrop-filter: blur(25px) saturate(180%);
     box-shadow:0 0 40px rgba(255,255,255,0.12);
-
     text-align:center;
     opacity:0;
     pointer-events:none;
     transition:opacity .5s ease;
     overflow-y:auto;
 }
-.slide.active {
-    opacity:1;
-    pointer-events:auto;
-}
+.slide.active { opacity:1; pointer-events:auto; }
 
 .slide h1, .slide h2 { margin-bottom:20px; }
-.slide p {
-    font-size:1.1rem;
-    opacity:.9;
-    line-height:1.6;
-    max-width:760px;
-    margin:0 auto;
-}
+.slide p { font-size:1.1rem; opacity:.9; line-height:1.6; max-width:760px; margin:0 auto; }
 
 /* ===== Navigation Buttons ===== */
 .nav-buttons {
@@ -110,7 +98,6 @@ body {
     gap:15px;
     z-index:999;
 }
-
 .nav-buttons button {
     padding:12px 20px;
     background:rgba(255,255,255,0.08);
@@ -122,12 +109,37 @@ body {
     backdrop-filter:blur(12px);
     transition:.3s;
 }
-.nav-buttons button:hover {
-    background:rgba(255,255,255,0.15);
+.nav-buttons button:hover { background:rgba(255,255,255,0.15); }
+
+/* ===== Interactive blocks ===== */
+.interactive {
+    margin-top:20px;
+    display:flex;
+    justify-content:center;
+    gap:15px;
 }
+.interactive button {
+    padding:10px 18px;
+    border:none;
+    border-radius:12px;
+    background:rgba(255,255,255,0.08);
+    color:#fff;
+    cursor:pointer;
+    transition:.3s;
+    backdrop-filter:blur(12px);
+}
+.interactive button:hover { background:rgba(255,255,255,0.15); }
+
+/* ===== Highlight animations ===== */
+.highlight {
+    color:#fffa61;
+    font-weight:600;
+    cursor:pointer;
+}
+.highlight:hover { text-decoration:underline; }
+
 </style>
 </head>
-
 <body>
 
 <!-- Background letters -->
@@ -150,37 +162,57 @@ body {
 
     <div class="slide active">
         <h1>Как рождается сленг?</h1>
-        <p>Сленг — это живой, гибкий и постоянно меняющийся язык. Он появляется там, где люди хотят говорить быстрее, проще, смешнее, ближе друг к другу.</p>
-        <p>Сегодня мы посмотрим на то, откуда берётся сленг, почему он так быстро распространяется и как он отражает культуру поколения.</p>
+        <p>Сленг — живой, гибкий язык, который формируется в среде друзей, районов и интернет-сообществ.</p>
+        <p>Сегодня узнаем, откуда берётся сленг, как он распространяется и что он отражает о поколении.</p>
+        <div class="interactive">
+            <button onclick="alert('Согласен!')">Согласен</button>
+            <button onclick="alert('Не совсем')">Не совсем</button>
+        </div>
     </div>
 
     <div class="slide">
-        <h2>Слайд 2 — Почему появляется сленг?</h2>
-        <p>Люди выбирают сленг, когда хотят создать своё «языковое пространство».  
-        Сленг даёт ощущение принадлежности к группе — друзьями, району, комьюнити или интернет-среде.</p>
-        <p>Это способ быть «своим», говорить на языке поколения.</p>
+        <h2>Почему появляется сленг?</h2>
+        <p>Сленг создаёт ощущение <span class="highlight" onclick="alert('Это чувство принадлежности к группе!')">принадлежности</span> к друзьям, району или интернет-группе.</p>
+        <p>Он помогает «быть своим» и быстро передавать эмоции и идеи.</p>
     </div>
 
     <div class="slide">
-        <h2>Слайд 3 — Роль интернета</h2>
-        <p>Интернет ускорил развитие сленга. Мемы, вайны, TikTok, YouTube, Discord — всё это генераторы слов, которые распространяются мгновенно.</p>
-        <p>Если раньше новое слово появлялось годами, то теперь — за сутки.</p>
+        <h2>Роль интернета</h2>
+        <p>Мемы, TikTok, YouTube, Discord — генераторы новых слов, распространяющихся мгновенно.</p>
+        <div class="interactive">
+            <button onclick="alert('Пример слова: хайп')">Пример сленга</button>
+            <button onclick="alert('Пример слова: кринж')">Другой пример</button>
+        </div>
     </div>
 
     <div class="slide">
-        <h2>Слайд 4 — Жизненный цикл сленга</h2>
-        <p>Каждый термин проходит путь:</p>
-        <p>1) появление → 2) распространение → 3) пик популярности → 4) устаревание</p>
-        <p>Например: «изи», «хайп», «кринж», «жиза» — все были хайповыми, а теперь считаются устаревшими.</p>
+        <h2>Жизненный цикл сленга</h2>
+        <p>Каждое слово проходит путь: появление → распространение → пик популярности → устаревание.</p>
+        <p>Например: «изи», «хайп», «кринж», «жиза».</p>
     </div>
 
     <div class="slide">
-        <h2>Слайд 5 — Мини-интерактив</h2>
-        <p>Как ты думаешь, какое из слов исчезнет раньше?</p>
-        <p>• лютый  
-        • рофлить  
-        • дефолт</p>
-        <p>(Это просто обсуждение, интерактив необязательен.)</p>
+        <h2>Мини-интерактив</h2>
+        <p>Какое слово исчезнет раньше?</p>
+        <div class="interactive">
+            <button onclick="alert('Вы выбрали лютый')">Лютый</button>
+            <button onclick="alert('Вы выбрали рофлить')">Рофлить</button>
+            <button onclick="alert('Вы выбрали дефолт')">Дефолт</button>
+        </div>
+    </div>
+
+    <div class="slide">
+        <h2>Сленг и культура</h2>
+        <p>Слова отражают ценности и привычки поколения. Понимание сленга — способ понять культуру людей вокруг.</p>
+        <div class="interactive">
+            <button onclick="alert('Это помогает понимать молодежь!')">Понятно</button>
+        </div>
+    </div>
+
+    <div class="slide">
+        <h2>Заключение</h2>
+        <p>Сленг живёт, меняется и исчезает. Он делает общение более живым, помогает выражать эмоции и создавать свои сообщества.</p>
+        <p>Следи за новыми словами, пробуй их использовать, но не бойся, если они устареют!</p>
     </div>
 
 </div>
