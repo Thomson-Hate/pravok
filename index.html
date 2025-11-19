@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Язык улиц — Современный сленг</title>
+<title>Язык Улиц — Сленг и культура</title>
 <style>
 /* ===== Base ===== */
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -67,7 +67,7 @@ a { color:inherit; text-decoration:none; }
     font-weight:700;
 }
 
-/* ===== Liquid Glass Toggle ===== */
+/* ===== Toggle ===== */
 .toggle {
     position:relative;
     width:270px;
@@ -96,6 +96,16 @@ a { color:inherit; text-decoration:none; }
 }
 
 /* ===== Slider ===== */
+@keyframes glassGlow {
+    0% { box-shadow:0 0 8px rgba(255,255,255,0.10), inset 0 0 6px rgba(255,255,255,0.07);}
+    50% { box-shadow:0 0 22px rgba(255,255,255,0.35), inset 0 0 10px rgba(255,255,255,0.18);}
+    100% { box-shadow:0 0 8px rgba(255,255,255,0.10), inset 0 0 6px rgba(255,255,255,0.07);}
+}
+@keyframes shineMove {
+    0% { transform: translateX(-60%) rotate(0deg); }
+    50% { transform: translateX(40%) rotate(10deg); }
+    100% { transform: translateX(-60%) rotate(0deg); }
+}
 .toggle .slider {
     position:absolute;
     top:0; left:0;
@@ -106,7 +116,24 @@ a { color:inherit; text-decoration:none; }
     background:rgba(255,255,255,0.25);
     border:1px solid rgba(255,255,255,0.42);
     box-shadow: inset 0 0 15px rgba(255,255,255,0.35), 0 0 25px rgba(255,255,255,0.55);
+    animation: glassGlow 3.5s ease-in-out infinite;
     transition: left .55s cubic-bezier(.18,.8,.35,1.25);
+    overflow:hidden;
+}
+.toggle .slider::before {
+    content:"";
+    position:absolute; inset:0;
+    border-radius:inherit;
+    background:linear-gradient(135deg,
+        rgba(255,255,255,0.65) 0%,
+        rgba(255,255,255,0.18) 40%,
+        rgba(255,255,255,0.08) 75%,
+        rgba(255,255,255,0) 100%
+    );
+    filter:blur(1.2px);
+    animation: shineMove 6s ease-in-out infinite;
+    opacity:.58;
+    pointer-events:none;
 }
 
 /* ===== Container ===== */
@@ -119,9 +146,14 @@ a { color:inherit; text-decoration:none; }
     backdrop-filter:blur(25px) saturate(180%);
     border:1px solid rgba(255,255,255,0.12);
     box-shadow:0 0 40px rgba(255,255,255,0.12);
+    animation:fadeInUp 0.7s ease forwards;
+}
+@keyframes fadeInUp {
+    from { opacity:0; transform:translateY(25px); }
+    to { opacity:1; transform:translateY(0); }
 }
 
-/* ===== Tabs ===== */
+/* ===== Tab Blocks ===== */
 .tab-block {
     width:92%; max-width:980px;
     margin:25px auto;
@@ -130,7 +162,7 @@ a { color:inherit; text-decoration:none; }
     gap:25px;
     opacity:0;
     max-height:0;
-    overflow:hidden;
+    overflow: visible;
     transition:.5s ease;
 }
 .tab-block.active {
@@ -138,32 +170,46 @@ a { color:inherit; text-decoration:none; }
     max-height:1200px;
 }
 
-/* ===== Cards ===== */
+/* ===== Glass Card ===== */
 .glass-card {
+    position: relative;
     padding: 25px;
     border-radius: 30px;
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.12);
+    margin: 10px 0;
     box-shadow: 0 0 40px rgba(255,255,255,0.12);
-    backdrop-filter: blur(25px);
+    backdrop-filter: blur(25px) saturate(180%);
+    overflow: visible;
+    opacity:0;
+    animation:fadeInUp 0.7s ease forwards;
 }
+.glass-card:nth-child(1){animation-delay:0.1s;}
+.glass-card:nth-child(2){animation-delay:0.3s;}
+.glass-card:nth-child(3){animation-delay:0.5s;}
 
-/* ===== Articles (instead of lessons) ===== */
+/* ===== Articles Table ===== */
 #articlesTable {
     width:92%; max-width:980px;
     margin:25px auto;
-    padding:25px;
     border-radius:25px;
     background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(25px) saturate(180%);
     border:1px solid rgba(255,255,255,0.12);
-    opacity:0;
+    box-shadow: 0 0 40px rgba(255,255,255,0.12);
     max-height:0;
-    transition:.5s ease;
+    opacity:0;
+    padding:0 25px;
+    position: relative;
+    transition:.5s, padding .5s ease;
 }
 #articlesTable.active {
+    max-height:1000px;
     opacity:1;
-    max-height:2000px;
+    padding:25px;
 }
+
+/* ===== Article Items ===== */
 .article {
     margin-bottom:14px;
     padding:16px;
@@ -171,10 +217,16 @@ a { color:inherit; text-decoration:none; }
     background:rgba(255,255,255,0.05);
     border:1px solid rgba(255,255,255,0.12);
     cursor:pointer;
+    box-shadow:none;
     transition:0.3s;
+    position:relative;
+    z-index:1;
 }
 .article:hover {
-    box-shadow:0 0 20px rgba(255,255,255,0.2);
+    box-shadow:0 0 25px rgba(255,255,255,0.15);
+    border-color:rgba(255,255,255,0.18);
+    transform:translateY(-2px);
+    z-index:2;
 }
 
 /* ===== Footer ===== */
@@ -192,7 +244,6 @@ footer {
 
 <div id="scrollBar"></div>
 
-<!-- Background letters -->
 <div class="bg-letters">
     <span style="left:5%; animation-duration:14s;">S</span>
     <span style="left:22%; animation-duration:18s;">L</span>
@@ -202,7 +253,7 @@ footer {
 </div>
 
 <div class="top-bar" id="topBar">
-    <div class="logo">Язык улиц</div>
+    <div class="logo">Язык Улиц</div>
     <div class="toggle">
         <div class="slider" id="slider"></div>
         <button data-tab="home" class="active">Главная</button>
@@ -212,74 +263,70 @@ footer {
 </div>
 
 <div class="container">
-    <h1 style="text-align:center;">Современный сленг</h1>
-    <p style="opacity:.75; text-align:center;">Как интернет, культура и улица меняют язык</p>
+    <h1 style="text-align:center;">Язык Улиц</h1>
+    <p style="opacity:.75; text-align:center;">Современный сленг — зеркало нашей культуры</p>
     <br>
     <p>
-        Сленг — это живой язык улиц, интернета, молодёжи и общества.  
-        Он постоянно обновляется, отражает моду, социальные изменения, медиа, мемы и даже технологии.
-        На этом сайте — исследования, сравнения и интерактивные материалы о языке, который мы используем каждый день.
+        Сайт исследует, как сленг формируется, развивается и влияет на молодёжь.  
+        Здесь собраны статьи о происхождении слов, мем-культуре, интернет-трендах и эволюции языка.
     </p>
 </div>
 
-<!-- Главная -->
 <div id="homeCards" class="tab-block active">
     <div class="glass-card">
-        <h3>Что такое сленг?</h3>
-        <p>Слова, которые появляются из мемов, игр, улицы, музыки, соцсетей. Они отражают дух поколения.</p>
+        <h3>Происхождение сленга</h3>
+        <p>Как появляются новые слова на улицах, в чатах и мемах.</p>
     </div>
     <div class="glass-card">
-        <h3>Почему сленг важен?</h3>
-        <p>Он показывает, как меняется общество, ценности и стиль общения. Это часть современной культуры.</p>
+        <h3>Интернет и язык</h3>
+        <p>Роль социальных сетей, мемов и онлайн-общения в развитии сленга.</p>
     </div>
     <div class="glass-card">
-        <h3>Кто создаёт сленг?</h3>
-        <p>Молодёжь, блогеры, стримеры, рэп- и гейм-культура, TikTok, интернет-сообщества.</p>
+        <h3>Сравнение эпох</h3>
+        <p>Сленг 2000-х vs поколения Z и его отражение в культуре.</p>
     </div>
 </div>
 
-<!-- Статьи -->
 <div id="articlesTable">
     <h2>Статьи</h2>
-    <div class="article" onclick="openArticle('article1.html')">1 — Как появляется сленг?</div>
+    <div class="article" onclick="openArticle('article1.html')">1 — Как рождается сленг</div>
     <div class="article" onclick="openArticle('article2.html')">2 — Влияние интернета на язык</div>
-    <div class="article" onclick="openArticle('article3.html')">3 — Молодёжный сленг 2000-х vs 2020-х</div>
-    <div class="article" onclick="openArticle('article4.html')">4 — Мемы как инструмент языка</div>
-    <div class="article" onclick="openArticle('article5.html')">5 — Интерактивный словарь сленга</div>
+    <div class="article" onclick="openArticle('article3.html')">3 — Сленг 2000-х vs 2020-х</div>
+    <div class="article" onclick="openArticle('article4.html')">4 — Мемы и слова</div>
+    <div class="article" onclick="openArticle('article5.html')">5 — Словарь сленга</div>
 </div>
 
-<!-- Контакты -->
 <div id="contactCards" class="tab-block">
     <div class="glass-card">
-        <h3>Связаться с автором проекта</h3>
-        <p>📩 Email: slang@school.ru</p>
-        <p>💬 Telegram: @slang_project</p>
+        <h3>Связаться с проектом</h3>
+        <p>📩 Email: slang.street@school.ru</p>
+        <p>💬 Telegram: @slangstreet</p>
     </div>
 </div>
 
 <footer>
-© 2025 • Проект «Язык улиц»
+© 2025 • Проект «Язык Улиц»
 </footer>
 
 <script>
-/* Scroll progress */
+/* Progress bar */
 const scrollBar = document.getElementById("scrollBar");
 window.addEventListener("scroll", () => {
     const max = document.body.scrollHeight - window.innerHeight;
     scrollBar.style.width = (window.scrollY / max) * 100 + "%";
 });
 
-/* Top bar */
+/* Shrink top bar */
 const topBar = document.getElementById("topBar");
 window.addEventListener("scroll", () => {
     topBar.classList.toggle("scrolled", window.scrollY > 40);
 });
 
-/* Tabs */
+/* Toggle tabs */
 const slider = document.getElementById("slider");
 const buttons = document.querySelectorAll(".toggle button");
 const homeCards = document.getElementById("homeCards");
-const articleBlock = document.getElementById("articlesTable");
+const articlesBlock = document.getElementById("articlesTable");
 const contactCards = document.getElementById("contactCards");
 
 buttons.forEach((btn, i) =>
@@ -288,23 +335,25 @@ buttons.forEach((btn, i) =>
         btn.classList.add("active");
         slider.style.left = i * 33.333 + "%";
 
-        if(btn.dataset.tab === "home"){
+        if (btn.dataset.tab === "home") {
             homeCards.classList.add("active");
-            articleBlock.classList.remove("active");
+            articlesBlock.classList.remove("active");
             contactCards.classList.remove("active");
-        } else if(btn.dataset.tab === "articles"){
-            articleBlock.classList.add("active");
+        } else if (btn.dataset.tab === "articles") {
+            articlesBlock.classList.add("active");
             homeCards.classList.remove("active");
             contactCards.classList.remove("active");
-        } else if(btn.dataset.tab === "contacts"){
+        } else if (btn.dataset.tab === "contacts") {
             contactCards.classList.add("active");
             homeCards.classList.remove("active");
-            articleBlock.classList.remove("active");
+            articlesBlock.classList.remove("active");
         }
     })
 );
 
-function openArticle(page){ location.href = page; }
+function openArticle(page) {
+    location.href = page;
+}
 </script>
 
 </body>
