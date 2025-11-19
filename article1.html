@@ -1,564 +1,214 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Как рождается сленг — Презентация</title>
+
 <style>
-  :root{
-    --bg:#0f0f10;
-    --glass: rgba(255,255,255,0.06);
-    --glass-2: rgba(255,255,255,0.10);
-    --accent: #fff;
-    --muted: rgba(255,255,255,0.75);
-    --radius:18px;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%;margin:0;}
-  body{
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Roboto, "Segoe UI", sans-serif;
-    background:var(--bg); color:var(--accent);
-    -webkit-font-smoothing:antialiased;
+/* ===== Base style (копия твоего сайта) ===== */
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    background:#111;
+    color:#fff;
     overflow:hidden;
-  }
+    height:100vh;
+}
 
-  /* Top bar */
-  .topbar{
-    position:fixed; left:50%; transform:translateX(-50%);
-    top:12px; width:92%; max-width:1200px; height:68px;
-    border-radius:28px; padding:10px 18px;
-    display:flex; align-items:center; justify-content:space-between;
-    gap:12px;
-    background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-    border:1px solid rgba(255,255,255,0.06);
-    backdrop-filter: blur(12px) saturate(160%);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
-    z-index:50;
-  }
-  .brand{font-weight:700; font-size:1.1rem; letter-spacing:0.4px;}
-  .controls{display:flex; gap:8px; align-items:center;}
-  .btn{
-    background:var(--glass); border:1px solid rgba(255,255,255,0.06);
-    color:var(--accent); padding:8px 12px; border-radius:12px; cursor:pointer;
-    font-weight:600; font-size:0.9rem;
-  }
-  .btn:active{transform:translateY(1px)}
-  .small{padding:6px 10px;font-size:0.85rem}
+/* ===== Background Letters ===== */
+.bg-letters {
+    position: fixed; inset:0; z-index:-1; overflow:hidden; opacity:0.05;
+    pointer-events:none;
+}
+.bg-letters span {
+    position:absolute;
+    font-size:4.4rem;
+    font-weight:900;
+    color:#fff;
+    animation:float linear infinite;
+}
+@keyframes float {
+    0% { transform: translateY(110vh) rotate(0deg); opacity:0; }
+    30% { opacity:0.25; }
+    100% { transform: translateY(-20vh) rotate(360deg); opacity:0; }
+}
 
-  /* Slide area */
-  .stage{
-    position:fixed; inset:90px 32px 36px 32px; /* leave room for topbar/footer */
-    display:flex; align-items:center; justify-content:center;
-    perspective:1200px;
-  }
-  .slide{
-    width:100%; max-width:1100px; height:100%;
+/* ===== Top Bar ===== */
+.top-bar {
+    position: fixed;
+    top:10px; left:50%;
+    transform: translateX(-50%);
+    width:95%; max-width:1200px;
+    height:75px;
     border-radius:20px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-    border:1px solid rgba(255,255,255,0.06);
-    padding:36px; box-shadow: 0 30px 80px rgba(0,0,0,0.6);
-    display:flex; flex-direction:column; align-items:center; gap:18px;
-    opacity:0; transform:translateY(12px) scale(.995);
-    transition: opacity .5s ease, transform .5s cubic-bezier(.2,.9,.25,1);
-    overflow:auto;
-    backdrop-filter: blur(12px) saturate(160%);
-  }
-  .slide.active{opacity:1; transform:translateY(0) scale(1); pointer-events:auto}
-  .slide h1{margin:0;font-size:2.0rem}
-  .slide h2{margin:0;font-size:1.4rem;color:var(--muted)}
-  .content{max-width:980px; text-align:left; font-size:1.05rem; line-height:1.6; color:var(--accent);}
+    backdrop-filter: blur(18px) saturate(180%);
+    background:rgba(255,255,255,0.06);
+    display:flex; justify-content:space-between; align-items:center;
+    padding:0 20px;
+    box-shadow:0 8px 35px rgba(0,0,0,0.35);
+    z-index:1000;
+}
+.logo {
+    font-size:1.4rem; font-weight:700;
+}
 
-  /* Blocks */
-  .card{
-    background: rgba(255,255,255,0.03);
-    border:1px solid rgba(255,255,255,0.04);
-    padding:18px; border-radius:14px; margin:6px 0;
-  }
+/* ===== Slides container ===== */
+.presentation {
+    position: absolute;
+    top: 110px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92%;
+    max-width: 1000px;
+    height: calc(100vh - 140px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
 
-  /* Timeline / stages */
-  .stages{display:flex; gap:12px; flex-wrap:wrap; justify-content:center;}
-  .stage-item{
-    min-width:180px; max-width:260px;
-    padding:14px;border-radius:12px; cursor:pointer;
-    background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.03);
-    transition:transform .18s, box-shadow .18s;
-  }
-  .stage-item:hover{transform:translateY(-6px); box-shadow:0 18px 40px rgba(0,0,0,0.6)}
-  .stage-item.active{outline:2px solid rgba(255,255,255,0.08)}
+/* ===== Slide ===== */
+.slide {
+    position:absolute;
+    width:100%;
+    height:100%;
+    border-radius:30px;
+    padding:40px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.12);
+    backdrop-filter: blur(25px) saturate(180%);
+    box-shadow:0 0 40px rgba(255,255,255,0.12);
 
-  /* Quiz */
-  .quiz{display:flex; flex-direction:column; gap:12px; max-width:740px;}
-  .options{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
-  .opt{padding:12px;border-radius:10px;background:rgba(255,255,255,0.03);cursor:pointer;border:1px solid rgba(255,255,255,0.04)}
-  .opt.correct{background:linear-gradient(90deg, rgba(0,200,120,0.18), rgba(0,200,120,0.06));border-color:rgba(0,200,120,0.25)}
-  .opt.wrong{background:linear-gradient(90deg, rgba(200,50,50,0.12), rgba(200,50,50,0.06));border-color:rgba(200,50,50,0.25)}
-  .opt:hover{transform:translateY(-4px)}
+    text-align:center;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .5s ease;
+    overflow-y:auto;
+}
+.slide.active {
+    opacity:1;
+    pointer-events:auto;
+}
 
-  /* Dictionary */
-  .dict-search{display:flex; gap:10px; align-items:center; margin-bottom:12px}
-  .dict-search input{flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--accent)}
-  .dict-list{display:grid; gap:8px; max-height:360px; overflow:auto; padding-right:6px}
-  .dict-item{display:flex; justify-content:space-between; gap:10px; padding:12px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03)}
+.slide h1, .slide h2 { margin-bottom:20px; }
+.slide p {
+    font-size:1.1rem;
+    opacity:.9;
+    line-height:1.6;
+    max-width:760px;
+    margin:0 auto;
+}
 
-  /* Footer (progress/time) */
-  .footer{
-    position:fixed; left:50%; transform:translateX(-50%);
-    bottom:12px; width:92%; max-width:1200px; height:60px;
-    border-radius:18px; display:flex; align-items:center; justify-content:space-between;
-    padding:8px 16px; gap:12px;
-    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    border:1px solid rgba(255,255,255,0.04);
-    backdrop-filter: blur(8px);
-  }
-  .progress{height:10px; background:rgba(255,255,255,0.04); border-radius:10px; overflow:hidden; flex:1; margin:0 12px}
-  .progress > i{display:block;height:100%; background:linear-gradient(90deg,#fff,#bfbfbf); width:0%}
-  .timebox{min-width:160px; text-align:right; color:var(--muted); font-weight:600}
+/* ===== Navigation Buttons ===== */
+.nav-buttons {
+    position: fixed;
+    bottom: 20px;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:15px;
+    z-index:999;
+}
 
-  /* Navigation thumbnails */
-  .thumbs{display:flex; gap:8px; align-items:center}
-  .thumb{padding:6px 10px;border-radius:10px;background:rgba(255,255,255,0.03);cursor:pointer;font-size:0.85rem}
-  .thumb.active{background:linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));font-weight:700}
-
-  /* Responsive */
-  @media (max-width:880px){
-    .options{grid-template-columns:1fr}
-    .stage-item{min-width:160px}
-    .content{font-size:1rem}
-  }
+.nav-buttons button {
+    padding:12px 20px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.25);
+    color:#fff;
+    cursor:pointer;
+    border-radius:15px;
+    font-size:1rem;
+    backdrop-filter:blur(12px);
+    transition:.3s;
+}
+.nav-buttons button:hover {
+    background:rgba(255,255,255,0.15);
+}
 </style>
 </head>
+
 <body>
 
-  <div class="topbar" role="navigation" aria-label="Презентация навигация">
-    <div class="brand">Язык Улиц — «Как рождается сленг»</div>
+<!-- Background letters -->
+<div class="bg-letters">
+    <span style="left:5%; animation-duration:14s;">S</span>
+    <span style="left:22%; animation-duration:18s;">L</span>
+    <span style="left:40%; animation-duration:16s;">A</span>
+    <span style="left:56%; animation-duration:20s;">N</span>
+    <span style="left:75%; animation-duration:17s;">G</span>
+</div>
 
-    <div class="controls" aria-hidden="false">
-      <button id="autoplayBtn" class="btn small">Автоплей: Вкл</button>
-      <button id="prevBtn" class="btn small">← Назад</button>
-      <div class="thumbs" id="thumbs"></div>
-      <button id="nextBtn" class="btn small">Вперёд →</button>
-      <button id="tocBtn" class="btn small">Оглавление</button>
+<!-- Top Bar -->
+<div class="top-bar">
+    <div class="logo">Язык улиц</div>
+    <div style="opacity:.8;">Статья 1 — Как рождается сленг</div>
+</div>
+
+<!-- Slides -->
+<div class="presentation">
+
+    <div class="slide active">
+        <h1>Как рождается сленг?</h1>
+        <p>Сленг — это живой, гибкий и постоянно меняющийся язык. Он появляется там, где люди хотят говорить быстрее, проще, смешнее, ближе друг к другу.</p>
+        <p>Сегодня мы посмотрим на то, откуда берётся сленг, почему он так быстро распространяется и как он отражает культуру поколения.</p>
     </div>
-  </div>
 
-  <main class="stage" id="stage" tabindex="0">
-    <!-- Slides (10 total) -->
-    <!-- Slide 1 — Вступление -->
-    <section class="slide active" data-index="0" id="s0" aria-label="Слайд 1">
-      <h1>Как рождается сленг</h1>
-      <h2>Коротко — почему на самом деле люди придумывают слова</h2>
-      <div class="content card">
-        <p>Сленг — это естественный механизм языка: он помогает быстрому общению, маркировке групповой идентичности и выражению эмоций. В этой презентации мы рассмотрим, кто придумывает слова, как они распространяются и почему некоторые превращаются в общепринятые выражения.</p>
-        <ul style="margin-top:12px;color:var(--muted)">
-          <li>10 слайдов — ~1.5 минуты на каждый (итого 15 минут)</li>
-          <li>Можно включать/отключать автоплей и листать вручную</li>
-        </ul>
-      </div>
-    </section>
+    <div class="slide">
+        <h2>Слайд 2 — Почему появляется сленг?</h2>
+        <p>Люди выбирают сленг, когда хотят создать своё «языковое пространство».  
+        Сленг даёт ощущение принадлежности к группе — друзьями, району, комьюнити или интернет-среде.</p>
+        <p>Это способ быть «своим», говорить на языке поколения.</p>
+    </div>
 
-    <!-- Slide 2 — Кто придумывает -->
-    <section class="slide" data-index="1" id="s1" aria-label="Слайд 2">
-      <h1>Кто придумывает сленг?</h1>
-      <div class="content">
-        <div class="stages">
-          <div class="stage-item" data-step="1"><strong>Малые группы</strong><div style="opacity:.8;margin-top:8px">Друзья, чаты, локальные сцены</div></div>
-          <div class="stage-item" data-step="2"><strong>Субкультуры</strong><div style="opacity:.8;margin-top:8px">Геймеры, скейтеры, рэп-сцена</div></div>
-          <div class="stage-item" data-step="3"><strong>Онлайн-лидеры</strong><div style="opacity:.8;margin-top:8px">Блогеры, стримеры, мем-крематорий</div></div>
-          <div class="stage-item" data-step="4"><strong>Массовая репликация</strong><div style="opacity:.8;margin-top:8px">Тренды, мемы, СМИ</div></div>
-        </div>
-        <div id="stageDetail" class="card" style="margin-top:14px">Нажми на блок, чтобы увидеть детали происхождения</div>
-      </div>
-    </section>
+    <div class="slide">
+        <h2>Слайд 3 — Роль интернета</h2>
+        <p>Интернет ускорил развитие сленга. Мемы, вайны, TikTok, YouTube, Discord — всё это генераторы слов, которые распространяются мгновенно.</p>
+        <p>Если раньше новое слово появлялось годами, то теперь — за сутки.</p>
+    </div>
 
-    <!-- Slide 3 — Этапы распространения -->
-    <section class="slide" data-index="2" id="s2" aria-label="Слайд 3">
-      <h1>Этапы жизни слова</h1>
-      <div class="content card">
-        <ol>
-          <li><strong>Зарождение</strong> — слово появляется в маленькой группе.</li>
-          <li><strong>Передача</strong> — мем/видео/стрим делает слово видимым для тысяч.</li>
-          <li><strong>Пик</strong> — слово в тренде, используют все.</li>
-          <li><strong>Угасание или закрепление</strong> — слово либо забывают, либо переносится в разговорный язык.</li>
-        </ol>
-        <p style="opacity:.85">Нижняя диаграмма иллюстрирует скорость прохождения этапов с появлением интернета.</p>
-        <div style="margin-top:12px;display:flex;gap:8px;align-items:flex-end;height:120px;">
-          <div style="flex:1;background:linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.04));border-radius:8px;padding:8px;text-align:center">Зарождение<br><strong>1</strong></div>
-          <div style="flex:1.6;background:linear-gradient(180deg,rgba(255,255,255,0.16),rgba(255,255,255,0.04));border-radius:8px;padding:8px;text-align:center">Передача<br><strong>2</strong></div>
-          <div style="flex:2.4;background:linear-gradient(180deg,rgba(255,255,255,0.22),rgba(255,255,255,0.04));border-radius:8px;padding:8px;text-align:center">Пик<br><strong>3</strong></div>
-          <div style="flex:1.2;background:linear-gradient(180deg,rgba(255,255,255,0.10),rgba(255,255,255,0.04));border-radius:8px;padding:8px;text-align:center">Исход<br><strong>4</strong></div>
-        </div>
-      </div>
-    </section>
+    <div class="slide">
+        <h2>Слайд 4 — Жизненный цикл сленга</h2>
+        <p>Каждый термин проходит путь:</p>
+        <p>1) появление → 2) распространение → 3) пик популярности → 4) устаревание</p>
+        <p>Например: «изи», «хайп», «кринж», «жиза» — все были хайповыми, а теперь считаются устаревшими.</p>
+    </div>
 
-    <!-- Slide 4 — Влияние соцсетей -->
-    <section class="slide" data-index="3" id="s3" aria-label="Слайд 4">
-      <h1>Роль соцсетей</h1>
-      <div class="content card">
-        <p><strong>TikTok</strong> и короткие форматы сокращают путь от идеи до массового употребления. <strong>Discord/Telegram</strong> — места для ранних адаптеров. <strong>Twitter/Reddit</strong> — форумы где слово может получить «слэнговый вирус».</p>
-        <ul style="margin-top:8px;color:var(--muted)">
-          <li>Виральный формат → мгновенное копирование</li>
-          <li>Алгоритмы подталкивают контент к похожим аудиториям</li>
-        </ul>
-        <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
-          <div class="card" style="min-width:200px"><strong>Пример</strong><div style="opacity:.85;margin-top:8px">«кринж» — пришёл из англ. «cringe» через YouTube/TikTok</div></div>
-          <div class="card" style="min-width:200px"><strong>Пример</strong><div style="opacity:.85;margin-top:8px">«краш» — из fan-culture → Instagram → разговор</div></div>
-        </div>
-      </div>
-    </section>
+    <div class="slide">
+        <h2>Слайд 5 — Мини-интерактив</h2>
+        <p>Как ты думаешь, какое из слов исчезнет раньше?</p>
+        <p>• лютый  
+        • рофлить  
+        • дефолт</p>
+        <p>(Это просто обсуждение, интерактив необязательен.)</p>
+    </div>
 
-    <!-- Slide 5 — Примеры происхождения (карточки) -->
-    <section class="slide" data-index="4" id="s4" aria-label="Слайд 5">
-      <h1>Истории слов — от источника к разговору</h1>
-      <div class="content">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-          <div class="card">
-            <strong>Рофл</strong>
-            <p style="opacity:.85">ROFL (англ.) → форумы → мемы → стал разговорным «рофл»</p>
-            <button class="btn small" onclick="speak('рофл')">Произнести</button>
-          </div>
-          <div class="card">
-            <strong>Кринж</strong>
-            <p style="opacity:.85">cringe → видео-сообщества → TikTok → русская адаптация</p>
-            <button class="btn small" onclick="speak('кринж')">Произнести</button>
-          </div>
-          <div class="card">
-            <strong>Краш</strong>
-            <p style="opacity:.85">crush → фан-лексика → соцсети → «краш»</p>
-            <button class="btn small" onclick="speak('краш')">Произнести</button>
-          </div>
-          <div class="card">
-            <strong>Флекс</strong>
-            <p style="opacity:.85">flex → рэп-лексика → мемы → «флексить»</p>
-            <button class="btn small" onclick="speak('флекс')">Произнести</button>
-          </div>
-        </div>
-      </div>
-    </section>
+</div>
 
-    <!-- Slide 6 — Почему быстро меняется -->
-    <section class="slide" data-index="5" id="s5" aria-label="Слайд 6">
-      <h1>Почему сленг меняется так быстро?</h1>
-      <div class="content card">
-        <p>Ключевые причины:</p>
-        <ul>
-          <li><strong>Алгоритмы</strong> — ускоряют распространение трендов.</li>
-          <li><strong>Фрагментация</strong> — много узких сообществ.</li>
-          <li><strong>Креативность</strong> — мемы и ремиксы создают новые значения.</li>
-        </ul>
-        <p style="opacity:.85">Вывод: в эпоху интернета слово может за 1–2 недели пересечь континент и стать частью разговорного языка.</p>
-      </div>
-    </section>
-
-    <!-- Slide 7 — Мини-тест (интерактив) -->
-    <section class="slide" data-index="6" id="s6" aria-label="Слайд 7">
-      <h1>Мини-тест: проверь внимание</h1>
-      <div class="content">
-        <div class="quiz card" id="quiz">
-          <div><strong>1.</strong> Какой канал чаще всего ускоряет попадание слова в массовый оборот?</div>
-          <div class="options" id="options">
-            <div class="opt" data-key="A">Научные журналы</div>
-            <div class="opt" data-key="B">TikTok / мем-видео</div>
-            <div class="opt" data-key="C">Печатная пресса</div>
-            <div class="opt" data-key="D">Государственные телепередачи</div>
-          </div>
-          <div style="display:flex;gap:10px;align-items:center;margin-top:8px">
-            <button id="checkBtn" class="btn small">Проверить</button>
-            <div id="quizResult" style="color:var(--muted); font-weight:700"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Slide 8 — Интерактивный словарь -->
-    <section class="slide" data-index="7" id="s7" aria-label="Слайд 8">
-      <h1>Интерактивный словарь</h1>
-      <div class="content card">
-        <div class="dict-search">
-          <input id="dictInput" placeholder="Найти слово (например: кринж, краш, флекс)" />
-          <button id="clearDict" class="btn small">Очистить</button>
-        </div>
-        <div class="dict-list" id="dictList" aria-live="polite">
-          <!-- items populated by JS -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Slide 9 — Практика: придумай слово (интерактив) -->
-    <section class="slide" data-index="8" id="s8" aria-label="Слайд 9">
-      <h1>Практика: придумай свое слово</h1>
-      <div class="content">
-        <div class="card">
-          <p>Постарайся придумать короткое слово/фразу, которая описывает эмоцию/ситуацию. Подумай — кому оно нужно? Как его можно быстро распространить?</p>
-          <textarea id="idea" placeholder="Напиши своё слово и кратко — как оно появится..." style="width:100%;min-height:120px;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.05);background:transparent;color:var(--accent)"></textarea>
-          <div style="margin-top:10px;display:flex;gap:8px">
-            <button id="saveIdea" class="btn small">Сохранить идею</button>
-            <div id="ideaSaved" style="color:var(--muted);font-weight:700"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Slide 10 — Заключение и ресурсы -->
-    <section class="slide" data-index="9" id="s9" aria-label="Слайд 10">
-      <h1>Выводы</h1>
-      <div class="content card">
-        <p>Сленг — это зеркало времени. Он рождается в группах, усиливается мемами и соцсетями и быстро распространяется. Некоторые слова остаются, другие умирают — но все они важны для понимания культуры поколения.</p>
-        <p style="opacity:.85;margin-top:8px">Ресурсы: наблюдай за сообществами, читай исследования по языку и экспериментируй — твоя идея может стать следующим трендом.</p>
-        <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn small" onclick="restart()">Пройти заново</button>
-          <button class="btn small" onclick="exportIdeas()">Скачать идеи</button>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <div class="footer" role="status">
-    <div style="font-weight:700">Слайд <span id="currentSlide">1</span> / <span id="totalSlides">10</span></div>
-    <div class="progress" aria-hidden="true"><i id="progBar"></i></div>
-    <div class="timebox"><span id="timeLeft">01:30</span> на слайд • <span id="totalLeft">15:00</span> всего</div>
-  </div>
+<!-- Navigation -->
+<div class="nav-buttons">
+    <button onclick="prevSlide()">← Назад</button>
+    <button onclick="nextSlide()">Далее →</button>
+</div>
 
 <script>
-/* Presentation logic */
-(() => {
-  const SLIDE_COUNT = 10;
-  const SECONDS_PER_SLIDE = 90; // 90s * 10 = 900s = 15 minutes
-  let current = 0;
-  let autoplay = true;
-  let slideTimer = null;
-  let remaining = SECONDS_PER_SLIDE;
-  let totalRemaining = SLIDE_COUNT * SECONDS_PER_SLIDE;
+let current = 0;
+const slides = document.querySelectorAll('.slide');
 
-  const slides = Array.from(document.querySelectorAll('.slide'));
-  const progBar = document.getElementById('progBar');
-  const currentSlideEl = document.getElementById('currentSlide');
-  const totalSlidesEl = document.getElementById('totalSlides');
-  const timeLeftEl = document.getElementById('timeLeft');
-  const totalLeftEl = document.getElementById('totalLeft');
-  const thumbs = document.getElementById('thumbs');
+function showSlide(i){
+    slides.forEach(s => s.classList.remove('active'));
+    slides[i].classList.add('active');
+}
 
-  totalSlidesEl.textContent = SLIDE_COUNT;
+function nextSlide(){
+    current = Math.min(current + 1, slides.length - 1);
+    showSlide(current);
+}
 
-  // create thumbs
-  for(let i=0;i<SLIDE_COUNT;i++){
-    const t = document.createElement('div');
-    t.className = 'thumb' + (i===0? ' active':'');
-    t.textContent = (i+1);
-    t.dataset.index = i;
-    t.title = 'Перейти к слайду ' + (i+1);
-    t.addEventListener('click', ()=>goTo(i, true));
-    thumbs.appendChild(t);
-  }
-
-  function updateUI(){
-    slides.forEach((s,idx)=> s.classList.toggle('active', idx===current));
-    Array.from(thumbs.children).forEach((t,idx)=> t.classList.toggle('active', idx===current));
-    currentSlideEl.textContent = (current+1);
-    const progPercent = ((SLIDE_COUNT - (totalRemaining/SECONDS_PER_SLIDE)) / SLIDE_COUNT) * 100;
-    progBar.style.width = progPercent + '%';
-    timeLeftEl.textContent = formatTime(remaining);
-    totalLeftEl.textContent = formatTime(totalRemaining);
-  }
-
-  function formatTime(sec){
-    const m = Math.floor(sec/60).toString().padStart(2,'0');
-    const s = Math.floor(sec%60).toString().padStart(2,'0');
-    return `${m}:${s}`;
-  }
-
-  function tick(){
-    remaining--;
-    totalRemaining--;
-    if(remaining <= 0){
-      if(current < SLIDE_COUNT - 1){
-        goTo(current+1, true);
-      } else {
-        // finish
-        stopAutoplay();
-        remaining = 0;
-      }
-    }
-    updateUI();
-  }
-
-  function startTimer(){
-    clearInterval(slideTimer);
-    slideTimer = setInterval(tick, 1000);
-  }
-  function stopAutoplay(){
-    autoplay = false;
-    document.getElementById('autoplayBtn').textContent = 'Автоплей: Выкл';
-    clearInterval(slideTimer);
-  }
-
-  function goTo(index, viaUser=false){
-    // if user navigates, reset slide timer
-    if(index < 0) index = 0;
-    if(index >= SLIDE_COUNT) index = SLIDE_COUNT-1;
-    current = index;
-    remaining = SECONDS_PER_SLIDE;
-    // recalc totalRemaining as slides remaining * per-slide plus current remaining
-    const slidesLeft = (SLIDE_COUNT - (current+1));
-    totalRemaining = remaining + slidesLeft * SECONDS_PER_SLIDE;
-    updateUI();
-    if(autoplay || viaUser){
-      startTimer();
-    }
-  }
-
-  // initial
-  updateUI();
-  startTimer();
-
-  // keyboard navigation
-  document.addEventListener('keydown', (e)=>{
-    if(e.key === 'ArrowRight') goTo(current+1, true);
-    if(e.key === 'ArrowLeft') goTo(current-1, true);
-    if(e.key === ' ') {
-      // toggle autoplay
-      e.preventDefault();
-      toggleAutoplay();
-    }
-  });
-
-  // buttons
-  document.getElementById('nextBtn').addEventListener('click', ()=>goTo(current+1, true));
-  document.getElementById('prevBtn').addEventListener('click', ()=>goTo(current-1, true));
-  document.getElementById('autoplayBtn').addEventListener('click', toggleAutoplay);
-  document.getElementById('tocBtn').addEventListener('click', ()=>goTo(0, true));
-
-  function toggleAutoplay(){
-    autoplay = !autoplay;
-    document.getElementById('autoplayBtn').textContent = 'Автоплей: ' + (autoplay? 'Вкл' : 'Выкл');
-    if(autoplay) startTimer(); else clearInterval(slideTimer);
-  }
-
-  // allow clicking on stage items (slide 2)
-  document.querySelectorAll('#s1 .stage-item').forEach(item=>{
-    item.addEventListener('click', ()=>{
-      document.querySelectorAll('#s1 .stage-item').forEach(i=>i.classList.remove('active'));
-      item.classList.add('active');
-      const step = item.dataset.step;
-      const txt = {
-        1: '<strong>Малые группы</strong>: Тут рождаются слова — друзья, чаты, локальные сцены. Новые формы проходят первичный тест на удобство.',
-        2: '<strong>Субкультуры</strong>: Геймеры, скейтеры, рэп-сцена — у каждой группы свои метафоры и сленговые маркеры.',
-        3: '<strong>Онлайн-лидеры</strong>: Блогеры и стримеры визуализируют слово, давая ему вирусную динамику.',
-        4: '<strong>Массовая репликация</strong>: СМИ и мемы завершают путь слова в массовое употребление.'
-      }[step] || '—';
-      document.getElementById('stageDetail').innerHTML = txt;
-    });
-  });
-
-  // Quiz logic (slide 7)
-  const correctKey = 'B';
-  Array.from(document.querySelectorAll('#options .opt')).forEach(o=>{
-    o.addEventListener('click', ()=> {
-      // toggle selection
-      document.querySelectorAll('#options .opt').forEach(x=>x.classList.remove('selected'));
-      o.classList.add('selected');
-    });
-  });
-  document.getElementById('checkBtn').addEventListener('click', ()=>{
-    const sel = document.querySelector('#options .opt.selected');
-    const res = document.getElementById('quizResult');
-    if(!sel){ res.textContent = 'Выбери ответ'; res.style.color='var(--muted)'; return; }
-    const key = sel.dataset.key;
-    if(key === correctKey){
-      sel.classList.add('correct'); res.textContent = 'Правильно! TikTok / мем-видео ускоряют распространение.'; res.style.color='#7fffb0';
-    } else {
-      sel.classList.add('wrong'); res.textContent = 'Не совсем — подумай про короткие видео и мемы.'; res.style.color='#ff9b9b';
-      // mark correct one
-      const corr = document.querySelector(`#options .opt[data-key="${correctKey}"]`);
-      if(corr) corr.classList.add('correct');
-    }
-    // disable further clicks
-    document.querySelectorAll('#options .opt').forEach(x=> x.style.pointerEvents='none');
-  });
-
-  // Dictionary data
-  const DICT = [
-    {w:'кринж', def:'заимств. от англ. "cringe" — ощущение неловкости или стыда у наблюдателя.'},
-    {w:'рофл', def:'сокращение от англ. ROFL — подчёркнутый смех/ирония.'},
-    {w:'краш', def:'заимств. от "crush" — объект симпатий.'},
-    {w:'флексить', def:'похвастаться, показать свой статус/имущество.'},
-    {w:'чиллить', def:'расслабляться, отдыхать.'},
-    {w:'зашквар', def:'что-то постыдное, морально неприемлемое.'},
-  ];
-  const dictList = document.getElementById('dictList');
-  const dictInput = document.getElementById('dictInput');
-  const clearDict = document.getElementById('clearDict');
-
-  function renderDict(filter=''){
-    dictList.innerHTML = '';
-    const items = DICT.filter(d => d.w.includes(filter.toLowerCase()));
-    if(items.length === 0){
-      dictList.innerHTML = '<div style="color:var(--muted);padding:12px">Ничего не найдено</div>';
-      return;
-    }
-    items.forEach(d=>{
-      const el = document.createElement('div');
-      el.className = 'dict-item';
-      el.innerHTML = `<div><strong>${d.w}</strong><div style="opacity:.85;margin-top:6px">${d.def}</div></div>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <button class="btn small" onclick="speak('${d.w.replace(/'/g,"\\'")}')">Произнести</button>
-        </div>`;
-      dictList.appendChild(el);
-    });
-  }
-  dictInput.addEventListener('input', ()=> renderDict(dictInput.value.trim()));
-  clearDict.addEventListener('click', ()=> { dictInput.value=''; renderDict(''); });
-  renderDict('');
-
-  // Speak function (uses Web Speech API)
-  window.speak = function(text){
-    if(!('speechSynthesis' in window)) return alert('TTS не поддерживается в этом браузере');
-    const msg = new SpeechSynthesisUtterance(text);
-    msg.lang = 'ru-RU';
-    msg.rate = 0.95;
-    window.speechSynthesis.cancel(); // stop previous
-    window.speechSynthesis.speak(msg);
-  }
-
-  // Save ideas (slide 9)
-  const ideas = [];
-  document.getElementById('saveIdea').addEventListener('click', ()=>{
-    const t = document.getElementById('idea').value.trim();
-    const saved = document.getElementById('ideaSaved');
-    if(!t){ saved.textContent = 'Напиши идею'; saved.style.color='var(--muted)'; return; }
-    ideas.push({text:t, date: new Date().toISOString()});
-    document.getElementById('idea').value = '';
-    saved.textContent = 'Идея сохранена ✓';
-    saved.style.color = '#bfffb0';
-    setTimeout(()=> saved.textContent = '', 2500);
-  });
-
-  // export ideas
-  window.exportIdeas = function(){
-    if(ideas.length===0) return alert('Нет сохранённых идей');
-    const blob = new Blob([JSON.stringify(ideas, null, 2)], {type:'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'slang_ideas.json';
-    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-  }
-
-  // restart
-  window.restart = function(){
-    current = 0; remaining = SECONDS_PER_SLIDE; totalRemaining = SLIDE_COUNT * SECONDS_PER_SLIDE;
-    updateUI(); startTimer();
-  }
-
-  // expose goTo for thumbs
-  window.goTo = function(i, user){
-    // wrapper to the internal goTo
-  }
-
-  // ensure stage is focused for keyboard
-  document.getElementById('stage').focus();
-
-})();
+function prevSlide(){
+    current = Math.max(current - 1, 0);
+    showSlide(current);
+}
 </script>
-
 </body>
 </html>
