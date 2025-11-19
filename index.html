@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Язык Улиц — Сленг и культура2</title>
+<title>SkillUp — учимся через практику</title>
 <style>
 /* ===== Base ===== */
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -246,66 +246,64 @@ footer {
 
 <div class="bg-letters">
     <span style="left:5%; animation-duration:14s;">S</span>
-    <span style="left:22%; animation-duration:18s;">L</span>
-    <span style="left:40%; animation-duration:16s;">A</span>
-    <span style="left:56%; animation-duration:20s;">N</span>
-    <span style="left:75%; animation-duration:17s;">G</span>
+    <span style="left:22%; animation-duration:18s;">K</span>
+    <span style="left:40%; animation-duration:16s;">I</span>
+    <span style="left:56%; animation-duration:20s;">L</span>
+    <span style="left:75%; animation-duration:17s;">L</span>
 </div>
 
 <div class="top-bar" id="topBar">
-    <div class="logo">Язык Улиц</div>
+    <div class="logo">SkillUp</div>
     <div class="toggle">
         <div class="slider" id="slider"></div>
         <button data-tab="home" class="active">Главная</button>
-        <button data-tab="articles">Статьи</button>
+        <button data-tab="tasks">Этапы</button>
         <button data-tab="contacts">Контакты</button>
     </div>
 </div>
 
 <div class="container">
-    <h1 style="text-align:center;">Язык Улиц</h1>
-    <p style="opacity:.75; text-align:center;">Современный сленг — зеркало нашей культуры</p>
+    <h1 style="text-align:center;">SkillUp</h1>
+    <p style="opacity:.75; text-align:center;">Учимся через практику: реальные задания и проекты</p>
     <br>
     <p>
-        Сайт исследует, как сленг формируется, развивается и влияет на молодёжь.  
-        Здесь собраны статьи о происхождении слов, мем-культуре, интернет-трендах и эволюции языка.
+        SkillUp — платформа для практического развития ключевых жизненных и командных навыков школьников. 
+        Здесь можно проходить интерактивные задания, тренировать планирование, принимать решения и работать в команде.
     </p>
 </div>
 
 <div id="homeCards" class="tab-block active">
     <div class="glass-card">
-        <h3>Происхождение сленга</h3>
-        <p>Как появляются новые слова на улицах, в чатах и мемах.</p>
+        <h3>Что такое SkillUp</h3>
+        <p>Платформа, где обучение идёт через реальные задания и командные проекты.</p>
     </div>
     <div class="glass-card">
-        <h3>Интернет и язык</h3>
-        <p>Роль социальных сетей, мемов и онлайн-общения в развитии сленга.</p>
+        <h3>Почему важно</h3>
+        <p>Практические навыки, умение принимать решения и работать в команде необходимы для жизни и будущей профессии.</p>
     </div>
     <div class="glass-card">
-        <h3>Сравнение эпох</h3>
-        <p>Сленг 2000-х vs поколения Z и его отражение в культуре.</p>
+        <h3>Как работает</h3>
+        <p>Пользователь выполняет задания, участвует в проектах и видит результат своих решений на команде.</p>
     </div>
 </div>
 
 <div id="articlesTable">
-    <h2>Статьи</h2>
-    <div class="article" onclick="openArticle('article1.html')">1 — Как рождается сленг</div>
-    <div class="article" onclick="openArticle('article2.html')">2 — Влияние интернета на язык</div>
-    <div class="article" onclick="openArticle('article3.html')">3 — Сленг 2000-х vs 2020-х</div>
-    <div class="article" onclick="openArticle('article4.html')">4 — Мемы и слова</div>
-    <div class="article" onclick="openArticle('article5.html')">5 — Словарь сленга</div>
+    <h2>Этапы проекта</h2>
+    <div class="article">1 — Разработка платформы</div>
+    <div class="article">2 — Создание интерактивных заданий</div>
+    <div class="article">3 — Проведение тестирования</div>
 </div>
 
 <div id="contactCards" class="tab-block">
     <div class="glass-card">
         <h3>Связаться с проектом</h3>
-        <p>📩 Email: slang.street@school.ru</p>
-        <p>💬 Telegram: @slangstreet</p>
+        <p>📩 Email: skillup@school.ru</p>
+        <p>💬 Telegram: @skillup_project</p>
     </div>
 </div>
 
 <footer>
-© 2025 • Проект «Язык Улиц»
+© 2025 • Проект «SkillUp»
 </footer>
 
 <script>
@@ -339,7 +337,7 @@ buttons.forEach((btn, i) =>
             homeCards.classList.add("active");
             articlesBlock.classList.remove("active");
             contactCards.classList.remove("active");
-        } else if (btn.dataset.tab === "articles") {
+        } else if (btn.dataset.tab === "tasks") {
             articlesBlock.classList.add("active");
             homeCards.classList.remove("active");
             contactCards.classList.remove("active");
@@ -350,10 +348,6 @@ buttons.forEach((btn, i) =>
         }
     })
 );
-
-function openArticle(page) {
-    location.href = page;
-}
 </script>
 
 </body>
