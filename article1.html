@@ -4,288 +4,317 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Как рождается сленг — Презентация</title>
-
 <style>
-/* ===== Base style ===== */
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-    background:#111;
-    color:#fff;
-    overflow:hidden;
-    height:100vh;
-}
-
-/* ===== Background Letters ===== */
-.bg-letters {
-    position: fixed; inset:0; z-index:-1; overflow:hidden; opacity:0.05;
-    pointer-events:none;
-}
-.bg-letters span {
-    position:absolute;
-    font-size:4.4rem;
-    font-weight:900;
-    color:#fff;
-    animation:float linear infinite;
-}
-@keyframes float {
-    0% { transform: translateY(110vh) rotate(0deg); opacity:0; }
-    30% { opacity:0.25; }
-    100% { transform: translateY(-20vh) rotate(360deg); opacity:0; }
-}
-
-/* ===== Top Bar ===== */
-.top-bar {
-    position: fixed;
-    top:10px; left:50%;
-    transform: translateX(-50%);
-    width:95%; max-width:1200px;
-    height:75px;
-    border-radius:20px;
-    backdrop-filter: blur(18px) saturate(180%);
-    background:rgba(255,255,255,0.06);
-    display:flex; justify-content:space-between; align-items:center;
-    padding:0 20px;
-    box-shadow:0 8px 35px rgba(0,0,0,0.35);
-    z-index:1000;
-}
-.logo { font-size:1.4rem; font-weight:700; }
-
-/* ===== Slides container ===== */
-.presentation {
-    position: absolute;
-    top: 110px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 92%;
-    max-width: 1000px;
-    height: calc(100vh - 140px);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    overflow:hidden;
-}
-
-/* ===== Slide ===== */
-.slide {
-    position:absolute;
-    width:100%;
-    height:100%;
-    border-radius:30px;
-    padding:40px;
-    background:rgba(255,255,255,0.05);
-    border:1px solid rgba(255,255,255,0.2);
-    backdrop-filter: blur(25px) saturate(180%);
-    box-shadow:0 0 40px rgba(255,255,255,0.12);
-    text-align:center;
-    opacity:0;
-    pointer-events:none;
-    transition:opacity .5s ease, border-color .5s ease;
-    overflow-y:auto;
-}
-.slide.active {
-    opacity:1;
-    pointer-events:auto;
-    border-color:rgba(255,255,255,0.42); /* подсветка границы */
-}
-
-.slide h1, .slide h2 { margin-bottom:20px; }
-.slide p {
-    font-size:1.1rem;
-    opacity:.9;
-    line-height:1.6;
-    max-width:760px;
-    margin:0 auto 15px auto;
-}
-
-/* ===== Navigation Buttons ===== */
-.nav-buttons {
-    position: fixed;
-    bottom: 20px;
-    left:50%;
-    transform:translateX(-50%);
-    display:flex;
-    gap:15px;
-    z-index:999;
-}
-.nav-buttons button {
-    padding:12px 20px;
-    background:rgba(255,255,255,0.08);
-    border:1px solid rgba(255,255,255,0.25);
-    color:#fff;
-    cursor:pointer;
-    border-radius:15px;
-    font-size:1rem;
-    backdrop-filter:blur(12px);
-    transition:.3s;
-}
-.nav-buttons button:hover { background:rgba(255,255,255,0.15); }
-
-/* ===== Interactive blocks ===== */
-.interactive {
-    margin-top:20px;
-    display:flex;
-    justify-content:center;
-    gap:15px;
-}
-.interactive button {
-    padding:10px 18px;
-    border:none;
-    border-radius:12px;
-    background:rgba(255,255,255,0.08);
-    color:#fff;
-    cursor:pointer;
-    transition:.3s;
-    backdrop-filter:blur(12px);
-}
-.interactive button:hover { background:rgba(255,255,255,0.15); }
-
-/* ===== Highlight clickable ===== */
-.highlight {
-    color:#fffa61;
-    font-weight:600;
-    cursor:pointer;
-}
-.highlight:hover { text-decoration:underline; }
-
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;background:#111;color:#fff;overflow:hidden;height:100vh;}
+.bg-letters{position:fixed;inset:0;z-index:-1;overflow:hidden;opacity:0.05;pointer-events:none;}
+.bg-letters span{position:absolute;font-size:4.4rem;font-weight:900;color:#fff;animation:float linear infinite;}
+@keyframes float{0%{transform:translateY(110vh) rotate(0deg);opacity:0;}30%{opacity:0.25;}100%{transform:translateY(-20vh) rotate(360deg);opacity:0;}}
+.top-bar{position:fixed;top:10px;left:50%;transform:translateX(-50%);width:95%;max-width:1200px;height:75px;border-radius:20px;backdrop-filter:blur(18px) saturate(180%);background:rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;padding:0 20px;box-shadow:0 8px 35px rgba(0,0,0,0.35);z-index:1000;}
+.logo{font-size:1.4rem;font-weight:700;}
+.presentation{position:absolute;top:110px;left:50%;transform:translateX(-50%);width:92%;max-width:1000px;height:calc(100vh - 140px);display:flex;justify-content:center;align-items:center;overflow:hidden;}
+.slide{position:absolute;width:100%;height:100%;border-radius:30px;padding:40px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.2);backdrop-filter:blur(25px) saturate(180%);box-shadow:0 0 40px rgba(255,255,255,0.12);text-align:center;opacity:0;pointer-events:none;transition:opacity .5s ease,border-color .5s ease;overflow-y:auto;}
+.slide.active{opacity:1;pointer-events:auto;border-color:rgba(255,255,255,0.42);}
+.slide h1,.slide h2{margin-bottom:20px;}
+.slide p{font-size:1.1rem;opacity:.9;line-height:1.6;max-width:760px;margin:0 auto 15px auto;}
+.nav-buttons{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:15px;z-index:999;}
+.nav-buttons button{padding:12px 20px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.25);color:#fff;cursor:pointer;border-radius:15px;font-size:1rem;backdrop-filter:blur(12px);transition:.3s;}
+.nav-buttons button:hover{background:rgba(255,255,255,0.15);}
+.interactive{margin-top:20px;display:flex;justify-content:center;gap:15px;flex-wrap:wrap;}
+.interactive button{padding:10px 18px;border:none;border-radius:12px;background:rgba(255,255,255,0.08);color:#fff;cursor:pointer;transition:.3s;backdrop-filter:blur(12px);}
+.interactive button:hover{background:rgba(255,255,255,0.15);}
+.highlight{color:#fffa61;font-weight:600;cursor:pointer;}
+.highlight:hover{text-decoration:underline;}
 </style>
 </head>
 <body>
-
-<!-- Background letters -->
 <div class="bg-letters">
-    <span style="left:5%; animation-duration:14s;">S</span>
-    <span style="left:22%; animation-duration:18s;">L</span>
-    <span style="left:40%; animation-duration:16s;">A</span>
-    <span style="left:56%; animation-duration:20s;">N</span>
-    <span style="left:75%; animation-duration:17s;">G</span>
+<span style="left:5%; animation-duration:14s;">S</span>
+<span style="left:22%; animation-duration:18s;">L</span>
+<span style="left:40%; animation-duration:16s;">A</span>
+<span style="left:56%; animation-duration:20s;">N</span>
+<span style="left:75%; animation-duration:17s;">G</span>
 </div>
-
-<!-- Top Bar -->
 <div class="top-bar">
-    <div class="logo">Язык улиц</div>
-    <div style="opacity:.8;">Статья 1 — Как рождается сленг</div>
+<div class="logo">Язык улиц</div>
+<div style="opacity:.8;">Статья 1 — Как рождается сленг</div>
 </div>
-
-<!-- Slides -->
 <div class="presentation">
-    <!-- 15 слайдов -->
-    <div class="slide active">
-        <h1>Введение в сленг</h1>
-        <p>Сленг — живой язык, отражающий культуру и привычки поколения.</p>
-        <p>Мы изучим происхождение, распространение и влияние на общение.</p>
-    </div>
 
-    <div class="slide">
-        <h2>Почему появляется сленг</h2>
-        <p>Он создаёт <span class="highlight" onclick="alert('Принадлежность к группе!')">ощущение группы</span> и уникальности.</p>
-    </div>
+<!-- Слайды 1-20 -->
+<div class="slide active">
+<h1>Введение в сленг</h1>
+<p>Сленг — это не просто слова. Это отражение жизни общества, настроений поколения, культурных изменений.</p>
+<p>На этой презентации мы пройдём путь от появления слов до их распространения, изучим влияние медиа и интернета и даже проверим свои знания с помощью мини-тестов.</p>
+</div>
 
-    <div class="slide">
-        <h2>Истоки сленга</h2>
-        <p>Часто заимствуется из субкультур: музыка, игры, мемы, интернет.</p>
-    </div>
+<div class="slide">
+<h2>Истоки сленга</h2>
+<p>Истоки многих слов приходят из субкультур: музыкальных, игровых, интернет-мемов. Например, «флекс» пришёл из хип-хоп среды.</p>
+<p>Сленг быстро подхватывается молодежью, формируя свой «язык улиц».</p>
+</div>
 
-    <div class="slide">
-        <h2>Жизненный цикл слова</h2>
-        <p>Появление → распространение → пик популярности → устаревание.</p>
-        <p>Пример: «кринж», «жиза», «хайп».</p>
-    </div>
+<div class="slide">
+<h2>Почему люди используют сленг</h2>
+<p>Сленг создаёт чувство <span class="highlight" onclick="alert('Принадлежность к группе!')">принадлежности к группе</span>, выделяет человека и облегчает коммуникацию среди своих.</p>
+<p>Он также помогает выражать эмоции и шутить.</p>
+</div>
 
-    <div class="slide">
-        <h2>Интернет как катализатор</h2>
-        <p>Мгновенное распространение слов через TikTok, Discord, YouTube и мемы.</p>
-        <div class="interactive">
-            <button onclick="alert('Пример хайпа: «лол»')">Пример 1</button>
-            <button onclick="alert('Пример хайпа: «руфлить»')">Пример 2</button>
-        </div>
-    </div>
+<div class="slide">
+<h2>Жизненный цикл слова</h2>
+<p>Каждое слово проходит четыре стадии:</p>
+<p>Появление → Распространение → Пик популярности → Устаревание.</p>
+<p>Пример: «кринж», «жиза», «хайп».</p>
+</div>
 
-    <div class="slide">
-        <h2>Социальная функция сленга</h2>
-        <p>Выражение эмоций, создание групповой идентичности, юмор.</p>
-    </div>
+<div class="slide">
+<h2>Интернет и сленг</h2>
+<p>Социальные сети, мемы, TikTok, Discord ускоряют распространение новых слов до невероятных скоростей.</p>
+<div class="interactive">
+<button onclick="alert('Пример популярного слова: «лол»')">Пример 1</button>
+<button onclick="alert('Пример популярного слова: «руфлить»')">Пример 2</button>
+</div>
+</div>
 
-    <div class="slide">
-        <h2>Сленг в молодежной культуре</h2>
-        <p>Помогает быстро общаться, обмениваться опытом и чувствами.</p>
-    </div>
+<div class="slide">
+<h2>Социальная функция сленга</h2>
+<p>Он помогает выделять группу, выражать юмор, эмоции и формировать стиль общения.</p>
+</div>
 
-    <div class="slide">
-        <h2>Мини-тест</h2>
-        <p>Что значит «кринж»?</p>
-        <div class="interactive">
-            <button onclick="alert('Стеснённость/неловкость')">Верно</button>
-            <button onclick="alert('Супер')">Нет</button>
-        </div>
-    </div>
+<div class="slide">
+<h2>Сленг в молодежной культуре</h2>
+<p>Сленг упрощает общение, даёт яркие образы, создаёт чувство принадлежности к поколению.</p>
+</div>
 
-    <div class="slide">
-        <h2>Примеры современного сленга</h2>
-        <p>«Жиза», «флекс», «вписка», «лайкать» — слова, живущие в сети.</p>
-    </div>
+<div class="slide">
+<h2>Мини-тест 1</h2>
+<p>Что значит «кринж»?</p>
+<div class="interactive">
+<button onclick="alert('Верно: стеснённость/неловкость')">Вариант 1</button>
+<button onclick="alert('Неверно, попробуй ещё')">Вариант 2</button>
+<button onclick="alert('Неверно, попробуй ещё')">Вариант 3</button>
+</div>
+</div>
 
-    <div class="slide">
-        <h2>Почему сленг устаревает?</h2>
-        <p>Слова теряют актуальность, меняются поколения и медиа-тренды.</p>
-    </div>
+<div class="slide">
+<h2>Примеры современного сленга</h2>
+<p>«Жиза», «флекс», «вписка», «лайкать» — слова, живущие в интернете и среди друзей.</p>
+</div>
 
-    <div class="slide">
-        <h2>Интерактив: угадай слово</h2>
-        <p>Выберите, какое слово старше:</p>
-        <div class="interactive">
-            <button onclick="alert('Верно: хайп старше')">Хайп</button>
-            <button onclick="alert('Нет, попробуй ещё')">Лайкать</button>
-        </div>
-    </div>
+<div class="slide">
+<h2>Сленг и поколение</h2>
+<p>Каждое поколение создаёт свой язык. Слова быстро устаревают, когда появляются новые тренды.</p>
+</div>
 
-    <div class="slide">
-        <h2>Роль мемов</h2>
-        <p>Мемы ускоряют распространение сленга и закрепляют значения.</p>
-    </div>
+<div class="slide">
+<h2>Почему сленг устаревает</h2>
+<p>Слова теряют актуальность, меняются поколения и медиа-тренды.</p>
+</div>
 
-    <div class="slide">
-        <h2>Советы для понимания сленга</h2>
-        <p>Следи за молодежными сообществами, соцсетями и интернет-культурой.</p>
-    </div>
+<div class="slide">
+<h2>Интерактив: угадай слово</h2>
+<p>Какое слово появилось раньше?</p>
+<div class="interactive">
+<button onclick="alert('Верно: хайп старше')">Хайп</button>
+<button onclick="alert('Неверно, попробуй ещё')">Лайкать</button>
+</div>
+</div>
 
-    <div class="slide">
-        <h2>Практическое задание</h2>
-        <p>Попробуй использовать новое слово сегодня в разговоре или чате.</p>
-    </div>
+<div class="slide">
+<h2>Роль мемов</h2>
+<p>Мемы ускоряют распространение сленга и закрепляют значения слов.</p>
+</div>
 
-    <div class="slide">
-        <h2>Заключение</h2>
-        <p>Сленг — это живой язык. Следи за изменениями, участвуй и используй слова.</p>
-    </div>
+<div class="slide">
+<h2>История некоторых слов</h2>
+<p>Например, «жиза» пришло от «жизненно», «кринж» из английского cringe — неловкость.</p>
+</div>
+
+<div class="slide">
+<h2>Использование сленга</h2>
+<p>Он помогает в играх, соцсетях, переписках, создаёт атмосферу доверия.</p>
+</div>
+
+<div class="slide">
+<h2>Интерактив: выбери правильное значение</h2>
+<p>Что значит «флекс»?</p>
+<div class="interactive">
+<button onclick="alert('Верно: показать статус/богатство')">Показать статус</button>
+<button onclick="alert('Неверно, попробуй ещё')">Шутка</button>
+<button onclick="alert('Неверно, попробуй ещё')">Мем</button>
+</div>
+</div>
+
+<div class="slide">
+<h2>Советы по изучению сленга</h2>
+<p>Следи за соцсетями, мемами, трендами в играх, общайся с молодежью.</p>
+</div>
+
+<div class="slide">
+<h2>Практическое задание 1</h2>
+<p>Попробуй использовать новое слово сегодня в разговоре или чате.</p>
+</div>
+
+<div class="slide">
+<h2>Практическое задание 2</h2>
+<p>Придумай свое слово для обозначения эмоций, дружбы или события, и попробуй ввести его в общение.</p>
+</div>
+
+<div class="slide">
+<h2>Заключение</h2>
+<p>Сленг — это живой язык, отражающий поколение. Используй, следи за трендами, пробуй новые слова и делись ими.</p>
+</div>
+
+<!-- Слайды 21-40 -->
+<div class="slide">
+<h2>Сленг и музыка</h2>
+<p>Музыка — мощный источник сленга. Рэп, хип-хоп, рок создают новые слова, которые мгновенно подхватываются фанатами.</p>
+<p>Пример: «флекс» из рэп-культуры, «чилл» — из американского сленга молодежи.</p>
+</div>
+
+<div class="slide">
+<h2>Сленг и фильмы</h2>
+<p>Фильмы и сериалы популяризируют слова: «кринж» активно вошёл в обиход после мемов на видео из сериалов и YouTube.</p>
+</div>
+
+<div class="slide">
+<h2>Сленг в играх</h2>
+<p>Игры создают свой язык: «гриндить», «фармить», «лут» — термины, которые теперь известны всем геймерам.</p>
+<div class="interactive">
+<button onclick="alert('Верно: «фармить» = собирать ресурсы/повторять задания')">Фармить</button>
+<button onclick="alert('Неверно')">Чилл</button>
+<button onclick="alert('Неверно')">Лайкать</button>
+</div>
+</div>
+
+<div class="slide">
+<h2>Эволюция сленга</h2>
+<p>Слова меняются: сначала их используют узкие группы, потом они становятся массовыми, а затем устаревают.</p>
+</div>
+
+<div class="slide">
+<h2>Интерактив: угадай возраст слова</h2>
+<p>Как давно появилось слово «жиза»?</p>
+<div class="interactive">
+<button onclick="alert('Верно! Слово появилось около 2018 года')">2018</button>
+<button onclick="alert('Неверно, попробуй ещё')">2015</button>
+<button onclick="alert('Неверно, попробуй ещё')">2020</button>
+</div>
+</div>
+
+<div class="slide">
+<h2>Сленг и мемы</h2>
+<p>Мемы фиксируют слова в культуре. Слова «лол», «кринж», «жиза» стали популярны благодаря вирусным мемам.</p>
+</div>
+
+<div class="slide">
+<h2>Сленг и социальные сети</h2>
+<p>Instagram, TikTok, VK, Discord — платформы, где новые слова рождаются каждую неделю.</p>
+</div>
+
+<div class="slide">
+<h2>Интерактив: выбери правильное определение</h2>
+<p>Что значит «вписка»?</p>
+<div class="interactive">
+<button onclick="alert('Верно! Это вечеринка, собрание друзей')">Вечеринка</button>
+<button onclick="alert('Неверно')">Образование</button>
+<button onclick="alert('Неверно')">Эмоция</button>
+</div>
+</div>
+
+<div class="slide">
+<h2>Сленг и юмор</h2>
+<p>Многие слова созданы ради шутки или иронии. Пример: «кринж», «лол», «ржака».</p>
+</div>
+
+<div class="slide">
+<h2>Сленг и эмоции</h2>
+<p>Слова помогают выражать эмоции ярче: «жиза» = согласие, «лол» = смех, «флекс» = гордость.</p>
+</div>
+
+<div class="slide">
+<h2>Мини-тест 2</h2>
+<p>Что значит «чилл»?</p>
+<div class="interactive">
+<button onclick="alert('Верно! Расслабляться, отдыхать')">Расслабляться</button>
+<button onclick="alert('Неверно, попробуй ещё')">Сильно работать</button>
+<button onclick="alert('Неверно, попробуй ещё')">Шутить</button>
+</div>
+</div>
+
+<div class="slide">
+<h2>Сленг и региональные особенности</h2>
+<p>Разные регионы создают свои слова. Например, сленг Санкт-Петербурга отличается от Москвы и южных городов.</p>
+</div>
+
+<div class="slide">
+<h2>Интерактив: выбери город</h2>
+<p>Где чаще говорят «вписка»?</p>
+<div class="interactive">
+<button onclick="alert('Верно: Москва и крупные города')">Москва</button>
+<button onclick="alert('Неверно, попробуй ещё')">Санкт-Петербург</button>
+<button onclick="alert('Неверно, попробуй ещё')">Южные города</button>
+</div>
+</div>
+
+<div class="slide">
+<h2>Сленг и молодежные сообщества</h2>
+<p>Discord, VK-группы, форумы — новые слова появляются и закрепляются именно там.</p>
+</div>
+
+<div class="slide">
+<h2>Интерактив: найди сленг</h2>
+<p>Выбери слово, которое относится к интернет-сленгу:</p>
+<div class="interactive">
+<button onclick="alert('Верно: лайкать')">Лайкать</button>
+<button onclick="alert('Неверно, попробуй ещё')">Стол</button>
+<button onclick="alert('Неверно, попробуй ещё')">Окно</button>
+</div>
+</div>
+
+<div class="slide">
+<h2>Эмоциональная окраска сленга</h2>
+<p>Слова могут быть положительными, отрицательными или нейтральными: «жиза» — положительное, «кринж» — отрицательное.</p>
+</div>
+
+<div class="slide">
+<h2>Сленг и профессии</h2>
+<p>Даже профессиональные группы создают свои термины: программерский сленг, медицинский, игровой.</p>
+</div>
+
+<div class="slide">
+<h2>Интерактив: угадай значение</h2>
+<p>Что значит «гриндить»?</p>
+<div class="interactive">
+<button onclick="alert('Верно! Выполнять повторяющиеся действия для достижения цели')">Гриндить</button>
+<button onclick="alert('Неверно')">Чилл</button>
+<button onclick="alert('Неверно')">Вписка</button>
+</div>
+</div>
+
+<div class="slide">
+<h2>Практическое задание 3</h2>
+<p>Попробуй создать цепочку слов, где каждое новое слово придумано тобой для описания эмоции, действия или ситуации.</p>
+</div>
+
+<div class="slide">
+<h2>Заключение второй части</h2>
+<p>Сленг — это язык, который живёт, меняется и развивается. Следи за культурой, пробуй новые слова, создавай свои и делись ими.</p>
+</div>
 
 </div>
 
-<!-- Navigation -->
 <div class="nav-buttons">
-    <button onclick="prevSlide()">← Назад</button>
-    <button onclick="nextSlide()">Далее →</button>
+<button onclick="prevSlide()">← Назад</button>
+<button onclick="nextSlide()">Далее →</button>
 </div>
 
 <script>
-let current = 0;
-const slides = document.querySelectorAll('.slide');
-
-function showSlide(i){
-    slides.forEach(s => s.classList.remove('active'));
-    slides[i].classList.add('active');
-}
-
-function nextSlide(){
-    if(current < slides.length - 1) current++;
-    showSlide(current);
-}
-
-function prevSlide(){
-    if(current > 0) current--;
-    showSlide(current);
-}
+let current=0;
+const slides=document.querySelectorAll('.slide');
+function showSlide(i){slides.forEach(s=>s.classList.remove('active'));slides[i].classList.add('active');}
+function nextSlide(){if(current<slides.length-1) current++; showSlide(current);}
+function prevSlide(){if(current>0) current--; showSlide(current);}
 </script>
-
 </body>
 </html>
