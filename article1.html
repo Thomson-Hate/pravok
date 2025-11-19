@@ -74,19 +74,29 @@ body {
     border-radius:30px;
     padding:40px;
     background:rgba(255,255,255,0.05);
-    border:1px solid rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.2);
     backdrop-filter: blur(25px) saturate(180%);
     box-shadow:0 0 40px rgba(255,255,255,0.12);
     text-align:center;
     opacity:0;
     pointer-events:none;
-    transition:opacity .5s ease;
+    transition:opacity .5s ease, border-color .5s ease;
     overflow-y:auto;
 }
-.slide.active { opacity:1; pointer-events:auto; }
+.slide.active {
+    opacity:1;
+    pointer-events:auto;
+    border-color:rgba(255,255,255,0.42); /* подсветка границы */
+}
 
 .slide h1, .slide h2 { margin-bottom:20px; }
-.slide p { font-size:1.1rem; opacity:.9; line-height:1.6; max-width:760px; margin:0 auto; }
+.slide p {
+    font-size:1.1rem;
+    opacity:.9;
+    line-height:1.6;
+    max-width:760px;
+    margin:0 auto 15px auto;
+}
 
 /* ===== Navigation Buttons ===== */
 .nav-buttons {
@@ -130,7 +140,7 @@ body {
 }
 .interactive button:hover { background:rgba(255,255,255,0.15); }
 
-/* ===== Highlight animations ===== */
+/* ===== Highlight clickable ===== */
 .highlight {
     color:#fffa61;
     font-weight:600;
@@ -159,60 +169,94 @@ body {
 
 <!-- Slides -->
 <div class="presentation">
-
+    <!-- 15 слайдов -->
     <div class="slide active">
-        <h1>Как рождается сленг?</h1>
-        <p>Сленг — живой, гибкий язык, который формируется в среде друзей, районов и интернет-сообществ.</p>
-        <p>Сегодня узнаем, откуда берётся сленг, как он распространяется и что он отражает о поколении.</p>
+        <h1>Введение в сленг</h1>
+        <p>Сленг — живой язык, отражающий культуру и привычки поколения.</p>
+        <p>Мы изучим происхождение, распространение и влияние на общение.</p>
+    </div>
+
+    <div class="slide">
+        <h2>Почему появляется сленг</h2>
+        <p>Он создаёт <span class="highlight" onclick="alert('Принадлежность к группе!')">ощущение группы</span> и уникальности.</p>
+    </div>
+
+    <div class="slide">
+        <h2>Истоки сленга</h2>
+        <p>Часто заимствуется из субкультур: музыка, игры, мемы, интернет.</p>
+    </div>
+
+    <div class="slide">
+        <h2>Жизненный цикл слова</h2>
+        <p>Появление → распространение → пик популярности → устаревание.</p>
+        <p>Пример: «кринж», «жиза», «хайп».</p>
+    </div>
+
+    <div class="slide">
+        <h2>Интернет как катализатор</h2>
+        <p>Мгновенное распространение слов через TikTok, Discord, YouTube и мемы.</p>
         <div class="interactive">
-            <button onclick="alert('Согласен!')">Согласен</button>
-            <button onclick="alert('Не совсем')">Не совсем</button>
+            <button onclick="alert('Пример хайпа: «лол»')">Пример 1</button>
+            <button onclick="alert('Пример хайпа: «руфлить»')">Пример 2</button>
         </div>
     </div>
 
     <div class="slide">
-        <h2>Почему появляется сленг?</h2>
-        <p>Сленг создаёт ощущение <span class="highlight" onclick="alert('Это чувство принадлежности к группе!')">принадлежности</span> к друзьям, району или интернет-группе.</p>
-        <p>Он помогает «быть своим» и быстро передавать эмоции и идеи.</p>
+        <h2>Социальная функция сленга</h2>
+        <p>Выражение эмоций, создание групповой идентичности, юмор.</p>
     </div>
 
     <div class="slide">
-        <h2>Роль интернета</h2>
-        <p>Мемы, TikTok, YouTube, Discord — генераторы новых слов, распространяющихся мгновенно.</p>
+        <h2>Сленг в молодежной культуре</h2>
+        <p>Помогает быстро общаться, обмениваться опытом и чувствами.</p>
+    </div>
+
+    <div class="slide">
+        <h2>Мини-тест</h2>
+        <p>Что значит «кринж»?</p>
         <div class="interactive">
-            <button onclick="alert('Пример слова: хайп')">Пример сленга</button>
-            <button onclick="alert('Пример слова: кринж')">Другой пример</button>
+            <button onclick="alert('Стеснённость/неловкость')">Верно</button>
+            <button onclick="alert('Супер')">Нет</button>
         </div>
     </div>
 
     <div class="slide">
-        <h2>Жизненный цикл сленга</h2>
-        <p>Каждое слово проходит путь: появление → распространение → пик популярности → устаревание.</p>
-        <p>Например: «изи», «хайп», «кринж», «жиза».</p>
+        <h2>Примеры современного сленга</h2>
+        <p>«Жиза», «флекс», «вписка», «лайкать» — слова, живущие в сети.</p>
     </div>
 
     <div class="slide">
-        <h2>Мини-интерактив</h2>
-        <p>Какое слово исчезнет раньше?</p>
+        <h2>Почему сленг устаревает?</h2>
+        <p>Слова теряют актуальность, меняются поколения и медиа-тренды.</p>
+    </div>
+
+    <div class="slide">
+        <h2>Интерактив: угадай слово</h2>
+        <p>Выберите, какое слово старше:</p>
         <div class="interactive">
-            <button onclick="alert('Вы выбрали лютый')">Лютый</button>
-            <button onclick="alert('Вы выбрали рофлить')">Рофлить</button>
-            <button onclick="alert('Вы выбрали дефолт')">Дефолт</button>
+            <button onclick="alert('Верно: хайп старше')">Хайп</button>
+            <button onclick="alert('Нет, попробуй ещё')">Лайкать</button>
         </div>
     </div>
 
     <div class="slide">
-        <h2>Сленг и культура</h2>
-        <p>Слова отражают ценности и привычки поколения. Понимание сленга — способ понять культуру людей вокруг.</p>
-        <div class="interactive">
-            <button onclick="alert('Это помогает понимать молодежь!')">Понятно</button>
-        </div>
+        <h2>Роль мемов</h2>
+        <p>Мемы ускоряют распространение сленга и закрепляют значения.</p>
+    </div>
+
+    <div class="slide">
+        <h2>Советы для понимания сленга</h2>
+        <p>Следи за молодежными сообществами, соцсетями и интернет-культурой.</p>
+    </div>
+
+    <div class="slide">
+        <h2>Практическое задание</h2>
+        <p>Попробуй использовать новое слово сегодня в разговоре или чате.</p>
     </div>
 
     <div class="slide">
         <h2>Заключение</h2>
-        <p>Сленг живёт, меняется и исчезает. Он делает общение более живым, помогает выражать эмоции и создавать свои сообщества.</p>
-        <p>Следи за новыми словами, пробуй их использовать, но не бойся, если они устареют!</p>
+        <p>Сленг — это живой язык. Следи за изменениями, участвуй и используй слова.</p>
     </div>
 
 </div>
@@ -233,14 +277,15 @@ function showSlide(i){
 }
 
 function nextSlide(){
-    current = Math.min(current + 1, slides.length - 1);
+    if(current < slides.length - 1) current++;
     showSlide(current);
 }
 
 function prevSlide(){
-    current = Math.max(current - 1, 0);
+    if(current > 0) current--;
     showSlide(current);
 }
 </script>
+
 </body>
 </html>
