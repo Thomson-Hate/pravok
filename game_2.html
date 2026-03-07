@@ -482,14 +482,14 @@ let bot2Score=0
 
 /* timer */
 
-let time=45
+let time=70
 let timerInterval
 
 function startTimer(){
 
 clearInterval(timerInterval)
 
-time=45
+time=70
 document.getElementById("timer").textContent=time
 
 timerInterval=setInterval(()=>{
@@ -630,7 +630,7 @@ updateScores()
 
 }
 
-setInterval(botsTurn,30000)
+setInterval(botsTurn,60000)
 
 /* end */
 
@@ -642,10 +642,10 @@ if(playerScore>bot1Score && playerScore>bot2Score)
 winner="Игрок"
 
 if(bot1Score>playerScore && bot1Score>bot2Score)
-winner="Бот Алекс"
+winner="Бот Дима"
 
 if(bot2Score>playerScore && bot2Score>bot1Score)
-winner="Бот Маша"
+winner="Бот Олег"
 
 document.body.innerHTML=`
 
