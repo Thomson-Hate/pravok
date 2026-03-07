@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Игра — Карманные деньги</title>
+<title>Карманные деньги — Умные деньги</title>
 
 <style>
 
@@ -17,9 +17,49 @@ min-height:100vh;
 display:flex;
 flex-direction:column;
 align-items:center;
+justify-content:center;
+overflow:hidden;
 }
 
-/* top bar */
+/* ===== start screen ===== */
+
+.start-screen{
+position:fixed;
+inset:0;
+background:#111;
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:999;
+transition:1s;
+}
+
+.start-card{
+padding:45px;
+border-radius:25px;
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.1);
+text-align:center;
+backdrop-filter:blur(25px);
+}
+
+#startBtn{
+margin-top:30px;
+padding:14px 35px;
+border-radius:14px;
+border:1px solid rgba(255,255,255,0.2);
+background:rgba(255,255,255,0.05);
+color:white;
+cursor:pointer;
+transition:.3s;
+}
+
+#startBtn:hover{
+background:rgba(255,255,255,0.18);
+box-shadow:0 0 20px rgba(255,255,255,0.4);
+}
+
+/* ===== top bar ===== */
 
 .top-bar{
 margin-top:25px;
@@ -28,23 +68,18 @@ max-width:1100px;
 padding:18px 25px;
 border-radius:20px;
 background:rgba(255,255,255,0.05);
-backdrop-filter:blur(20px);
 border:1px solid rgba(255,255,255,0.1);
 display:flex;
 justify-content:space-between;
 align-items:center;
+backdrop-filter:blur(20px);
 }
 
-.logo{
-font-weight:700;
-font-size:1.2rem;
+.timer{
+font-weight:600;
 }
 
-.progress{
-opacity:.7;
-}
-
-/* layout */
+/* ===== layout ===== */
 
 .game-wrapper{
 width:95%;
@@ -55,7 +90,7 @@ grid-template-columns:1fr 260px;
 gap:25px;
 }
 
-/* card */
+/* ===== card ===== */
 
 .card{
 background:rgba(255,255,255,0.05);
@@ -64,16 +99,31 @@ border-radius:25px;
 padding:35px;
 backdrop-filter:blur(25px);
 box-shadow:0 0 35px rgba(255,255,255,0.1);
+transition:.4s;
 }
 
-/* question */
+.fade-out{
+opacity:0;
+transform:translateY(-20px);
+}
+
+.fade-in{
+animation:fadeIn .4s;
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(20px)}
+to{opacity:1}
+}
+
+/* ===== question ===== */
 
 .question{
 font-size:1.3rem;
 margin-bottom:25px;
 }
 
-/* answers */
+/* ===== answers ===== */
 
 .answers{
 display:flex;
@@ -94,17 +144,33 @@ transition:.25s;
 background:rgba(255,255,255,0.09);
 }
 
+/* ===== answer animations ===== */
+
+@keyframes correctFlash{
+0%{transform:scale(1)}
+50%{transform:scale(1.07);box-shadow:0 0 25px rgba(80,255,120,.8)}
+100%{transform:scale(1)}
+}
+
+@keyframes wrongFlash{
+0%{transform:scale(1)}
+50%{transform:scale(.95);box-shadow:0 0 25px rgba(255,80,80,.8)}
+100%{transform:scale(1)}
+}
+
 .correct{
 background:rgba(80,255,120,0.25);
-border-color:rgba(80,255,120,0.7);
+border-color:rgba(80,255,120,0.8);
+animation:correctFlash .5s;
 }
 
 .wrong{
 background:rgba(255,80,80,0.25);
-border-color:rgba(255,80,80,0.7);
+border-color:rgba(255,80,80,0.8);
+animation:wrongFlash .5s;
 }
 
-/* scoreboard */
+/* ===== scoreboard ===== */
 
 .scoreboard{
 display:flex;
@@ -121,8 +187,18 @@ display:flex;
 justify-content:space-between;
 }
 
-.bot{
-opacity:.85;
+.bot{opacity:.85}
+
+/* ===== winner screen ===== */
+
+.winner{
+position:fixed;
+inset:0;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#111;
+z-index:1000;
 }
 
 </style>
@@ -130,16 +206,31 @@ opacity:.85;
 
 <body>
 
+<div class="start-screen" id="startScreen">
+
+<div class="start-card">
+
+<h2>Готовы проверить свои финансовые навыки?</h2>
+
+<button id="startBtn">Готово</button>
+
+</div>
+
+</div>
+
 <div class="top-bar">
-<div class="logo">Умные деньги</div>
-<div class="progress">
-Вопрос <span id="qCurrent">1</span> / <span id="qTotal"></span>
+<div>Умные деньги</div>
+<div>
+Вопрос <span id="qCurrent">1</span>/<span id="qTotal"></span>
+</div>
+<div class="timer">
+⏱ <span id="timer">10</span>
 </div>
 </div>
 
 <div class="game-wrapper">
 
-<div class="card">
+<div class="card" id="card">
 
 <div class="question" id="question"></div>
 
@@ -170,107 +261,114 @@ opacity:.85;
 
 <script>
 
-/* =========================
-CONFIG
-========================= */
+/* sounds */
 
-const QUESTIONS_TOTAL = 6
+const correctSound=new Audio("correct.mp3")
+correctSound.volume=0.1
 
-const QUESTIONS = [
+const wrongSound=new Audio("incorrect.mp3")
+wrongSound.volume=0.1
 
-{
-q:"Ты получил 100 монет. Что лучше сделать?",
-answers:[
-"Потратить всё сразу",
-"Отложить часть денег",
-"Купить случайную вещь"
-],
-correct:1
-},
+/* questions */
 
-{
-q:"У тебя есть 200 монет. Ты хочешь игрушку за 150.",
-answers:[
-"Купить и ничего не останется",
-"Купить дешевле",
-"Накопить ещё"
-],
-correct:2
-},
+const QUESTIONS_TOTAL=6
 
-{
-q:"Что лучше при карманных деньгах?",
-answers:[
-"Тратить всё",
-"Планировать расходы",
-"Покупать всё подряд"
-],
-correct:1
-},
+const QUESTIONS=[
 
-{
-q:"Ты увидел скидку на сладости.",
-answers:[
-"Купить много",
-"Подумать нужно ли",
-"Потратить все деньги"
-],
-correct:1
-},
+{q:"Ты получил 100 монет. Что лучше сделать?",
+answers:["Потратить всё","Отложить часть денег","Купить случайную вещь"],
+correct:1},
 
-{
-q:"Ты копишь на велосипед.",
-answers:[
-"Копить регулярно",
-"Тратить деньги",
-"Забыть про цель"
-],
-correct:0
-},
+{q:"У тебя есть 200 монет. Ты хочешь игрушку за 150.",
+answers:["Купить","Купить дешевле","Накопить ещё"],
+correct:2},
 
-{
-q:"Что помогает накопить деньги?",
-answers:[
-"План",
-"Импульсивные покупки",
-"Покупки каждый день"
-],
-correct:0
-}
+{q:"Что помогает копить деньги?",
+answers:["План","Импульсивные покупки","Тратить всё"],
+correct:0},
+
+{q:"Ты увидел скидку на сладости",
+answers:["Купить много","Подумать нужно ли","Потратить всё"],
+correct:1},
+
+{q:"Ты копишь на велосипед",
+answers:["Копить регулярно","Тратить деньги","Забыть цель"],
+correct:0},
+
+{q:"Что лучше при карманных деньгах?",
+answers:["Планировать","Тратить всё","Покупать всё"],
+correct:0}
 
 ]
 
-/* ========================= */
+document.getElementById("qTotal").textContent=QUESTIONS_TOTAL
 
-document.getElementById("qTotal").textContent = QUESTIONS_TOTAL
+let shuffled=[...QUESTIONS].sort(()=>Math.random()-0.5)
 
-let current = 0
+let current=0
 
-let playerScore = 0
-let bot1Score = 0
-let bot2Score = 0
+let playerScore=0
+let bot1Score=0
+let bot2Score=0
 
-let shuffled = [...QUESTIONS].sort(()=>Math.random()-0.5)
+/* timer */
+
+let time=10
+let timerInterval
+
+function startTimer(){
+
+clearInterval(timerInterval)
+
+time=10
+document.getElementById("timer").textContent=time
+
+timerInterval=setInterval(()=>{
+
+time--
+document.getElementById("timer").textContent=time
+
+if(time<=0){
+
+clearInterval(timerInterval)
+
+current++
+nextQuestion()
+
+}
+
+},1000)
+
+}
+
+/* load question */
 
 function loadQuestion(){
 
-if(current >= QUESTIONS_TOTAL){
+if(current>=QUESTIONS_TOTAL){
 endGame()
 return
 }
 
-document.getElementById("qCurrent").textContent = current+1
+document.getElementById("qCurrent").textContent=current+1
 
-const q = shuffled[current]
+const q=shuffled[current]
 
-document.getElementById("question").textContent = q.q
+const card=document.getElementById("card")
 
-const answersBlock = document.getElementById("answers")
-answersBlock.innerHTML = ""
+card.classList.remove("fade-in")
+card.classList.add("fade-out")
+
+setTimeout(()=>{
+
+document.getElementById("question").textContent=q.q
+
+const answersBlock=document.getElementById("answers")
+answersBlock.innerHTML=""
 
 q.answers.forEach((text,i)=>{
 
-const div = document.createElement("div")
+const div=document.createElement("div")
 div.className="answer"
 div.textContent=text
 
@@ -280,25 +378,41 @@ answersBlock.appendChild(div)
 
 })
 
+card.classList.remove("fade-out")
+card.classList.add("fade-in")
+
+startTimer()
+
+},300)
+
 }
+
+/* answer */
 
 function selectAnswer(el,index){
 
-const q = shuffled[current]
+clearInterval(timerInterval)
 
-const answers = document.querySelectorAll(".answer")
+const q=shuffled[current]
+const answers=document.querySelectorAll(".answer")
 
 answers.forEach(a=>a.onclick=null)
 
-if(index === q.correct){
+if(index===q.correct){
 
 el.classList.add("correct")
 playerScore+=10
+
+correctSound.currentTime=0
+correctSound.play()
 
 }else{
 
 el.classList.add("wrong")
 answers[q.correct].classList.add("correct")
+
+wrongSound.currentTime=0
+wrongSound.play()
 
 }
 
@@ -307,15 +421,21 @@ updateScores()
 setTimeout(()=>{
 
 current++
-loadQuestion()
+nextQuestion()
 
 },1200)
 
 }
 
-function updateScores(){
+function nextQuestion(){
 
-playerScore=Math.max(0,playerScore)
+loadQuestion()
+
+}
+
+/* scores */
+
+function updateScores(){
 
 document.getElementById("playerScore").textContent=playerScore
 document.getElementById("bot1Score").textContent=bot1Score
@@ -323,21 +443,19 @@ document.getElementById("bot2Score").textContent=bot2Score
 
 }
 
-/* =========================
-BOTS
-========================= */
+/* bots */
 
 function botsTurn(){
 
-const q = shuffled[current]
+const q=shuffled[current]
 
-if(!q) return
+if(!q)return
 
-const rand1 = Math.floor(Math.random()*3)
-const rand2 = Math.floor(Math.random()*3)
+const r1=Math.floor(Math.random()*3)
+const r2=Math.floor(Math.random()*3)
 
-if(rand1===q.correct) bot1Score+=10
-if(rand2===q.correct) bot2Score+=10
+if(r1===q.correct)bot1Score+=10
+if(r2===q.correct)bot2Score+=10
 
 updateScores()
 
@@ -345,22 +463,69 @@ updateScores()
 
 setInterval(botsTurn,30000)
 
-/* ========================= */
+/* end */
 
 function endGame(){
 
-alert(
-"Игра окончена!\n\n"+
-"Игрок: "+playerScore+"\n"+
-"Бот Алекс: "+bot1Score+"\n"+
-"Бот Маша: "+bot2Score
-)
+let winner="Ничья"
+
+if(playerScore>bot1Score && playerScore>bot2Score)
+winner="Игрок"
+
+if(bot1Score>playerScore && bot1Score>bot2Score)
+winner="Бот Алекс"
+
+if(bot2Score>playerScore && bot2Score>bot1Score)
+winner="Бот Маша"
+
+document.body.innerHTML=`
+
+<div class="winner">
+
+<div class="card" style="text-align:center">
+
+<h2>Игра окончена</h2>
+
+<br>
+
+<h3>Победитель: ${winner}</h3>
+
+<br>
+
+<p>Игрок: ${playerScore}</p>
+<p>Бот Алекс: ${bot1Score}</p>
+<p>Бот Маша: ${bot2Score}</p>
+
+<br>
+
+<p style="opacity:.6">Возврат через 5 секунд...</p>
+
+</div>
+
+</div>
+
+`
+
+setTimeout(()=>{
+
+location.reload()
+
+},5000)
 
 }
 
 /* start */
 
+document.getElementById("startBtn").onclick=()=>{
+
+document.getElementById("startScreen").style.opacity="0"
+
+setTimeout(()=>{
+document.getElementById("startScreen").style.display="none"
 loadQuestion()
+},700)
+
+}
 
 </script>
 
