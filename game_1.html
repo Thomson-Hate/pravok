@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Игра — Карманные деньги</title>
+
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;
+background:#111;
+color:#fff;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+
+/* top bar */
+
+.top-bar{
+margin-top:25px;
+width:95%;
+max-width:1100px;
+padding:18px 25px;
+border-radius:20px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,0.1);
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logo{
+font-weight:700;
+font-size:1.2rem;
+}
+
+.progress{
+opacity:.7;
+}
+
+/* layout */
+
+.game-wrapper{
+width:95%;
+max-width:1100px;
+margin-top:25px;
+display:grid;
+grid-template-columns:1fr 260px;
+gap:25px;
+}
+
+/* card */
+
+.card{
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.12);
+border-radius:25px;
+padding:35px;
+backdrop-filter:blur(25px);
+box-shadow:0 0 35px rgba(255,255,255,0.1);
+}
+
+/* question */
+
+.question{
+font-size:1.3rem;
+margin-bottom:25px;
+}
+
+/* answers */
+
+.answers{
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.answer{
+padding:14px;
+border-radius:14px;
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.12);
+cursor:pointer;
+transition:.25s;
+}
+
+.answer:hover{
+background:rgba(255,255,255,0.09);
+}
+
+.correct{
+background:rgba(80,255,120,0.25);
+border-color:rgba(80,255,120,0.7);
+}
+
+.wrong{
+background:rgba(255,80,80,0.25);
+border-color:rgba(255,80,80,0.7);
+}
+
+/* scoreboard */
+
+.scoreboard{
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.player{
+padding:14px;
+border-radius:14px;
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.12);
+display:flex;
+justify-content:space-between;
+}
+
+.bot{
+opacity:.85;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="top-bar">
+<div class="logo">Умные деньги</div>
+<div class="progress">
+Вопрос <span id="qCurrent">1</span> / <span id="qTotal"></span>
+</div>
+</div>
+
+<div class="game-wrapper">
+
+<div class="card">
+
+<div class="question" id="question"></div>
+
+<div class="answers" id="answers"></div>
+
+</div>
+
+<div class="scoreboard">
+
+<div class="player">
+<span>Игрок</span>
+<span id="playerScore">0</span>
+</div>
+
+<div class="player bot">
+<span>Бот Алекс</span>
+<span id="bot1Score">0</span>
+</div>
+
+<div class="player bot">
+<span>Бот Маша</span>
+<span id="bot2Score">0</span>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* =========================
+CONFIG
+========================= */
+
+const QUESTIONS_TOTAL = 6
+
+const QUESTIONS = [
+
+{
+q:"Ты получил 100 монет. Что лучше сделать?",
+answers:[
+"Потратить всё сразу",
+"Отложить часть денег",
+"Купить случайную вещь"
+],
+correct:1
+},
+
+{
+q:"У тебя есть 200 монет. Ты хочешь игрушку за 150.",
+answers:[
+"Купить и ничего не останется",
+"Купить дешевле",
+"Накопить ещё"
+],
+correct:2
+},
+
+{
+q:"Что лучше при карманных деньгах?",
+answers:[
+"Тратить всё",
+"Планировать расходы",
+"Покупать всё подряд"
+],
+correct:1
+},
+
+{
+q:"Ты увидел скидку на сладости.",
+answers:[
+"Купить много",
+"Подумать нужно ли",
+"Потратить все деньги"
+],
+correct:1
+},
+
+{
+q:"Ты копишь на велосипед.",
+answers:[
+"Копить регулярно",
+"Тратить деньги",
+"Забыть про цель"
+],
+correct:0
+},
+
+{
+q:"Что помогает накопить деньги?",
+answers:[
+"План",
+"Импульсивные покупки",
+"Покупки каждый день"
+],
+correct:0
+}
+
+]
+
+/* ========================= */
+
+document.getElementById("qTotal").textContent = QUESTIONS_TOTAL
+
+let current = 0
+
+let playerScore = 0
+let bot1Score = 0
+let bot2Score = 0
+
+let shuffled = [...QUESTIONS].sort(()=>Math.random()-0.5)
+
+function loadQuestion(){
+
+if(current >= QUESTIONS_TOTAL){
+endGame()
+return
+}
+
+document.getElementById("qCurrent").textContent = current+1
+
+const q = shuffled[current]
+
+document.getElementById("question").textContent = q.q
+
+const answersBlock = document.getElementById("answers")
+answersBlock.innerHTML = ""
+
+q.answers.forEach((text,i)=>{
+
+const div = document.createElement("div")
+div.className="answer"
+div.textContent=text
+
+div.onclick=()=>selectAnswer(div,i)
+
+answersBlock.appendChild(div)
+
+})
+
+}
+
+function selectAnswer(el,index){
+
+const q = shuffled[current]
+
+const answers = document.querySelectorAll(".answer")
+
+answers.forEach(a=>a.onclick=null)
+
+if(index === q.correct){
+
+el.classList.add("correct")
+playerScore+=10
+
+}else{
+
+el.classList.add("wrong")
+answers[q.correct].classList.add("correct")
+
+}
+
+updateScores()
+
+setTimeout(()=>{
+
+current++
+loadQuestion()
+
+},1200)
+
+}
+
+function updateScores(){
+
+playerScore=Math.max(0,playerScore)
+
+document.getElementById("playerScore").textContent=playerScore
+document.getElementById("bot1Score").textContent=bot1Score
+document.getElementById("bot2Score").textContent=bot2Score
+
+}
+
+/* =========================
+BOTS
+========================= */
+
+function botsTurn(){
+
+const q = shuffled[current]
+
+if(!q) return
+
+const rand1 = Math.floor(Math.random()*3)
+const rand2 = Math.floor(Math.random()*3)
+
+if(rand1===q.correct) bot1Score+=10
+if(rand2===q.correct) bot2Score+=10
+
+updateScores()
+
+}
+
+setInterval(botsTurn,30000)
+
+/* ========================= */
+
+function endGame(){
+
+alert(
+"Игра окончена!\n\n"+
+"Игрок: "+playerScore+"\n"+
+"Бот Алекс: "+bot1Score+"\n"+
+"Бот Маша: "+bot2Score
+)
+
+}
+
+/* start */
+
+loadQuestion()
+
+</script>
+
+</body>
+</html>
