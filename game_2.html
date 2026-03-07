@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Карманные деньги — Умные деньги</title>
+
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;
+background:#111;
+color:#fff;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+}
+
+/* ===== start screen ===== */
+
+.start-screen{
+position:fixed;
+inset:0;
+background:#111;
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:999;
+transition:1s;
+}
+
+.start-card{
+padding:45px;
+border-radius:25px;
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.1);
+text-align:center;
+backdrop-filter:blur(25px);
+}
+
+#startBtn{
+margin-top:30px;
+padding:14px 35px;
+border-radius:14px;
+border:1px solid rgba(255,255,255,0.2);
+background:rgba(255,255,255,0.05);
+color:white;
+cursor:pointer;
+transition:.3s;
+}
+
+#startBtn:hover{
+background:rgba(255,255,255,0.18);
+box-shadow:0 0 20px rgba(255,255,255,0.4);
+}
+
+/* ===== top bar ===== */
+
+.top-bar{
+margin-top:25px;
+width:95%;
+max-width:1100px;
+padding:18px 25px;
+border-radius:20px;
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.1);
+display:flex;
+justify-content:space-between;
+align-items:center;
+backdrop-filter:blur(20px);
+}
+
+.timer{
+font-weight:600;
+}
+
+/* ===== layout ===== */
+
+.game-wrapper{
+width:95%;
+max-width:1100px;
+margin-top:25px;
+display:grid;
+grid-template-columns:1fr 260px;
+gap:25px;
+}
+
+/* ===== card ===== */
+
+.card{
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.12);
+border-radius:25px;
+padding:35px;
+backdrop-filter:blur(25px);
+box-shadow:0 0 35px rgba(255,255,255,0.1);
+transition:.4s;
+}
+
+.fade-out{
+opacity:0;
+transform:translateY(-20px);
+}
+
+.fade-in{
+animation:fadeIn .4s;
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(20px)}
+to{opacity:1}
+}
+
+/* ===== question ===== */
+
+.question{
+font-size:1.3rem;
+margin-bottom:25px;
+}
+
+/* ===== answers ===== */
+
+.answers{
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.answer{
+padding:14px;
+border-radius:14px;
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.12);
+cursor:pointer;
+transition:.25s;
+}
+
+.answer:hover{
+background:rgba(255,255,255,0.09);
+}
+
+/* ===== answer animations ===== */
+
+@keyframes correctFlash{
+0%{transform:scale(1)}
+50%{transform:scale(1.07);box-shadow:0 0 25px rgba(80,255,120,.8)}
+100%{transform:scale(1)}
+}
+
+@keyframes wrongFlash{
+0%{transform:scale(1)}
+50%{transform:scale(.95);box-shadow:0 0 25px rgba(255,80,80,.8)}
+100%{transform:scale(1)}
+}
+
+.correct{
+background:rgba(80,255,120,0.25);
+border-color:rgba(80,255,120,0.8);
+animation:correctFlash .5s;
+}
+
+.wrong{
+background:rgba(255,80,80,0.25);
+border-color:rgba(255,80,80,0.8);
+animation:wrongFlash .5s;
+}
+
+/* ===== scoreboard ===== */
+
+.scoreboard{
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.player{
+padding:14px;
+border-radius:14px;
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.12);
+display:flex;
+justify-content:space-between;
+}
+
+.bot{opacity:.85}
+
+/* ===== winner screen ===== */
+
+.winner{
+position:fixed;
+inset:0;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#111;
+z-index:1000;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="start-screen" id="startScreen">
+
+<div class="start-card">
+
+<h2>Готовы проверить свои финансовые навыки?</h2>
+
+<button id="startBtn">Готово</button>
+
+</div>
+
+</div>
+
+<div class="top-bar">
+<div>Умные деньги</div>
+<div>
+Вопрос <span id="qCurrent">1</span>/<span id="qTotal"></span>
+</div>
+<div class="timer">
+⏱ <span id="timer">10</span>
+</div>
+</div>
+
+<div class="game-wrapper">
+
+<div class="card" id="card">
+
+<div class="question" id="question"></div>
+
+<div class="answers" id="answers"></div>
+
+</div>
+
+<div class="scoreboard">
+
+<div class="player">
+<span>Игрок</span>
+<span id="playerScore">0</span>
+</div>
+
+<div class="player bot">
+<span>Бот Алекс</span>
+<span id="bot1Score">0</span>
+</div>
+
+<div class="player bot">
+<span>Бот Маша</span>
+<span id="bot2Score">0</span>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* sounds */
+
+const correctSound=new Audio("correct.mp3")
+correctSound.volume=0.1
+
+const wrongSound=new Audio("incorrect.mp3")
+wrongSound.volume=0.1
+
+/* questions */
+
+const QUESTIONS_TOTAL=6
+
+const QUESTIONS = [
+{q:"Ты накопил 120 монет на велосипед. В магазине увидел новый велосипед за 150 монет, а старый хороший за 110. Что выбрать?", answers:["Купить дорогой сразу","Купить дешевый и сэкономить","Продолжать копить на дорогой"], correct:2},
+{q:"Тебе дали 50 монет на неделю. Хочешь съездить в кино (30 монет) и купить мороженое (25 монет). Как распорядиться деньгами?", answers:["Купить всё и остаться в долгу","Выбрать только одно развлечение","Отложить на будущую неделю"], correct:1},
+{q:"В магазине акция: купи 2 книги по цене 1. Тебе нужны обе? Одна для тебя, одна для друга.", answers:["Купить сразу обе","Купить только себе","Не покупать и подождать"], correct:2},
+{q:"Друг предлагает обменять свою коллекцию карточек на твои монеты. Но ты не уверен, нужны ли они тебе.", answers:["Обменять сразу","Подумать о ценности и важности","Отказаться"], correct:1},
+{q:"Ты хочешь новую настольную игру, но знаешь, что через месяц будет скидка. Что делать?", answers:["Купить сейчас","Подождать скидку и накопить","Игнорировать игру"], correct:1},
+{q:"Ты получил бонусные монеты за выполнение домашнего задания. Хочешь потратить их на сладости.", answers:["Тратить сразу","Сначала накопить и купить что-то полезное","Не тратить вообще"], correct:1},
+{q:"Ты накопил деньги на новый рюкзак, но твои друзья предлагают поход в парк за 40 монет.", answers:["Пойти в парк","Сначала купить рюкзак","Отложить всё на будущее"], correct:1},
+{q:"В магазине игрушек есть два одинаковых набора: один с маленьким браком, другой без. Цена разная.", answers:["Купить дешевый с браком","Купить качественный дорогой","Не покупать"], correct:1},
+{q:"Ты хочешь купить 3 разных игрушки, каждая по 50 монет, а у тебя только 120.", answers:["Купить все","Выбрать одну","Откладывать дальше"], correct:1},
+{q:"Твои родители дают 30 монет на неделю. Хочешь купить сладости каждый день.", answers:["Покупать каждый день","Планировать на неделю","Не покупать"], correct:1},
+{q:"Ты видишь рекламный баннер новой игрушки, которой нет у друзей.", answers:["Купить сразу","Подумать, нужна ли она","Игнорировать"], correct:1},
+{q:"Тебе предложили обменять старую игрушку на новую коллекционную карточку.", answers:["Сразу обменять","Подумать, стоит ли","Отказаться"], correct:1},
+{q:"Ты получаешь 50 монет за хорошие оценки каждый месяц. Хочешь потратить их на мелочи.", answers:["Тратить сразу","Накопить на важную цель","Отдать другу"], correct:1},
+{q:"Ты накопил на планшет 500 монет, но недавно вышел новый, который стоит 600.", answers:["Купить старый сразу","Подождать и накопить на новый","Не покупать"], correct:1},
+{q:"Хочешь купить игрушку, которую случайно нашли в магазине с большим количеством скидок.", answers:["Купить сейчас","Сравнить с другими предложениями","Игнорировать"], correct:1},
+{q:"Твои друзья копят на велосипед, а у тебя есть лишние монеты. Предложили помочь.", answers:["Помочь им и потерять свои монеты","Отложить деньги на себя","Игнорировать друзей"], correct:1},
+{q:"В магазине предлагают набор сладостей с разными вкусами, часть тебе не нравится.", answers:["Купить весь набор","Выбрать только любимые","Не покупать"], correct:1},
+{q:"Ты накопил деньги на подарок другу, а сам хочешь игрушку.", answers:["Потратить на себя","Купить подарок другу","Подождать и накопить на обе"], correct:2},
+{q:"В игре дают монеты за выполнение всех заданий. Потратил уже много на обновки.", answers:["Продолжать тратить","Начать экономить","Игнорировать монеты"], correct:1},
+{q:"Хочешь новую книгу, но ещё не прочитал старую.", answers:["Купить новую","Прочитать старую","Не покупать"], correct:1},
+{q:"В магазине акция: купи 3 шоколадки за цену 2, но дома уже много сладостей.", answers:["Купить все","Купить только нужное","Не покупать"], correct:1},
+{q:"Ты накопил деньги на велосипед, но мама предлагает купить ему колеса сейчас дешевле.", answers:["Купить колеса","Продолжать копить на велосипед","Игнорировать"], correct:1},
+{q:"Друг предлагает совместно купить настольную игру, которую потом будете делить.", answers:["Сразу согласиться","Обсудить условия и цену","Отказаться"], correct:1},
+{q:"Ты получаешь монеты за помощь по дому. Друг предлагает потратить их на общую покупку.", answers:["Тратить сам","Потратить вместе","Откладывать"], correct:1},
+{q:"Хочешь купить дорогую игрушку, но родители советуют подождать.", answers:["Купить тайком","Подождать","Игнорировать"], correct:1},
+{q:"Видишь новую игру, которой нет у друзей. Стоимость высокая.", answers:["Купить сразу","Сравнить с другими возможностями","Не покупать"], correct:1},
+{q:"Ты получаешь карманные деньги раз в неделю, но хочешь покупать сладости каждый день.", answers:["Тратить каждый день","Планировать на неделю","Не покупать"], correct:1},
+{q:"В магазине предлагают игрушку с бонусом, который тебе не нужен.", answers:["Купить ради бонуса","Купить только если нужен","Не покупать"], correct:1},
+{q:"Ты накопил 100 монет на подарок другу, а твой друг подарил тебе подарок.", answers:["Отдать подарок другу","Купить подарок другу","Откладывать"], correct:2},
+{q:"Хочешь купить коллекционную карточку, но знаешь, что через месяц она станет дешевле.", answers:["Купить сразу","Подождать скидку","Не покупать"], correct:1},
+{q:"Тебе предлагают обменять игрушку, которую давно не используешь, на новую.", answers:["Сразу обменять","Подумать, нужна ли","Отказаться"], correct:1}
+];
+
+document.getElementById("qTotal").textContent=QUESTIONS_TOTAL
+
+let shuffled=[...QUESTIONS].sort(()=>Math.random()-0.5)
+
+let current=0
+
+let playerScore=0
+let bot1Score=0
+let bot2Score=0
+
+/* timer */
+
+let time=45
+let timerInterval
+
+function startTimer(){
+
+clearInterval(timerInterval)
+
+time=45
+document.getElementById("timer").textContent=time
+
+timerInterval=setInterval(()=>{
+
+time--
+document.getElementById("timer").textContent=time
+
+if(time<=0){
+
+clearInterval(timerInterval)
+
+current++
+nextQuestion()
+
+}
+
+},1000)
+
+}
+
+/* load question */
+
+function loadQuestion(){
+
+if(current>=QUESTIONS_TOTAL){
+endGame()
+return
+}
+
+document.getElementById("qCurrent").textContent=current+1
+
+const q=shuffled[current]
+
+const card=document.getElementById("card")
+
+card.classList.remove("fade-in")
+card.classList.add("fade-out")
+
+setTimeout(()=>{
+
+document.getElementById("question").textContent=q.q
+
+const answersBlock=document.getElementById("answers")
+answersBlock.innerHTML=""
+
+q.answers.forEach((text,i)=>{
+
+const div=document.createElement("div")
+div.className="answer"
+div.textContent=text
+
+div.onclick=()=>selectAnswer(div,i)
+
+answersBlock.appendChild(div)
+
+})
+
+card.classList.remove("fade-out")
+card.classList.add("fade-in")
+
+startTimer()
+
+},300)
+
+}
+
+/* answer */
+
+function selectAnswer(el,index){
+
+clearInterval(timerInterval)
+
+const q=shuffled[current]
+const answers=document.querySelectorAll(".answer")
+
+answers.forEach(a=>a.onclick=null)
+
+if(index===q.correct){
+
+el.classList.add("correct")
+playerScore+=10
+
+correctSound.currentTime=0
+correctSound.play()
+
+}else{
+
+el.classList.add("wrong")
+answers[q.correct].classList.add("correct")
+
+wrongSound.currentTime=0
+wrongSound.play()
+
+}
+
+updateScores()
+
+setTimeout(()=>{
+
+current++
+nextQuestion()
+
+},1200)
+
+}
+
+function nextQuestion(){
+
+loadQuestion()
+
+}
+
+/* scores */
+
+function updateScores(){
+
+document.getElementById("playerScore").textContent=playerScore
+document.getElementById("bot1Score").textContent=bot1Score
+document.getElementById("bot2Score").textContent=bot2Score
+
+}
+
+/* bots */
+
+function botsTurn(){
+
+const q=shuffled[current]
+
+if(!q)return
+
+const r1=Math.floor(Math.random()*3)
+const r2=Math.floor(Math.random()*3)
+
+if(r1===q.correct)bot1Score+=10
+if(r2===q.correct)bot2Score+=10
+
+updateScores()
+
+}
+
+setInterval(botsTurn,30000)
+
+/* end */
+
+function endGame(){
+
+let winner="Ничья"
+
+if(playerScore>bot1Score && playerScore>bot2Score)
+winner="Игрок"
+
+if(bot1Score>playerScore && bot1Score>bot2Score)
+winner="Бот Алекс"
+
+if(bot2Score>playerScore && bot2Score>bot1Score)
+winner="Бот Маша"
+
+document.body.innerHTML=`
+
+<div class="winner">
+
+<div class="card" style="text-align:center">
+
+<h2>Игра окончена</h2>
+
+<br>
+
+<h3>Победитель: ${winner}</h3>
+
+<br>
+
+<p>Игрок: ${playerScore}</p>
+<p>Бот Алекс: ${bot1Score}</p>
+<p>Бот Маша: ${bot2Score}</p>
+
+<br>
+
+<p style="opacity:.6">Возврат через 5 секунд...</p>
+
+</div>
+
+</div>
+
+`
+
+setTimeout(()=>{
+
+location.reload()
+
+},5000)
+
+}
+
+/* start */
+
+document.getElementById("startBtn").onclick=()=>{
+
+document.getElementById("startScreen").style.opacity="0"
+
+setTimeout(()=>{
+document.getElementById("startScreen").style.display="none"
+loadQuestion()
+},700)
+
+}
+
+</script>
+
+</body>
+</html>
